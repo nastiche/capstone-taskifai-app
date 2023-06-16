@@ -42,14 +42,15 @@ const RadioButton = styled.input`
   margin-right: 0.5rem;
 `;
 
-export default function Form({ defaultData }) {
+export default function Form({ onSubmit, formName, defaultData }) {
   const [selectedPrio, setSelectedPrio] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    // onSubmit(data);
+    data.subtasks = data.subtasks.split(",").map((subtask) => subtask.trim());
+    onSubmit(data);
   }
 
   function handleRadioButtonChange(prio) {
@@ -58,23 +59,23 @@ export default function Form({ defaultData }) {
 
   function resetForm() {
     setSelectedPrio("");
-    document.getElementById("task-input-form").reset();
+    document.getElementById({ formName }).reset();
   }
   return (
     <FormContainer
-      id="task-input-form"
-      aria-labelledby="task-input-form"
+      id={formName}
+      aria-labelledby={formName}
       onSubmit={handleSubmit}
     >
       <Label htmlFor="title">title</Label>
       <Textarea
-        id="name"
-        name="name"
+        id="title"
+        name="title"
         type="text"
         defaultValue={defaultData?.name}
         rows="1"
       ></Textarea>
-      <Label htmlFor="title">subtasks</Label>
+      <Label htmlFor="subtasks">subtasks</Label>
       <Textarea
         id="subtasks"
         name="subtasks"
@@ -82,7 +83,7 @@ export default function Form({ defaultData }) {
         defaultValue={defaultData?.subtasks}
         rows="5"
       ></Textarea>
-      <Label htmlFor="title">category</Label>
+      <Label htmlFor="category">category</Label>
       <Textarea
         id="category"
         name="category"
@@ -90,7 +91,7 @@ export default function Form({ defaultData }) {
         defaultValue={defaultData?.category}
         rows="1"
       ></Textarea>
-      <Label htmlFor="title">deadline</Label>
+      <Label htmlFor="deadline">deadline</Label>
       <Input
         id="deadline"
         name="deadline"

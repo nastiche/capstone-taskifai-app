@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>hallo</div>;
+import Form from "../components/TaskInputForm";
+
+export default function CreateTaskPage() {
+  return <Form></Form>;
 }

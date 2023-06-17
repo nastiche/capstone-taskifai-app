@@ -102,7 +102,8 @@ export default function Form({ onSubmit, formName, defaultData }) {
         defaultValue={defaultData?.deadline}
         rows="1"
       ></Input>
-      <RadioButtonGroup id="prioritisation">
+      <Label htmlFor="prioritisation">priority</Label>
+      <RadioButtonGroup id="prioritisation" name="prioritisation">
         <RadioButtonLabel>
           <RadioButton
             type="radio"

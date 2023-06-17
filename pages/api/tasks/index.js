@@ -14,4 +14,10 @@ export default async function handler(request, response) {
       response.status(400).json({ error: error.message });
     }
   }
+
+  if (request.method === "GET") {
+    const tasks = await Task.find();
+    response.status(200).json(tasks);
+    return;
+  }
 }

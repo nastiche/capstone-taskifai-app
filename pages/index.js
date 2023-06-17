@@ -18,8 +18,7 @@ const ListItem = styled.li`
 `;
 
 export default function CreateTaskPage() {
-  const { data } = useSWR("/api/tasks", { fallbackData: [] });
-  // console.log(data);
+  const { data, mutate } = useSWR("/api/tasks", { fallbackData: [] });
 
   async function addTask(task) {
     const response = await fetch("/api/tasks", {
@@ -29,9 +28,9 @@ export default function CreateTaskPage() {
       },
       body: JSON.stringify(task),
     });
-    // if (response.ok) {
-    //   mutate();
-    // }
+    if (response.ok) {
+      mutate();
+    }
   }
   return (
     <>

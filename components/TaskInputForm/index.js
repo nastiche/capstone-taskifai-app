@@ -51,6 +51,8 @@ export default function Form({ onSubmit, formName, defaultData }) {
     const data = Object.fromEntries(formData);
     data.subtasks = data.subtasks.split(",").map((subtask) => subtask.trim());
     onSubmit(data);
+    event.target.reset();
+    event.target.elements.title.focus();
   }
 
   function handleRadioButtonChange(prio) {
@@ -59,7 +61,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
 
   function resetForm() {
     setSelectedPrio("");
-    document.getElementById({ formName }).reset();
+    document.getElementById(formName).reset();
   }
   return (
     <FormContainer
@@ -74,6 +76,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         type="text"
         defaultValue={defaultData?.name}
         rows="1"
+        required
       ></Textarea>
       <Label htmlFor="subtasks">subtasks</Label>
       <Textarea

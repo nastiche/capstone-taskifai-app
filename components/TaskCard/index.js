@@ -37,7 +37,7 @@ export default function TaskCard({
     <Article>
       <List>
         <ListItem>
-          title: <BoldText>{title}</BoldText>
+          task: <BoldText>{title}</BoldText>
         </ListItem>
         <ListItem>
           category: <BoldText>{category}</BoldText>

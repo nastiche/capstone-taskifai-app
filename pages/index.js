@@ -1,11 +1,55 @@
-import Heading from "../components/Heading";
-import SubHeading from "../components/SubHeading";
+import useSWR from "swr";
+import Form from "../components/TaskInputForm";
+import styled from "styled-components";
+import TaskCard from "../components/TaskCard";
 
-export default function Home() {
+const List = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 0;
+`;
+
+const ListItem = styled.li`
+  position: relative;
+  width: 100%;
+`;
+
+export default function CreateTaskPage() {
+  const { data, mutate } = useSWR("/api/tasks", { fallbackData: [] });
+
+  async function addTask(task) {
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+    if (response.ok) {
+      mutate();
+    }
+  }
   return (
-    <main>
-      <Heading>🐬 Capstone Template 🐬</Heading>
-      <SubHeading>We dolphinitely love coding!</SubHeading>
-    </main>
+    <>
+      <Form onSubmit={addTask} formName={"add-task"}></Form>
+      <List role="list">
+        {data.map((task) => {
+          return (
+            <ListItem key={task._id}>
+              <TaskCard
+                title={task.title}
+                subtasks={task.subtasks}
+                tags={task.tags}
+                deadline={task.deadline}
+                priority={task.priority}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
+    </>
   );
 }

@@ -1,14 +1,24 @@
+import { SWRConfig } from "swr";
+import Layout from "../components/Layout";
 import GlobalStyle from "../styles";
-import Head from "next/head";
+
 
 export default function App({ Component, pageProps }) {
+  //define fetcher
+  const fetcher = async (...args) => {
+    const response = await fetch(...args);
+    if (!response.ok) {
+      throw new Error(`Request with ${JSON.stringify(args)} failed.`);
+    }
+    return await response.json();
+  };
+
   return (
-    <>
-      <GlobalStyle />
-      <Head>
-        <title>Capstone Project</title>
-      </Head>
-      <Component {...pageProps} />
-    </>
+    <SWRConfig value={{ fetcher }}>
+      <Layout >
+        <GlobalStyle />
+        <Component {...pageProps} />
+      </Layout>
+    </SWRConfig>
   );
 }

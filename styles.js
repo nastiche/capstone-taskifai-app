@@ -8,6 +8,9 @@ export default createGlobalStyle`
   }
   body {
     margin: 0;
-    font-family: system-ui;
+  }
+  textarea, input, button, select {
+    font-family: inherit;
+    font-size: inherit;
   }
 `;

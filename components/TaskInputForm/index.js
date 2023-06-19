@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { StyledButton } from "../StyledButton/StyledButton";
 
@@ -43,39 +43,11 @@ const RadioButton = styled.input`
   margin-right: 0.5rem;
 `;
 
-const TagEditor = styled(ReactTags)`
-  width: 100%;
-
-  .react-tags-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .react-tags__tag {
-    display: flex;
-    align-items: center;
-    background-color: #e4e6eb;
-    border-radius: 4px;
-    padding: 2px 4px;
-    font-size: 0.875rem;
-  }
-
-  .react-tags__tag-content {
-    margin-right: 0.5rem;
-  }
-
-  .react-tags__remove {
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    margin-left: 0.5rem;
-  }
-
-  .react-tags__remove:hover {
-    color: #f44336;
+const MyTagsWrapper = styled.div`
+  .ReactTags__tagInputField {
+    width: 100%;
+    border: 3px solid black;
+    border-radius: 0.5rem;
   }
 `;
 
@@ -127,7 +99,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
- 
   }
 
   function handleRadioButtonChange(prio) {
@@ -167,16 +138,18 @@ Clean the kitchen
 Clean the bathroom`}
       ></Textarea>
       <Label htmlFor="tags">tags</Label>
-      <TagEditor
-        id="tags"
-        name="tags"
-        tags={tags}
-        handleDelete={handleTagDelete}
-        handleAddition={handleTagAddition}
-        delimiters={delimiters}
-        placeholder="Press enter to add new tag"
-        allowNew
-      />
+      <MyTagsWrapper>
+        <ReactTags
+          id="tags"
+          name="tags"
+          tags={tags}
+          handleDelete={handleTagDelete}
+          handleAddition={handleTagAddition}
+          delimiters={delimiters}
+          placeholder="Press enter to add new tag"
+          allowNew
+        />
+      </MyTagsWrapper>
       <Label htmlFor="deadline">deadline</Label>
       <Input
         id="deadline"

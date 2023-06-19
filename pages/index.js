@@ -41,9 +41,10 @@ export default function CreateTaskPage() {
             <ListItem key={task._id}>
               <TaskCard
                 title={task.title}
-                category={task.category}
+                subtasks={task.subtasks}
+                tags={task.tags}
                 deadline={task.deadline}
-                prioritisation={task.prioritisation}
+                priority={task.priority}
               />
             </ListItem>
           );

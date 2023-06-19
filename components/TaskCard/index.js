@@ -24,15 +24,49 @@ const BoldText = styled.span`
   font-weight: bold;
 `;
 
+const TagList = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+`;
+
+const TagItem = styled.li`
+  background-color: lightgray;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
+`;
+
+const BulletPoint = styled.div`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: black;
+  border-radius: 50%;
+  margin-right: 4px;
+`;
+
+const SubtaskContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SubtaskText = styled.span`
+  margin-left: 8px;
+`;
+
 export default function TaskCard({
   title,
-  category,
+  subtasks,
+  tags,
   deadline,
-  prioritisation,
+  priority,
 }) {
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString()
     : "";
+
   return (
     <Article>
       <List>
@@ -40,13 +74,31 @@ export default function TaskCard({
           task: <BoldText>{title}</BoldText>
         </ListItem>
         <ListItem>
-          category: <BoldText>{category}</BoldText>
+          subtasks:
+          <List>
+            {subtasks.map((subtask, index) => (
+              <ListItem key={index}>
+                <SubtaskContainer>
+                  <BulletPoint />
+                  <SubtaskText>{subtask}</SubtaskText>
+                </SubtaskContainer>
+              </ListItem>
+            ))}
+          </List>
+        </ListItem>
+        <ListItem>
+          tags:
+          <TagList>
+            {tags.map((tag) => (
+              <TagItem key={tag}>{tag}</TagItem>
+            ))}
+          </TagList>
         </ListItem>
         <ListItem>
           deadline:<BoldText> {formattedDeadline}</BoldText>
         </ListItem>
         <ListItem>
-          priority:<BoldText> {prioritisation}</BoldText>
+          priority:<BoldText> {priority}</BoldText>
         </ListItem>
       </List>
     </Article>

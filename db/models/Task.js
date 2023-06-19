@@ -9,8 +9,11 @@ const taskSchema = new Schema({
     default: [],
   },
   deadline: { type: Date },
-  category: { type: String },
-  prioritisation: { type: String },
+  tags: {
+    type: [String],
+    default: [],
+  },
+  priority: { type: String },
 });
 
 const Task = mongoose.models.Task || mongoose.model("Task", taskSchema);

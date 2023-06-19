@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import Head from "next/head.js";
 import Header from "../Header";
+import { Roboto } from "@next/font/google";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const Main = styled.main`
   display: grid;
@@ -17,8 +23,8 @@ export default function Layout({ children }) {
       <Head>
         <title>taskifAI</title>
       </Head>
-      <Header />
-      <Main>{children}</Main>
+      <Header font={roboto.className} />
+      <Main className={roboto.className}>{children}</Main>
     </>
   );
 }

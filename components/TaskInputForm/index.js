@@ -87,6 +87,10 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.space];
 
+const BoldText = styled.span`
+  font-weight: bold;
+`;
+
 export default function Form({ onSubmit, formName, defaultData }) {
   const [selectedPrio, setSelectedPrio] = useState("");
   const [tags, setTags] = useState([]);
@@ -113,10 +117,15 @@ export default function Form({ onSubmit, formName, defaultData }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    data.subtasks = data.subtasks.split("\n").map((subtask) => subtask.trim());
+    data.subtasks = data.subtasks
+      .split("\n")
+      .map((subtask) => subtask.trim())
+      .filter((subtask) => subtask !== ""); // Filter out empty subtasks
     data.tags = tags.map((tag) => tag.text);
     onSubmit(data);
     event.target.reset();
+    setSelectedPrio("");
+    setTags([]);
     event.target.elements.title.focus();
     console.log(data);
   }
@@ -146,7 +155,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
         rows="1"
         required
       ></Textarea>
-
       <Label htmlFor="subtasks">subtasks</Label>
       <Textarea
         id="subtasks"
@@ -158,7 +166,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
 Clean the kitchen
 Clean the bathroom`}
       ></Textarea>
-
       <Label htmlFor="tags">tags</Label>
       <TagEditor
         id="tags"
@@ -170,7 +177,6 @@ Clean the bathroom`}
         placeholder="Press enter to add new tag"
         allowNew
       />
-
       <Label htmlFor="deadline">deadline</Label>
       <Input
         id="deadline"
@@ -179,33 +185,35 @@ Clean the bathroom`}
         defaultValue={defaultData?.deadline}
         rows="1"
       ></Input>
-
-      <Label htmlFor="priority">priority</Label>
+      <BoldText>priority</BoldText>
       <RadioButtonGroup id="priority" name="priority">
-        <RadioButtonLabel>
+        <RadioButtonLabel htmlFor="priority-high">
           <RadioButton
+            id="priority-high"
             type="radio"
-            name="priority"
+            name="priority-high"
             value="high"
             checked={selectedPrio === "high"}
             onChange={() => handleRadioButtonChange("high")}
           />
           high
         </RadioButtonLabel>
-        <RadioButtonLabel>
+        <RadioButtonLabel htmlFor="priority-medium">
           <RadioButton
+            id="priority-medium"
             type="radio"
-            name="priority"
+            name="priority-medium"
             value="medium"
             checked={selectedPrio === "medium"}
             onChange={() => handleRadioButtonChange("medium")}
           />
           medium
         </RadioButtonLabel>
-        <RadioButtonLabel>
+        <RadioButtonLabel htmlFor="priority-low">
           <RadioButton
+            id="priority-low"
             type="radio"
-            name="priority"
+            name="priority-low"
             value="low"
             checked={selectedPrio === "low"}
             onChange={() => handleRadioButtonChange("low")}
@@ -213,7 +221,6 @@ Clean the bathroom`}
           low
         </RadioButtonLabel>
       </RadioButtonGroup>
-
       <StyledButton type="submit">{defaultData ? "edit" : "add"}</StyledButton>
       <StyledButton type="button" onClick={resetForm}>
         reset

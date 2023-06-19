@@ -127,6 +127,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
+    console.log(data);
   }
 
   function handleRadioButtonChange(prio) {
@@ -190,7 +191,7 @@ Clean the bathroom`}
           <RadioButton
             id="priority-high"
             type="radio"
-            name="priority-high"
+            name="priority"
             value="high"
             checked={selectedPrio === "high"}
             onChange={() => handleRadioButtonChange("high")}
@@ -201,7 +202,7 @@ Clean the bathroom`}
           <RadioButton
             id="priority-medium"
             type="radio"
-            name="priority-medium"
+            name="priority"
             value="medium"
             checked={selectedPrio === "medium"}
             onChange={() => handleRadioButtonChange("medium")}
@@ -212,7 +213,7 @@ Clean the bathroom`}
           <RadioButton
             id="priority-low"
             type="radio"
-            name="priority-low"
+            name="priority"
             value="low"
             checked={selectedPrio === "low"}
             onChange={() => handleRadioButtonChange("low")}

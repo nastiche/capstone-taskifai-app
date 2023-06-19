@@ -120,14 +120,13 @@ export default function Form({ onSubmit, formName, defaultData }) {
     data.subtasks = data.subtasks
       .split("\n")
       .map((subtask) => subtask.trim())
-      .filter((subtask) => subtask !== ""); // Filter out empty subtasks
+      .filter((subtask) => subtask !== "");
     data.tags = tags.map((tag) => tag.text);
     onSubmit(data);
     event.target.reset();
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
-    console.log(data);
   }
 
   function handleRadioButtonChange(prio) {

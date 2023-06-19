@@ -127,7 +127,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
-    console.log(data);
+ 
   }
 
   function handleRadioButtonChange(prio) {

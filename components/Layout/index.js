@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Head from "next/head.js";
 import Header from "../Header";
 import { Roboto } from "@next/font/google";
+import Navigation from "../Navigation";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -12,6 +13,7 @@ const Main = styled.main`
   display: grid;
   gap: 0.5rem;
   margin-top: 1rem;
+  margin-bottom: 3rem;
   padding: 0.5rem;
   position: relative;
   width: 100%;
@@ -25,6 +27,7 @@ export default function Layout({ children }) {
       </Head>
       <Header font={roboto.className} />
       <Main className={roboto.className}>{children}</Main>
+      <Navigation font={roboto.className}></Navigation>
     </>
   );
 }

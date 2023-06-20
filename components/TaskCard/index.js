@@ -21,7 +21,7 @@ const ListItem = styled.li`
 `;
 
 const BoldText = styled.span`
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 const TagList = styled.ul`

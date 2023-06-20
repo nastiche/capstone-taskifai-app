@@ -5,7 +5,7 @@ export const StyledButton = styled.button`
   border-radius: 0.6rem;
   color: black;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 700;
   border: none;
   font-size: inherit;
 `;

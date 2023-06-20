@@ -1,14 +1,8 @@
 import useSWR from "swr";
 import Form from "../components/TaskInputForm";
-import styled from "styled-components";
-
-const StyledTitle = styled.h2`
-  margin: 0.3rem 0;
-  font-size: 1.3rem;
-`;
 
 export default function CreateTaskPage() {
-  const { mutate } = useSWR("api/tasks"); //vlt "/"" vor api ????
+  const { mutate } = useSWR("api/tasks");
 
   async function addTask(task) {
     const response = await fetch("/api/tasks", {
@@ -24,7 +18,6 @@ export default function CreateTaskPage() {
   }
   return (
     <>
-      <StyledTitle id="add-task">Add Task</StyledTitle>
       <Form onSubmit={addTask} formName={"add-task"}></Form>
     </>
   );

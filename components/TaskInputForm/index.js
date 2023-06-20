@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { StyledButton } from "../StyledButton/StyledButton";
 
@@ -23,7 +23,7 @@ const Input = styled.input`
 `;
 
 const Label = styled.label`
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 const RadioButtonGroup = styled.div`
@@ -60,12 +60,17 @@ const KeyCodes = {
 const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.space];
 
 const BoldText = styled.span`
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 export default function Form({ onSubmit, formName, defaultData }) {
   const [selectedPrio, setSelectedPrio] = useState("");
   const [tags, setTags] = useState([]);
+  const titleTextareaRef = useRef(null);
+
+  useEffect(() => {
+    titleTextareaRef.current.focus();
+  }, []);
 
   function handleTagDelete(index) {
     setTags((prevTags) => prevTags.filter((_, i) => i !== index));
@@ -125,6 +130,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         defaultValue={defaultData?.name}
         rows="1"
         required
+        ref={titleTextareaRef}
       ></Textarea>
       <Label htmlFor="subtasks">subtasks</Label>
       <Textarea
@@ -136,7 +142,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
 
 Clean the kitchen
 Clean the bathroom`}
-
       ></Textarea>
       <Label htmlFor="tags">tags</Label>
       <MyTagsWrapper>

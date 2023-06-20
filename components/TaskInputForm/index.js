@@ -151,7 +151,6 @@ Clean the bathroom`}
           id="tags"
           name="tags"
           tags={tags}
-          wrap="hard"
           handleDelete={handleTagDelete}
           handleAddition={handleTagAddition}
           delimiters={delimiters}

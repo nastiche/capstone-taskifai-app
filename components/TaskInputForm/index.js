@@ -200,7 +200,9 @@ Clean the bathroom`}
           low
         </RadioButtonLabel>
       </RadioButtonGroup>
-      <StyledButton type="submit">{defaultData ? "edit" : "add"}</StyledButton>
+      <StyledButton type="submit">
+        {defaultData ? "edit" : "create"}
+      </StyledButton>
       <StyledButton type="button" onClick={resetForm}>
         reset
       </StyledButton>

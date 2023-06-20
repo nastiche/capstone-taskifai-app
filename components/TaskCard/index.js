@@ -22,6 +22,7 @@ const ListItem = styled.li`
 
 const BoldText = styled.span`
   font-weight: 700;
+  white-space: normal;
 `;
 
 const TagList = styled.ul`
@@ -36,6 +37,7 @@ const TagItem = styled.li`
   background-color: lightgray;
   border-radius: 0.3rem;
   padding: 0.3rem 0.5rem;
+  white-space: normal;
 `;
 
 const BulletPoint = styled.div`
@@ -54,6 +56,11 @@ const SubtaskContainer = styled.div`
 
 const SubtaskText = styled.span`
   margin-left: 8px;
+  white-space: normal;
+`;
+
+const TagText = styled.span`
+  white-space: normal;
 `;
 
 export default function TaskCard({
@@ -90,7 +97,9 @@ export default function TaskCard({
           tags:
           <TagList>
             {tags.map((tag) => (
-              <TagItem key={tag}>{tag}</TagItem>
+              <TagItem key={tag}>
+                <TagText>{tag}</TagText>
+              </TagItem>
             ))}
           </TagList>
         </ListItem>

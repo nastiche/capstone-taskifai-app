@@ -131,6 +131,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         rows="1"
         required
         ref={titleTextareaRef}
+        wrap="hard"
       ></Textarea>
       <Label htmlFor="subtasks">subtasks</Label>
       <Textarea
@@ -138,6 +139,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         name="subtasks"
         defaultValue={defaultData?.subtasks}
         rows="5"
+        wrap="hard"
         placeholder={`Enter each subtask on a new line, e.g.
 
 Clean the kitchen
@@ -149,6 +151,7 @@ Clean the bathroom`}
           id="tags"
           name="tags"
           tags={tags}
+          wrap="hard"
           handleDelete={handleTagDelete}
           handleAddition={handleTagAddition}
           delimiters={delimiters}

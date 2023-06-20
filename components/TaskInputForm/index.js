@@ -172,7 +172,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setTags([]);
     document.getElementById(formName).reset();
   }
-  console.log(subtasks);
 
   return (
     <FormContainer

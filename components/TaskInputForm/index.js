@@ -88,8 +88,8 @@ export default function Form({ onSubmit, formName, defaultData }) {
   const [tags, setTags] = useState([]);
   const titleInputRef = useRef(null);
   const subtaskRef = useRef([]);
-
   const [subtasks, setSubtasks] = useState([]);
+  const [addingSubtask, setAddingSubtask] = useState(false);
 
   useEffect(() => {
     if (titleInputRef.current) {
@@ -98,6 +98,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
   }, []);
 
   function handleAddSubtask() {
+    setAddingSubtask(true);
     const newSubtask = { id: uuidv4(), value: "" };
     setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
   }
@@ -109,7 +110,8 @@ export default function Form({ onSubmit, formName, defaultData }) {
     if (subtasks.length > 0) {
       subtaskRef.current[subtasks.length - 1]?.focus();
     }
-  }, [subtasks]);
+    setAddingSubtask(false);
+  }, [addingSubtask]);
 
   function handleChangeSubtask(subtaskId, subtaskValue) {
     setSubtasks((prevSubtasks) => {

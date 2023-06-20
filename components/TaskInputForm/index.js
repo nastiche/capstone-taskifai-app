@@ -161,7 +161,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
-    setSubtasks([{ value: "" }]);
+    setSubtasks([]);
     console.log(data);
   }
 

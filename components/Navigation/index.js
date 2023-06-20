@@ -21,10 +21,10 @@ export default function Navigation({ font }) {
   return (
     <StyledNavigation>
       <StyledNavigationLink href={"/"} className={font}>
-        Tasks
+        tasks
       </StyledNavigationLink>
       <StyledNavigationLink href={"/create"} className={font}>
-        Create
+        create
       </StyledNavigationLink>
     </StyledNavigation>
   );

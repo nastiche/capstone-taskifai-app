@@ -163,7 +163,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setTags([]);
     event.target.elements.title.focus();
     setSubtasks([]);
-    console.log(data);
   }
 
   function handleRadioButtonChange(prio) {
@@ -232,7 +231,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
           handleDelete={handleTagDelete}
           handleAddition={handleTagAddition}
           delimiters={delimiters}
-          placeholder="Press enter to add new tag"
+          placeholder="press enter to add new tag"
           maxLength={15}
           allowNew
         />

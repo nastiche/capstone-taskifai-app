@@ -21,7 +21,8 @@ const ListItem = styled.li`
 `;
 
 const BoldText = styled.span`
-  font-weight: bold;
+  font-weight: 700;
+  white-space: normal;
 `;
 
 const TagList = styled.ul`
@@ -36,6 +37,7 @@ const TagItem = styled.li`
   background-color: lightgray;
   border-radius: 0.3rem;
   padding: 0.3rem 0.5rem;
+  white-space: normal;
 `;
 
 const BulletPoint = styled.div`
@@ -45,6 +47,7 @@ const BulletPoint = styled.div`
   background-color: black;
   border-radius: 50%;
   margin-right: 4px;
+  flex-shrink: 0;
 `;
 
 const SubtaskContainer = styled.div`
@@ -54,6 +57,23 @@ const SubtaskContainer = styled.div`
 
 const SubtaskText = styled.span`
   margin-left: 8px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  font-weight: 700;
+`;
+
+const TitleText = styled.span`
+  font-weight: 700;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+`;
+
+const TagText = styled.span`
+  white-space: normal;
 `;
 
 export default function TaskCard({
@@ -71,7 +91,7 @@ export default function TaskCard({
     <Article>
       <List>
         <ListItem>
-          task: <BoldText>{title}</BoldText>
+          task: <TitleText>{title}</TitleText>
         </ListItem>
         <ListItem>
           subtasks:
@@ -90,7 +110,9 @@ export default function TaskCard({
           tags:
           <TagList>
             {tags.map((tag) => (
-              <TagItem key={tag}>{tag}</TagItem>
+              <TagItem key={tag}>
+                <TagText>{tag}</TagText>
+              </TagItem>
             ))}
           </TagList>
         </ListItem>

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { StyledButton } from "../StyledButton/StyledButton";
+import { v4 as uuidv4 } from "uuid";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const FormContainer = styled.form`
   display: grid;
   gap: 0.5rem;
 `;
 
-const Textarea = styled.textarea`
-  padding: 0.5rem;
-  font-size: inherit;
+const SubtaskWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   border: 3px solid black;
   border-radius: 0.5rem;
 `;
@@ -22,8 +26,17 @@ const Input = styled.input`
   border-radius: 0.5rem;
 `;
 
+const SubtaskInput = styled.input`
+  padding: 0.5rem;
+  font-size: inherit;
+  border: none;
+  border-radius: 0.5rem;
+  flex: 1;
+  margin-right: 0.5rem;
+`;
+
 const Label = styled.label`
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 const RadioButtonGroup = styled.div`
@@ -39,15 +52,13 @@ const RadioButtonLabel = styled.label`
   text-align: center;
 `;
 
-const RadioButton = styled.input`
-  margin-right: 0.5rem;
-`;
-
 const MyTagsWrapper = styled.div`
   .ReactTags__tagInputField {
     width: 100%;
     border: 3px solid black;
     border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: inherit;
   }
 `;
 
@@ -60,12 +71,65 @@ const KeyCodes = {
 const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.space];
 
 const BoldText = styled.span`
+  font-weight: 700;
+`;
+
+const DeleteSubtaskButton = styled.button`
+  padding: 0.5rem;
+  font-size: inherit;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: red;
   font-weight: bold;
 `;
 
 export default function Form({ onSubmit, formName, defaultData }) {
   const [selectedPrio, setSelectedPrio] = useState("");
   const [tags, setTags] = useState([]);
+  const titleInputRef = useRef(null);
+  const subtaskRef = useRef([]);
+  const [subtasks, setSubtasks] = useState([]);
+  const [addingSubtask, setAddingSubtask] = useState(false);
+
+  useEffect(() => {
+    if (titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+  }, []);
+
+  function handleAddSubtask() {
+    setAddingSubtask(true);
+    const newSubtask = { id: uuidv4(), value: "" };
+    setSubtasks((prevSubtasks) => [...prevSubtasks, newSubtask]);
+  }
+
+  useEffect(() => {
+    if (titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+    if (subtasks.length > 0) {
+      subtaskRef.current[subtasks.length - 1]?.focus();
+    }
+    setAddingSubtask(false);
+  }, [addingSubtask]);
+
+  function handleChangeSubtask(subtaskId, subtaskValue) {
+    setSubtasks((prevSubtasks) => {
+      const updatedSubtasks = prevSubtasks.map((subtask) => {
+        if (subtask.id === subtaskId) {
+          return { ...subtask, value: subtaskValue };
+        }
+        return subtask;
+      });
+      return updatedSubtasks;
+    });
+  }
+  function handleDeleteSubtask(subtaskId) {
+    setSubtasks((prevSubtasks) =>
+      prevSubtasks.filter((subtask) => subtask.id !== subtaskId)
+    );
+  }
 
   function handleTagDelete(index) {
     setTags((prevTags) => prevTags.filter((_, i) => i !== index));
@@ -89,9 +153,8 @@ export default function Form({ onSubmit, formName, defaultData }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    data.subtasks = data.subtasks
-      .split("\n")
-      .map((subtask) => subtask.trim())
+    data.subtasks = subtasks
+      .map((subtask) => subtask.value.trim())
       .filter((subtask) => subtask !== "");
     data.tags = tags.map((tag) => tag.text);
     onSubmit(data);
@@ -99,6 +162,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setSelectedPrio("");
     setTags([]);
     event.target.elements.title.focus();
+    setSubtasks([]);
   }
 
   function handleRadioButtonChange(prio) {
@@ -118,26 +182,46 @@ export default function Form({ onSubmit, formName, defaultData }) {
       onSubmit={handleSubmit}
     >
       <Label htmlFor="title">title</Label>
-      <Textarea
+      <Input
         id="title"
         name="title"
         type="text"
-        defaultValue={defaultData?.name}
+        // defaultValue={defaultData?.name}
         rows="1"
         required
-      ></Textarea>
-      <Label htmlFor="subtasks">subtasks</Label>
-      <Textarea
-        id="subtasks"
-        name="subtasks"
-        defaultValue={defaultData?.subtasks}
-        rows="5"
-        placeholder={`Enter each subtask on a new line, e.g.
-
-Clean the kitchen
-Clean the bathroom`}
-
-      ></Textarea>
+        wrap="hard"
+        maxLength={40}
+        ref={titleInputRef}
+      />
+      <BoldText>subtasks</BoldText>
+      {subtasks.map((subtask, index) => (
+        <SubtaskWrapper key={subtask.id}>
+          <SubtaskInput
+            id={subtask.id}
+            value={subtask.value}
+            rows="1"
+            wrap="hard"
+            maxLength={150}
+            onChange={(event) =>
+              handleChangeSubtask(subtask.id, event.target.value)
+            }
+            ref={(ref) => {
+              subtaskRef.current[index] = ref;
+            }}
+          />
+          <DeleteSubtaskButton onClick={() => handleDeleteSubtask(subtask.id)}>
+            X
+          </DeleteSubtaskButton>
+        </SubtaskWrapper>
+      ))}
+      <StyledButton
+        type="button"
+        onClick={() => {
+          handleAddSubtask();
+        }}
+      >
+        add subtask
+      </StyledButton>
       <Label htmlFor="tags">tags</Label>
       <MyTagsWrapper>
         <ReactTags
@@ -147,7 +231,8 @@ Clean the bathroom`}
           handleDelete={handleTagDelete}
           handleAddition={handleTagAddition}
           delimiters={delimiters}
-          placeholder="Press enter to add new tag"
+          placeholder="press enter to add new tag"
+          maxLength={15}
           allowNew
         />
       </MyTagsWrapper>
@@ -162,7 +247,7 @@ Clean the bathroom`}
       <BoldText>priority</BoldText>
       <RadioButtonGroup id="priority" name="priority">
         <RadioButtonLabel htmlFor="priority-high">
-          <RadioButton
+          <input
             id="priority-high"
             type="radio"
             name="priority"
@@ -173,7 +258,7 @@ Clean the bathroom`}
           high
         </RadioButtonLabel>
         <RadioButtonLabel htmlFor="priority-medium">
-          <RadioButton
+          <input
             id="priority-medium"
             type="radio"
             name="priority"
@@ -184,7 +269,7 @@ Clean the bathroom`}
           medium
         </RadioButtonLabel>
         <RadioButtonLabel htmlFor="priority-low">
-          <RadioButton
+          <input
             id="priority-low"
             type="radio"
             name="priority"
@@ -195,7 +280,9 @@ Clean the bathroom`}
           low
         </RadioButtonLabel>
       </RadioButtonGroup>
-      <StyledButton type="submit">{defaultData ? "edit" : "add"}</StyledButton>
+      <StyledButton type="submit">
+        {defaultData ? "edit" : "create"}
+      </StyledButton>
       <StyledButton type="button" onClick={resetForm}>
         reset
       </StyledButton>

@@ -202,6 +202,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
             value={subtask.value}
             rows="1"
             wrap="hard"
+            maxLength={150}
             onChange={(event) =>
               handleChangeSubtask(subtask.id, event.target.value)
             }
@@ -232,7 +233,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
           handleAddition={handleTagAddition}
           delimiters={delimiters}
           placeholder="Press enter to add new tag"
-          maxLength={30}
+          maxLength={15}
           allowNew
         />
       </MyTagsWrapper>

@@ -61,6 +61,15 @@ const SubtaskText = styled.span`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-all;
+  font-weight: 700;
+`;
+
+const TitleText = styled.span`
+  font-weight: 700;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 const TagText = styled.span`
@@ -82,7 +91,7 @@ export default function TaskCard({
     <Article>
       <List>
         <ListItem>
-          task: <BoldText>{title}</BoldText>
+          task: <TitleText>{title}</TitleText>
         </ListItem>
         <ListItem>
           subtasks:

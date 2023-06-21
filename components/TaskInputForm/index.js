@@ -30,6 +30,7 @@ const SubtaskInput = styled.input`
   padding: 0.5rem;
   font-size: inherit;
   border: none;
+  border-radius: 0.5rem;
   flex: 1;
   margin-right: 0.5rem;
 `;

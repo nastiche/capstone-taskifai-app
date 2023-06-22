@@ -114,6 +114,33 @@ export default function Form({ onSubmit, formName, defaultData }) {
     setAddingSubtask(false);
   }, [addingSubtask]);
 
+  useEffect(() => {
+    if (defaultData?.title) {
+      titleInputRef.current.value = defaultData.title;
+    }
+    if (defaultData?.subtasks) {
+      const defaultSubtasks = defaultData.subtasks.map((subtask) => {
+        return { id: uuidv4(), value: subtask };
+      });
+      setSubtasks(defaultSubtasks);
+    }
+    if (defaultData?.tags) {
+      const defaultTags = defaultData.tags.map((tag, index) => {
+        return { id: String(index + 1), text: tag };
+      });
+      setTags(defaultTags);
+    }
+    if (defaultData?.priority) {
+      setSelectedPrio(defaultData.priority);
+    }
+    if (defaultData?.deadline) {
+      const formattedDefaultDeadline = new Date(defaultData.deadline)
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("deadline").value = formattedDefaultDeadline;
+    }
+  }, [defaultData]);
+
   function handleChangeSubtask(subtaskId, subtaskValue) {
     setSubtasks((prevSubtasks) => {
       const updatedSubtasks = prevSubtasks.map((subtask) => {
@@ -186,7 +213,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
         id="title"
         name="title"
         type="text"
-        // defaultValue={defaultData?.name}
         rows="1"
         required
         wrap="hard"
@@ -237,13 +263,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         />
       </MyTagsWrapper>
       <Label htmlFor="deadline">deadline</Label>
-      <Input
-        id="deadline"
-        name="deadline"
-        type="date"
-        defaultValue={defaultData?.deadline}
-        rows="1"
-      ></Input>
+      <Input id="deadline" name="deadline" type="date" rows="1"></Input>
       <BoldText>priority</BoldText>
       <RadioButtonGroup id="priority" name="priority">
         <RadioButtonLabel htmlFor="priority-high">
@@ -281,7 +301,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
         </RadioButtonLabel>
       </RadioButtonGroup>
       <StyledButton type="submit">
-        {defaultData ? "edit" : "create"}
+        {defaultData ? "save" : "create"}
       </StyledButton>
       <StyledButton type="button" onClick={resetForm}>
         reset

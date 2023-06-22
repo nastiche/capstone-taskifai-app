@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import Form from "../../../components/TaskInputForm";
 import Link from "next/link";
+import styled from "styled-components";
 
 const LinkWrapper = styled.div`
   font-size: 3rem;

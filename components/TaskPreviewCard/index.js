@@ -41,30 +41,6 @@ const TagItem = styled.li`
   white-space: normal;
 `;
 
-const BulletPoint = styled.div`
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: black;
-  border-radius: 50%;
-  margin-right: 4px;
-  flex-shrink: 0;
-`;
-
-const SubtaskContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const SubtaskText = styled.span`
-  margin-left: 8px;
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  font-weight: 700;
-`;
-
 const TitleText = styled.span`
   font-weight: 700;
   white-space: normal;

@@ -28,10 +28,10 @@ export default function TaskDetailsPage() {
         tags={task.tags}
         deadline={task.deadline}
         priority={task.priority}
-      ></TaskDetails>
+      />
       <LinkWrapper>
-        <Link href={`/`} passHref legacyBehavior>
-          🔙
+        <Link href={`/`} passHref legacyBehavior aria-label="go back">
+          <span aria-hidden="true">🔙</span>
         </Link>
       </LinkWrapper>
     </>

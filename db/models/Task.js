@@ -4,10 +4,13 @@ const { Schema } = mongoose;
 
 const taskSchema = new Schema({
   title: { type: String, required: true },
-  subtasks: {
-    type: [String],
-    default: [],
-  },
+  subtasks: [
+    {
+      id: { type: String },
+      value: { type: String },
+    },
+  ],
+  default: [],
   deadline: { type: Date },
   tags: {
     type: [String],

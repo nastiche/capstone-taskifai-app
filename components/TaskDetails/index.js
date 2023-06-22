@@ -96,11 +96,11 @@ export default function TaskDetails({
         <ListItem>
           subtasks:
           <List>
-            {subtasks.map((subtask, index) => (
-              <ListItem key={index}>
+            {subtasks.map((subtask) => (
+              <ListItem key={subtask.id}>
                 <SubtaskContainer>
                   <BulletPoint />
-                  <SubtaskText>{subtask}</SubtaskText>
+                  <SubtaskText>{subtask.value}</SubtaskText>
                 </SubtaskContainer>
               </ListItem>
             ))}

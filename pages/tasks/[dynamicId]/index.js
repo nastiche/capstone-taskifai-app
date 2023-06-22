@@ -5,11 +5,25 @@ import Link from "next/link";
 import styled from "styled-components";
 import { StyledButton } from "../../../components/StyledButton/StyledButton";
 
-const LinkWrapper = styled.div`
+const BackLinkWrapper = styled.div`
   font-size: 3rem;
   a {
     text-decoration: none;
   }
+`;
+
+const StyledEditLinkDiv = styled.div`
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  background-color: #f0f0f0;
+  color: black;
+  text-decoration: none;
+  font-weight: 700;
+  border: none;
+  font-size: inherit;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
 `;
 
 export default function TaskDetailsPage() {
@@ -21,6 +35,10 @@ export default function TaskDetailsPage() {
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
+  function handleEditLinkDivClick(event) {
+    event.preventDefault();
+    router.push(`/tasks/${dynamicId}/edit`);
+  }
   return (
     <>
       <TaskDetails
@@ -30,14 +48,16 @@ export default function TaskDetailsPage() {
         deadline={task.deadline}
         priority={task.priority}
       />
-      <Link href={`/tasks/${dynamicId}/edit`} passHref legacyBehavior>
-        <StyledButton>edit</StyledButton>
-      </Link>
-      <LinkWrapper>
+
+      <StyledEditLinkDiv onClick={handleEditLinkDivClick}>
+        edit
+      </StyledEditLinkDiv>
+
+      <BackLinkWrapper>
         <Link href={`/`} passHref legacyBehavior aria-label="go back">
           <span aria-hidden="true">🔙</span>
         </Link>
-      </LinkWrapper>
+      </BackLinkWrapper>
     </>
   );
 }

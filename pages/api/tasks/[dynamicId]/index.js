@@ -18,4 +18,11 @@ export default async function handler(request, response) {
     response.status(200).json(task);
     return;
   }
+
+  if (request.method === "PATCH") {
+    await Task.findByIdAndUpdate(dynamicId, {
+      $set: request.body,
+    });
+    response.status(200).json({ status: `Task ${dynamicId} updated` });
+  }
 }

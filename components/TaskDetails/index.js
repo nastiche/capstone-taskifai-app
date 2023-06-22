@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 const Article = styled.article`
@@ -76,7 +77,7 @@ const TagText = styled.span`
   white-space: normal;
 `;
 
-export default function TaskCard({
+export default function TaskDetails({
   title,
   subtasks,
   tags,

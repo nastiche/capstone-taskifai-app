@@ -3,6 +3,7 @@ import useSWR from "swr";
 import TaskDetails from "../../../components/TaskDetails";
 import Link from "next/link";
 import styled from "styled-components";
+import { StyledButton } from "../../../components/StyledButton/StyledButton";
 
 const LinkWrapper = styled.div`
   font-size: 3rem;
@@ -29,6 +30,9 @@ export default function TaskDetailsPage() {
         deadline={task.deadline}
         priority={task.priority}
       />
+      <Link href={`/tasks/${dynamicId}/edit`} passHref legacyBehavior>
+        <StyledButton>edit</StyledButton>
+      </Link>
       <LinkWrapper>
         <Link href={`/`} passHref legacyBehavior aria-label="go back">
           <span aria-hidden="true">🔙</span>

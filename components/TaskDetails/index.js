@@ -76,7 +76,7 @@ const TagText = styled.span`
   white-space: normal;
 `;
 
-export default function TaskCard({
+export default function TaskDetails({
   title,
   subtasks,
   tags,

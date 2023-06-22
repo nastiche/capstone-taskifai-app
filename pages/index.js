@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import styled from "styled-components";
-import TaskCard from "../components/TaskCard";
+import TaskPreviewCard from "../components/TaskPreviewCard";
 
 const List = styled.ul`
   list-style: none;
@@ -30,12 +30,12 @@ export default function TasksListPage() {
       {sortedTasks.map((task) => {
         return (
           <ListItem key={task._id}>
-            <TaskCard
+            <TaskPreviewCard
               title={task.title}
-              subtasks={task.subtasks}
               tags={task.tags}
               deadline={task.deadline}
               priority={task.priority}
+              id={task._id}
             />
           </ListItem>
         );

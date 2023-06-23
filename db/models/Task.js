@@ -10,7 +10,6 @@ const taskSchema = new Schema({
       value: { type: String },
     },
   ],
-  default: [],
   deadline: { type: Date },
   tags: {
     type: [String],

@@ -31,13 +31,32 @@ export default function TaskDetailsPage() {
   const { isReady } = router;
   const { dynamicId } = router.query;
 
-  const { data: task, isLoading, error } = useSWR(`/api/tasks/${dynamicId}`);
+  const {
+    data: task,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(`/api/tasks/${dynamicId}`);
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
   function handleEditLinkDivClick(event) {
     event.preventDefault();
     router.push(`/tasks/${dynamicId}/edit`);
+  }
+
+  async function deleteTask() {
+    const response = await fetch(`/api/tasks/${dynamicId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+    if (response.ok) {
+      mutate();
+    }
+    router.push(`/`);
   }
   return (
     <>
@@ -52,7 +71,7 @@ export default function TaskDetailsPage() {
       <StyledEditLinkDiv onClick={handleEditLinkDivClick}>
         edit
       </StyledEditLinkDiv>
-
+      <StyledButton onClick={deleteTask}>delete</StyledButton>
       <BackLinkWrapper>
         <Link href={`/`} passHref legacyBehavior aria-label="go back">
           <span aria-hidden="true">🔙</span>

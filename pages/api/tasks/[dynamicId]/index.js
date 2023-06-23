@@ -25,4 +25,9 @@ export default async function handler(request, response) {
     });
     response.status(200).json({ status: `Task ${dynamicId} updated` });
   }
+
+  if (request.method === "DELETE") {
+    await Task.findByIdAndDelete(dynamicId);
+    response.status(200).json({ status: `Task ${dynamicId} deleted` });
+  }
 }

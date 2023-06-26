@@ -199,7 +199,6 @@ export default function Form({ onSubmit, formName, defaultData, aiMode }) {
     }
     onSubmit(data);
     event.target.reset();
-    console.log(data);
   }
 
   function handleRadioButtonChange(prio) {

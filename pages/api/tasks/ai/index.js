@@ -59,7 +59,6 @@ export default async function handler(request, response) {
       subtasks: object.Subtasks,
       tags: object.Tags,
     });
-    
     console.log(taskData);
     response.status(200).json(taskData);
   } catch (error) {

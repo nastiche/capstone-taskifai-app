@@ -32,6 +32,12 @@ export default function CreateTaskPage() {
         },
         body: JSON.stringify(task),
       });
+      if (response.ok) {
+        const taskData = await response.json();
+      } else {
+        const taskData = { title: "", subtasks: [], tags: [] };
+        console.error("Failed to generate task");
+      }
     }
   }
 

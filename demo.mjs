@@ -6,7 +6,6 @@ import {
   StructuredOutputParser,
   OutputFixingParser,
 } from "langchain/output_parsers";
-
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -28,8 +27,7 @@ const model = new OpenAI({
 const outputFixingParser = OutputFixingParser.fromLLM(model, outputParser);
 
 const promptTemplate = new PromptTemplate({
-  template:
-    "Analyze the users text to extract meaningful information. If the users text is coherent and sufficiently long, generate task details (title, subtasks and tags) based on the content. If the users text is nonsensical or too short, create a task to learn how to write precise task descriptions (also with title, subtasks and tags). Ensure that the generated task details include a title (string), subtasks (array of strings), and tags (array of strings). Concatenate multiple words in a tag with underscores and write them in lowercase. Maintain a polite and respectful tone throughout the task description. Be sure that title string always has maximum 40 characters (including spaces), each subtask string has maximum 150 characters (including spaces) and each tag string has maximum 20 characters (including spaces):\n{format_instructions}\n{query}",
+  template: `Analyze text to extract meaningful information. If the text is coherent and sufficiently long, generate a task based on the text. Task should have a title, subtasks and tags. If the text is nonsensical or too short, create a task to learn how to write precise task descriptions (task should contain a title, subtasks and tags). Ensure that the generated task details include a title, subtasks and tags. Concatenate multiple words in a tag with underscores and write them in lowercase. Maintain a polite and respectful tone throughout the task description. Do your best:\n{format_instructions}\n{query}`,
   inputVariables: ["query"],
   partialVariables: {
     format_instructions: outputFixingParser.getFormatInstructions(),
@@ -44,7 +42,7 @@ const chain = new LLMChain({
 });
 
 const result = await chain.call({
-  query: "thank you for your great work",
+  query: "plan birthday party for Anna",
 });
 
 const object = result.task;

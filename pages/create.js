@@ -33,9 +33,9 @@ export default function CreateTaskPage() {
         body: JSON.stringify(task),
       });
       if (response.ok) {
-        const taskData = await response.json();
+        const aiTaskData = await response.json();
       } else {
-        const taskData = { title: "", subtasks: [], tags: [] };
+        const aiTaskData = { title: "", subtasks: [] };
         console.error("Failed to generate task");
       }
     }
@@ -64,7 +64,11 @@ export default function CreateTaskPage() {
       {aiMode ? (
         <Form onSubmit={addTask} formName={"add-task"} aiMode={aiMode}></Form>
       ) : (
-        <Form onSubmit={addTask} formName={"add-task"}></Form>
+        <Form
+          onSubmit={addTask}
+          formName={"add-task"}
+          aiTaskData={aiTaskData}
+        ></Form>
       )}
     </>
   );

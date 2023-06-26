@@ -8,6 +8,7 @@ export default async function handler(request, response) {
     try {
       const taskData = request.body;
       await Task.create(taskData);
+      await 
       response.status(201).json({ status: "Task created" });
     } catch (error) {
       console.log(error);

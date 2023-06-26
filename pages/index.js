@@ -25,6 +25,8 @@ export default function TasksListPage() {
     return priorityMap[taskB.priority] - priorityMap[taskA.priority];
   });
 
+  if (!data) return <div>...loading</div>;
+
   return (
     <List role="list">
       {sortedTasks.map((task) => {

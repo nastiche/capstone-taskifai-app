@@ -112,7 +112,7 @@ export default function Form({ onSubmit, formName, defaultData }) {
       subtaskRef.current[subtasks.length - 1]?.focus();
     }
     setAddingSubtask(false);
-  }, [addingSubtask, subtasks.length]);
+  }, [addingSubtask]);
 
   useEffect(() => {
     if (defaultData?.title) {

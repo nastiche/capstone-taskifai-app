@@ -5,7 +5,7 @@ export default function CreateTaskPage() {
   const { mutate } = useSWR("api/tasks");
 
   async function addTask(task) {
-    const response = await fetch("/api/tasks", {
+    const response = await fetch("/api/tasks/ai", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

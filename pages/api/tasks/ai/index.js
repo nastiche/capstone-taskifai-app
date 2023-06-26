@@ -12,8 +12,7 @@ dotenv.config();
 
 const openAIModel = new OpenAI({
   modelName: "gpt-3.5-turbo",
-  max_tokens: 2000,
-  temperature: 1,
+  temperature: 0.3,
 });
 
 const outputParser = StructuredOutputParser.fromZodSchema(
@@ -33,7 +32,6 @@ const outputFixingParser = OutputFixingParser.fromLLM(
 
 export default async function handler(request, response) {
   try {
-
     const query = await request.body.taskDescription;
 
     const promptTemplate = new PromptTemplate({
@@ -55,7 +53,15 @@ export default async function handler(request, response) {
       query: query,
     });
 
-    response.status(200).json(result);
+    const object = result.task;
+    const taskData = JSON.stringify({
+      title: object.Title,
+      subtasks: object.Subtasks,
+      tags: object.Tags,
+    });
+    
+    console.log(taskData);
+    response.status(200).json(taskData);
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: "Failed to generate task" });

@@ -10,10 +10,13 @@ import {
 import * as dotenv from "dotenv";
 dotenv.config();
 
+const apiKey = process.env.OPENAI_API_KEY;
+
 const openAIModel = new OpenAI({
   modelName: "gpt-3.5-turbo",
   temperature: 0,
   maxTokens: 2000,
+  apiKey: apiKey,
 });
 
 const outputParser = StructuredOutputParser.fromZodSchema(
@@ -35,7 +38,7 @@ export default async function handler(request, response) {
     const query = await request.body.taskDescription;
 
     const promptTemplate = new PromptTemplate({
-      template: `Analyze the task description you got from user to extract meaningful information. If the description is coherent and sufficiently long, generate a task title and subtasks based on the description. If the description is nonsensical or too short, create a task to learn how to write precise task descriptions. Ensure that the generated task includes a title (a string, maximum 40 characters long) and subtasks (an array of strings, each string maximum 150 characters long). Maintain a polite and respectful tone throughout the task description. ALWAYS keep you response in the right format (title is a string maximum 40 characters long and subtasks is an array of strings, each string maximum 150 characters long). Title and subtasks in the described format are always required. If you don't know which task you can create of the given description, create a task to learn how to write precise task descriptions.Do your best:\n{format_instructions}\n{query}`,
+      template: `Analyze the task description provided by the user to extract meaningful information. If the description is coherent and sufficiently long, generate a precise task title and subtasks based on the description. If the description is nonsensical or too short, create a task to learn how to write precise task descriptions. Ensure that the generated task includes a title (a string, maximum 40 characters long) and subtasks (an array of strings, each string maximum 150 characters long). Maintain a polite and respectful tone throughout the task description. It is important to always keep your response in the specified format (title as a string, maximum 40 characters long, and subtasks as an array of strings, each string maximum 150 characters long). Title and subtasks in the described format are always required. If you are uncertain about the appropriate task to create based on the given description, generate a task to learn how to write precise task descriptions. Please do your best to follow these guidelines:\n{format_instructions}\n{query}`,
       inputVariables: ["query"],
       partialVariables: {
         format_instructions: outputFixingParser.getFormatInstructions(),

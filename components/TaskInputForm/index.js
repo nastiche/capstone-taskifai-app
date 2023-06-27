@@ -374,7 +374,7 @@ export default function Form({
             rows="17"
             required
             wrap="hard"
-            maxLength={400}
+            maxLength={500}
             defaultValue={
               newAiTaskData ? newAiTaskData.originalTaskDescription : ""
             }

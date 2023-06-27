@@ -16,6 +16,8 @@ const taskSchema = new Schema({
     default: [],
   },
   priority: { type: String },
+  originalTaskDescription: { type: String },
+  creationDate: { type: Date },
 });
 
 const Task = mongoose.models.Task || mongoose.model("Task", taskSchema);

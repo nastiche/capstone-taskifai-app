@@ -89,19 +89,25 @@ const Textarea = styled.textarea`
   border-radius: 0.5rem;
 `;
 
-export default function Form({ onSubmit, formName, defaultData, aiMode }) {
+const StyledErrorDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: red;
+`;
+
+export default function Form({
+  onSubmit,
+  formName,
+  defaultData,
+  aiDefaultData,
+  aiMode,
+}) {
   const [selectedPrio, setSelectedPrio] = useState("");
   const [tags, setTags] = useState([]);
   const titleInputRef = useRef(null);
   const subtaskRef = useRef([]);
   const [subtasks, setSubtasks] = useState([]);
   const [addingSubtask, setAddingSubtask] = useState(false);
-
-  useEffect(() => {
-    if (titleInputRef.current) {
-      titleInputRef.current.focus();
-    }
-  }, []);
 
   function handleAddSubtask() {
     setAddingSubtask(true);
@@ -110,41 +116,51 @@ export default function Form({ onSubmit, formName, defaultData, aiMode }) {
   }
 
   useEffect(() => {
-    if (titleInputRef.current) {
-      titleInputRef.current.focus();
-    }
     if (subtasks.length > 0) {
       subtaskRef.current[subtasks.length - 1]?.focus();
     }
     setAddingSubtask(false);
-  }, [addingSubtask, aiMode]);
+  }, [addingSubtask]);
+
+  useEffect(() => {
+    if (!aiMode) {
+      titleInputRef.current.focus();
+    } else {
+      const taskDescriptionInput = document.getElementById("task-description");
+      if (taskDescriptionInput) {
+        taskDescriptionInput.focus();
+      }
+    }
+  }, [aiMode]);
 
   useEffect(() => {
     if (defaultData?.title) {
       titleInputRef.current.value = defaultData.title;
     }
-    if (defaultData?.subtasks) {
-      const defaultSubtasks = defaultData.subtasks.map((subtask) => {
-        return { id: subtask.id, value: subtask.value };
-      });
-      setSubtasks(defaultSubtasks);
+
+    if (aiDefaultData?.title) {
+      titleInputRef.current.value = aiDefaultData.title;
     }
+
     if (defaultData?.tags) {
       const defaultTags = defaultData.tags.map((tag, index) => {
         return { id: String(index + 1), text: tag };
       });
       setTags(defaultTags);
     }
+
+    if (defaultData?.subtasks) {
+      setSubtasks(defaultData.subtasks);
+    }
+
+    if (aiDefaultData?.subtasks) {
+      setSubtasks(aiDefaultData.subtasks);
+    }
+
     if (defaultData?.priority) {
       setSelectedPrio(defaultData.priority);
     }
-    if (defaultData?.deadline) {
-      const formattedDefaultDeadline = new Date(defaultData.deadline)
-        .toISOString()
-        .split("T")[0];
-      document.getElementById("deadline").value = formattedDefaultDeadline;
-    }
-  }, [defaultData]);
+  }, [defaultData, aiDefaultData]);
 
   function handleChangeSubtask(subtaskId, subtaskValue) {
     setSubtasks((prevSubtasks) => {
@@ -191,11 +207,16 @@ export default function Form({ onSubmit, formName, defaultData, aiMode }) {
         .filter((subtask) => subtask.value !== "");
       data.subtasks = subtasksWithId;
       data.tags = tags.map((tag) => tag.text);
+      data.creationDate = new Date();
 
-      event.target.elements.title.focus();
       setSelectedPrio("");
       setTags([]);
       setSubtasks([]);
+      titleInputRef.current.value = "";
+      setSubtasks([]);
+      event.target.reset();
+      event.target.elements.title.focus();
+      aiDefaultData = {};
     }
     onSubmit(data);
     event.target.reset();
@@ -204,145 +225,162 @@ export default function Form({ onSubmit, formName, defaultData, aiMode }) {
   function handleRadioButtonChange(prio) {
     setSelectedPrio(prio);
   }
-
+  console.log(aiDefaultData);
   function resetForm() {
     setSelectedPrio("");
     setTags([]);
     setSubtasks([]);
-    document.getElementById(formName).reset();
+    titleInputRef.current.value = "";
+    setSubtasks([]);
   }
 
   if (!aiMode) {
     return (
-      <FormContainer
-        id={formName}
-        aria-labelledby={formName}
-        onSubmit={handleSubmit}
-      >
-        <Label htmlFor="title">title</Label>
-        <Input
-          id="title"
-          name="title"
-          type="text"
-          rows="1"
-          required
-          wrap="hard"
-          maxLength={40}
-          ref={titleInputRef}
-        />
-        <BoldText>subtasks</BoldText>
-        {subtasks.map((subtask, index) => (
-          <SubtaskWrapper key={subtask.id}>
-            <SubtaskInput
-              id={subtask.id}
-              value={subtask.value}
-              rows="1"
-              wrap="hard"
-              maxLength={150}
-              onChange={(event) =>
-                handleChangeSubtask(subtask.id, event.target.value)
-              }
-              ref={(ref) => {
-                subtaskRef.current[index] = ref;
-              }}
-            />
-            <DeleteSubtaskButton
-              onClick={() => handleDeleteSubtask(subtask.id)}
-            >
-              X
-            </DeleteSubtaskButton>
-          </SubtaskWrapper>
-        ))}
-        <StyledButton
-          type="button"
-          onClick={() => {
-            handleAddSubtask();
-          }}
+      <>
+        <FormContainer
+          id={formName}
+          aria-labelledby={formName}
+          onSubmit={handleSubmit}
         >
-          add subtask
-        </StyledButton>
-        <Label htmlFor="tags">tags</Label>
-        <MyTagsWrapper>
-          <ReactTags
-            id="tags"
-            name="tags"
-            tags={tags}
-            handleDelete={handleTagDelete}
-            handleAddition={handleTagAddition}
-            delimiters={delimiters}
-            placeholder="press enter to add new tag"
-            maxLength={15}
-            allowNew
+          <Label htmlFor="title">title</Label>
+          <Input
+            id="title"
+            name="title"
+            type="text"
+            rows="1"
+            required
+            wrap="hard"
+            maxLength={40}
+            ref={titleInputRef}
+            autoFocus
           />
-        </MyTagsWrapper>
-        <Label htmlFor="deadline">deadline</Label>
-        <Input id="deadline" name="deadline" type="date" rows="1" />
-        <BoldText>priority</BoldText>
-        <RadioButtonGroup id="priority" name="priority">
-          <RadioButtonLabel htmlFor="priority-high">
-            <input
-              id="priority-high"
-              type="radio"
-              name="priority"
-              value="high"
-              checked={selectedPrio === "high"}
-              onChange={() => handleRadioButtonChange("high")}
+          <BoldText>subtasks</BoldText>
+          {subtasks.map((subtask, index) => (
+            <SubtaskWrapper key={subtask.id}>
+              <SubtaskInput
+                id={subtask.id}
+                value={subtask.value}
+                rows="1"
+                wrap="hard"
+                maxLength={150}
+                onChange={(event) =>
+                  handleChangeSubtask(subtask.id, event.target.value)
+                }
+                ref={(ref) => {
+                  subtaskRef.current[index] = ref;
+                }}
+              />
+              <DeleteSubtaskButton
+                onClick={() => handleDeleteSubtask(subtask.id)}
+              >
+                X
+              </DeleteSubtaskButton>
+            </SubtaskWrapper>
+          ))}
+          <StyledButton
+            type="button"
+            onClick={() => {
+              handleAddSubtask();
+            }}
+          >
+            add subtask
+          </StyledButton>
+          <Label htmlFor="tags">tags</Label>
+          <MyTagsWrapper>
+            <ReactTags
+              id="tags"
+              name="tags"
+              tags={tags}
+              handleDelete={handleTagDelete}
+              handleAddition={handleTagAddition}
+              delimiters={delimiters}
+              placeholder="press enter to add new tag"
+              maxLength={15}
+              allowNew
             />
-            high
-          </RadioButtonLabel>
-          <RadioButtonLabel htmlFor="priority-medium">
-            <input
-              id="priority-medium"
-              type="radio"
-              name="priority"
-              value="medium"
-              checked={selectedPrio === "medium"}
-              onChange={() => handleRadioButtonChange("medium")}
-            />
-            medium
-          </RadioButtonLabel>
-          <RadioButtonLabel htmlFor="priority-low">
-            <input
-              id="priority-low"
-              type="radio"
-              name="priority"
-              value="low"
-              checked={selectedPrio === "low"}
-              onChange={() => handleRadioButtonChange("low")}
-            />
-            low
-          </RadioButtonLabel>
-        </RadioButtonGroup>
-        <StyledButton type="submit">
-          {defaultData ? "save" : "create"}
-        </StyledButton>
-        <StyledButton type="button" onClick={resetForm}>
-          reset
-        </StyledButton>
-      </FormContainer>
+          </MyTagsWrapper>
+          <Label htmlFor="deadline">deadline</Label>
+          <Input id="deadline" name="deadline" type="date" rows="1" />
+          <BoldText>priority</BoldText>
+          <RadioButtonGroup id="priority" name="priority">
+            <RadioButtonLabel htmlFor="priority-high">
+              <input
+                id="priority-high"
+                type="radio"
+                name="priority"
+                value="high"
+                checked={selectedPrio === "high"}
+                onChange={() => handleRadioButtonChange("high")}
+              />
+              high
+            </RadioButtonLabel>
+            <RadioButtonLabel htmlFor="priority-medium">
+              <input
+                id="priority-medium"
+                type="radio"
+                name="priority"
+                value="medium"
+                checked={selectedPrio === "medium"}
+                onChange={() => handleRadioButtonChange("medium")}
+              />
+              medium
+            </RadioButtonLabel>
+            <RadioButtonLabel htmlFor="priority-low">
+              <input
+                id="priority-low"
+                type="radio"
+                name="priority"
+                value="low"
+                checked={selectedPrio === "low"}
+                onChange={() => handleRadioButtonChange("low")}
+              />
+              low
+            </RadioButtonLabel>
+          </RadioButtonGroup>
+          <StyledButton type="submit">
+            {defaultData ? "save" : "create"}
+          </StyledButton>
+          <StyledButton type="button" onClick={resetForm}>
+            reset
+          </StyledButton>
+        </FormContainer>
+      </>
     );
   } else {
     return (
-      <FormContainer
-        id={formName}
-        aria-labelledby={formName}
-        onSubmit={handleSubmit}
-      >
-        <Label htmlFor="task-description">task description</Label>
-        <Textarea
-          id="task-description"
-          name="taskDescription"
-          type="text"
-          rows="17"
-          required
-          wrap="hard"
-          maxLength={400}
-        />
-        <StyledButton type="submit">taskifAI</StyledButton>
-        <StyledButton type="button" onClick={resetForm}>
-          reset
-        </StyledButton>
-      </FormContainer>
+      <>
+        {aiDefaultData &&
+        aiDefaultData.title === "" &&
+        aiDefaultData.subtasks.length === 0 &&
+        aiDefaultData.tags.length === 0 &&
+        aiDefaultData.priority === "" &&
+        aiDefaultData.deadline === null ? (
+          <StyledErrorDiv>try again</StyledErrorDiv>
+        ) : null}
+        <FormContainer
+          id={formName}
+          aria-labelledby={formName}
+          onSubmit={handleSubmit}
+        >
+          <Label htmlFor="task-description">task description</Label>
+          <Textarea
+            id="task-description"
+            name="taskDescription"
+            type="text"
+            rows="17"
+            required
+            wrap="hard"
+            maxLength={400}
+            defaultValue={
+              aiDefaultData ? aiDefaultData.originalTaskDescription : ""
+            }
+          />
+          <StyledButton type="submit">create</StyledButton>
+          <StyledButton type="button" onClick={resetForm}>
+            reset
+          </StyledButton>
+        </FormContainer>
+      </>
     );
   }
 }

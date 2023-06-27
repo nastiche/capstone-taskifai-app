@@ -21,8 +21,10 @@ export default function TasksListPage() {
   const { data } = useSWR("/api/tasks", { fallbackData: [] });
 
   const sortedTasks = data.sort((taskA, taskB) => {
-    const priorityMap = { high: 3, medium: 2, low: 1 };
-    return priorityMap[taskB.priority] - priorityMap[taskA.priority];
+    const dateA = new Date(taskA.creationDate);
+    const dateB = new Date(taskB.creationDate);
+
+    return dateB - dateA;
   });
 
   if (!data) return <div>...loading</div>;

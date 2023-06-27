@@ -37,6 +37,7 @@ export default function TaskEditPage() {
   }
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+
   return (
     <>
       <Form onSubmit={editTask} formName={"edit-task"} defaultData={task} />

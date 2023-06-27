@@ -7,13 +7,10 @@ import {
   OutputFixingParser,
 } from "langchain/output_parsers";
 
-const apiKey = process.env.OPENAI_API_KEY;
-
 const openAIModel = new OpenAI({
   modelName: "gpt-3.5-turbo",
   temperature: 0,
   maxTokens: 2000,
-  openAIApiKey: apiKey,
 });
 
 const outputParser = StructuredOutputParser.fromZodSchema(

@@ -108,7 +108,8 @@ export default function Form({
   const subtaskRef = useRef([]);
   const [subtasks, setSubtasks] = useState([]);
   const [addingSubtask, setAddingSubtask] = useState(false);
-  const [resetTaskDataAfterSave, setResetTaskDataAfterSave] = useState(false);
+  const [clearAiTaskDataAfterSave, setClearAiTaskDataAfterSave] =
+    useState(false);
 
   function handleAddSubtask() {
     setAddingSubtask(true);
@@ -222,9 +223,9 @@ export default function Form({
       setSubtasks([]);
       event.target.reset();
       event.target.elements.title.focus();
-      setResetTaskDataAfterSave(true);
+      setClearAiTaskDataAfterSave(true);
     }
-    onSubmit(data, resetTaskDataAfterSave);
+    onSubmit(data, clearAiTaskDataAfterSave);
     event.target.reset();
   }
 
@@ -233,11 +234,20 @@ export default function Form({
   }
 
   function resetForm() {
-    setSelectedPrio("");
-    setTags([]);
-    setSubtasks([]);
-    titleInputRef.current.value = "";
-    setSubtasks([]);
+    if (!aiMode) {
+      setSelectedPrio("");
+      setTags([]);
+      setSubtasks([]);
+      titleInputRef.current.value = "";
+      setSubtasks([]);
+      document.getElementById("deadline").value = "";
+    } else {
+      document.getElementById("add-task").reset();
+      const taskDescriptionInput = document.getElementById("task-description");
+      if (taskDescriptionInput) {
+        taskDescriptionInput.focus();
+      }
+    }
   }
 
   if (!aiMode || (!aiMode && newAiTaskData !== {})) {

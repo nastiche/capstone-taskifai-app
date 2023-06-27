@@ -2,27 +2,6 @@ import useSWR from "swr";
 import styled from "styled-components";
 import TaskPreviewCard from "../components/TaskPreviewCard";
 
-const List = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding-left: 0;
-  margin: 0;
-`;
-
-const ListItem = styled.li`
-  position: relative;
-  width: 100%;
-`;
-
-const StyledLoadingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: green;
-`;
-
 export default function TasksListPage() {
   const { data } = useSWR("/api/tasks", { fallbackData: [] });
 
@@ -55,3 +34,24 @@ export default function TasksListPage() {
     );
   }
 }
+
+const List = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 0;
+  margin: 0;
+`;
+
+const ListItem = styled.li`
+  position: relative;
+  width: 100%;
+`;
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: green;
+`;

@@ -4,13 +4,6 @@ import Form from "../../../components/TaskInputForm";
 import Link from "next/link";
 import styled from "styled-components";
 
-const LinkWrapper = styled.div`
-  font-size: 3rem;
-  a {
-    text-decoration: none;
-  }
-`;
-
 export default function TaskEditPage() {
   const router = useRouter();
   const { isReady } = router;
@@ -40,7 +33,11 @@ export default function TaskEditPage() {
 
   return (
     <>
-      <Form onSubmit={editTask} formName={"edit-task"} existingTaskData={task} />
+      <Form
+        onSubmit={editTask}
+        formName={"edit-task"}
+        existingTaskData={task}
+      />
       <LinkWrapper>
         <Link href={`/`} passHref legacyBehavior aria-label="go back">
           <span aria-hidden="true">🔙</span>
@@ -49,3 +46,10 @@ export default function TaskEditPage() {
     </>
   );
 }
+
+const LinkWrapper = styled.div`
+  font-size: 3rem;
+  a {
+    text-decoration: none;
+  }
+`;

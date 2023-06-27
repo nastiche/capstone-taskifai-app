@@ -17,6 +17,12 @@ const ListItem = styled.li`
   width: 100%;
 `;
 
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: green;
+`;
+
 export default function TasksListPage() {
   const { data } = useSWR("/api/tasks", { fallbackData: [] });
 
@@ -27,23 +33,25 @@ export default function TasksListPage() {
     return dateB - dateA;
   });
 
-  if (!data) return <div>...loading</div>;
-
-  return (
-    <List role="list">
-      {sortedTasks.map((task) => {
-        return (
-          <ListItem key={task._id}>
-            <TaskPreviewCard
-              title={task.title}
-              tags={task.tags}
-              deadline={task.deadline}
-              priority={task.priority}
-              id={task._id}
-            />
-          </ListItem>
-        );
-      })}
-    </List>
-  );
+  if (!data) {
+    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
+  } else {
+    return (
+      <List role="list">
+        {sortedTasks.map((task) => {
+          return (
+            <ListItem key={task._id}>
+              <TaskPreviewCard
+                title={task.title}
+                tags={task.tags}
+                deadline={task.deadline}
+                priority={task.priority}
+                id={task._id}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+  }
 }

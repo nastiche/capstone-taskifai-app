@@ -13,19 +13,20 @@ const EmptyDiv = styled.div`
   height: 28px;
 `;
 
-const LoadingDiv = styled.div`
+const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   background-color: green;
 `;
 
 export default function CreateTaskPage() {
-  const [aiMode, setAiMode] = useState(false);
+  const [aiMode, setAiMode] = useState(true);
   const { mutate } = useSWR("api/tasks");
   const [aiTaskDescription, setAiTaskDescription] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [giveAiTaskDataToForm, setGiveAiTaskDataToForm] = useState(false);
 
-  async function addTask(taskData) {
+  async function addTask(taskData, resetTaskDataAfterSave) {
     setIsLoading(true);
     if (!aiMode) {
       const response = await fetch("/api/tasks", {
@@ -38,6 +39,7 @@ export default function CreateTaskPage() {
       if (response.ok) {
         mutate();
       }
+      setGiveAiTaskDataToForm(!resetTaskDataAfterSave);
     } else {
       try {
         const response = await fetch("/api/tasks/ai", {
@@ -49,13 +51,25 @@ export default function CreateTaskPage() {
         });
         if (response.ok) {
           const aiTaskData = await response.json();
-          aiTaskData.subtasks = aiTaskData.subtasks.map((subtask) => ({
-            ...subtask,
-            value: subtask,
-            id: uuidv4(),
-          }));
-          setAiTaskDescription(aiTaskData);
-          setAiMode(false);
+          if (aiTaskData.title !== "" && aiTaskData.subtasks !== []) {
+            aiTaskData.subtasks = aiTaskData.subtasks.map((subtask) => ({
+              ...subtask,
+              value: subtask,
+              id: uuidv4(),
+            }));
+            setAiTaskDescription(aiTaskData);
+            setAiMode(false);
+          } else {
+            setAiTaskDescription({
+              title: "",
+              subtasks: [],
+              tags: [],
+              deadline: null,
+              priority: "",
+              originalTaskDescription: taskData.taskDescription,
+            });
+            setAiMode(true);
+          }
         } else {
           console.error("Failed to generate task");
           setAiTaskDescription({
@@ -66,6 +80,7 @@ export default function CreateTaskPage() {
             priority: "",
             originalTaskDescription: taskData.taskDescription,
           });
+          setAiMode(true);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -73,12 +88,13 @@ export default function CreateTaskPage() {
     }
     setIsLoading(false);
   }
+  console.log(aiTaskDescription);
   return (
     <>
       {isLoading ? (
         <>
           <EmptyDiv></EmptyDiv>
-          <LoadingDiv>...creating task...</LoadingDiv>
+          <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
         </>
       ) : (
         <>
@@ -100,12 +116,20 @@ export default function CreateTaskPage() {
               />
             </label>
           </SwitchWrapper>
-          <Form
-            onSubmit={addTask}
-            formName={"add-task"}
-            aiDefaultData={aiTaskDescription}
-            aiMode={aiMode}
-          ></Form>
+          {giveAiTaskDataToForm ? (
+            <Form
+              onSubmit={addTask}
+              formName={"add-task"}
+              aiMode={aiMode}
+            ></Form>
+          ) : (
+            <Form
+              onSubmit={addTask}
+              formName={"add-task"}
+              newAiTaskData={aiTaskDescription}
+              aiMode={aiMode}
+            ></Form>
+          )}
         </>
       )}
     </>

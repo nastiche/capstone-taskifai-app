@@ -40,7 +40,7 @@ export default function TaskEditPage() {
 
   return (
     <>
-      <Form onSubmit={editTask} formName={"edit-task"} defaultData={task} />
+      <Form onSubmit={editTask} formName={"edit-task"} existingTaskData={task} />
       <LinkWrapper>
         <Link href={`/`} passHref legacyBehavior aria-label="go back">
           <span aria-hidden="true">🔙</span>

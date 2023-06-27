@@ -19,8 +19,8 @@ const openAIModel = new OpenAI({
 const outputParser = StructuredOutputParser.fromZodSchema(
   z
     .object({
-      Title: z.string().max(40).optional().default(""),
-      Subtasks: z.array(z.string().max(150)).optional().default([]),
+      Title: z.string().optional().default(""),
+      Subtasks: z.array(z.string()).optional().default([]),
     })
     .nonstrict()
 );
@@ -35,7 +35,7 @@ export default async function handler(request, response) {
     const query = await request.body.taskDescription;
 
     const promptTemplate = new PromptTemplate({
-      template: `Analyze text to extract meaningful information. If the text is coherent and sufficiently long, generate a task based on the text. If the text is nonsensical or too short, create a task to learn how to write precise task descriptions. Ensure that the generated task includes a title (a string, maximum 40 characters long) and subtasks (an array of strings, each string maximum 150 characters long). Maintain a polite and respectful tone throughout the task description. ALWAYS keep you response in the right format(title is a string maximum 40 characters long and subtasks is an array of strings, each string maximum 150 characters long). Title and subtasks in the described format are always required. Do your best:\n{format_instructions}\n{query}`,
+      template: `Analyze the task description you got from user to extract meaningful information. If the description is coherent and sufficiently long, generate a task title and subtasks based on the description. If the description is nonsensical or too short, create a task to learn how to write precise task descriptions. Ensure that the generated task includes a title (a string, maximum 40 characters long) and subtasks (an array of strings, each string maximum 150 characters long). Maintain a polite and respectful tone throughout the task description. ALWAYS keep you response in the right format (title is a string maximum 40 characters long and subtasks is an array of strings, each string maximum 150 characters long). Title and subtasks in the described format are always required. If you don't know which task you can create of the given description, create a task to learn how to write precise task descriptions.Do your best:\n{format_instructions}\n{query}`,
       inputVariables: ["query"],
       partialVariables: {
         format_instructions: outputFixingParser.getFormatInstructions(),
@@ -52,7 +52,7 @@ export default async function handler(request, response) {
     const result = await chain.call({
       query: query,
     });
-    
+
     const object = result.task;
 
     const aiTaskData = {
@@ -63,7 +63,7 @@ export default async function handler(request, response) {
       priority: "",
       originalTaskDescription: query,
     };
-
+    console.log(aiTaskData);
     response.status(200).json(aiTaskData);
   } catch (error) {
     console.error(error);

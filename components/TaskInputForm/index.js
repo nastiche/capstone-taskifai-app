@@ -98,8 +98,8 @@ const StyledErrorDiv = styled.div`
 export default function Form({
   onSubmit,
   formName,
-  defaultData,
-  aiDefaultData,
+  existingTaskData,
+  newAiTaskData,
   aiMode,
 }) {
   const [selectedPrio, setSelectedPrio] = useState("");
@@ -108,6 +108,7 @@ export default function Form({
   const subtaskRef = useRef([]);
   const [subtasks, setSubtasks] = useState([]);
   const [addingSubtask, setAddingSubtask] = useState(false);
+  const [resetTaskDataAfterSave, setResetTaskDataAfterSave] = useState(false);
 
   function handleAddSubtask() {
     setAddingSubtask(true);
@@ -124,7 +125,9 @@ export default function Form({
 
   useEffect(() => {
     if (!aiMode) {
-      titleInputRef.current.focus();
+      if (titleInputRef.current) {
+        titleInputRef.current.focus();
+      }
     } else {
       const taskDescriptionInput = document.getElementById("task-description");
       if (taskDescriptionInput) {
@@ -134,33 +137,36 @@ export default function Form({
   }, [aiMode]);
 
   useEffect(() => {
-    if (defaultData?.title) {
-      titleInputRef.current.value = defaultData.title;
-    }
+    if (existingTaskData) {
+      if (titleInputRef.current) {
+        titleInputRef.current.value = existingTaskData.title;
+      }
 
-    if (aiDefaultData?.title) {
-      titleInputRef.current.value = aiDefaultData.title;
-    }
+      setSubtasks(existingTaskData.subtasks);
 
-    if (defaultData?.tags) {
-      const defaultTags = defaultData.tags.map((tag, index) => {
+      const defaultTags = existingTaskData.tags.map((tag, index) => {
         return { id: String(index + 1), text: tag };
       });
       setTags(defaultTags);
+
+      if (existingTaskData?.deadline) {
+        const formattedDefaultDeadline = new Date(existingTaskData.deadline)
+          .toISOString()
+          .split("T")[0];
+        document.getElementById("deadline").value = formattedDefaultDeadline;
+      }
+
+      setSelectedPrio(existingTaskData.priority);
     }
 
-    if (defaultData?.subtasks) {
-      setSubtasks(defaultData.subtasks);
-    }
+    if (newAiTaskData && Object.keys(newAiTaskData).length > 0) {
+      if (titleInputRef.current) {
+        titleInputRef.current.value = newAiTaskData.title;
+      }
 
-    if (aiDefaultData?.subtasks) {
-      setSubtasks(aiDefaultData.subtasks);
+      setSubtasks(newAiTaskData.subtasks);
     }
-
-    if (defaultData?.priority) {
-      setSelectedPrio(defaultData.priority);
-    }
-  }, [defaultData, aiDefaultData]);
+  }, [existingTaskData, newAiTaskData]);
 
   function handleChangeSubtask(subtaskId, subtaskValue) {
     setSubtasks((prevSubtasks) => {
@@ -216,16 +222,16 @@ export default function Form({
       setSubtasks([]);
       event.target.reset();
       event.target.elements.title.focus();
-      aiDefaultData = {};
+      setResetTaskDataAfterSave(true);
     }
-    onSubmit(data);
+    onSubmit(data, resetTaskDataAfterSave);
     event.target.reset();
   }
 
   function handleRadioButtonChange(prio) {
     setSelectedPrio(prio);
   }
-  console.log(aiDefaultData);
+
   function resetForm() {
     setSelectedPrio("");
     setTags([]);
@@ -234,7 +240,7 @@ export default function Form({
     setSubtasks([]);
   }
 
-  if (!aiMode) {
+  if (!aiMode || (!aiMode && newAiTaskData !== {})) {
     return (
       <>
         <FormContainer
@@ -250,7 +256,6 @@ export default function Form({
             rows="1"
             required
             wrap="hard"
-            maxLength={40}
             ref={titleInputRef}
             autoFocus
           />
@@ -262,7 +267,6 @@ export default function Form({
                 value={subtask.value}
                 rows="1"
                 wrap="hard"
-                maxLength={150}
                 onChange={(event) =>
                   handleChangeSubtask(subtask.id, event.target.value)
                 }
@@ -338,7 +342,7 @@ export default function Form({
             </RadioButtonLabel>
           </RadioButtonGroup>
           <StyledButton type="submit">
-            {defaultData ? "save" : "create"}
+            {existingTaskData ? "save" : "create"}
           </StyledButton>
           <StyledButton type="button" onClick={resetForm}>
             reset
@@ -349,12 +353,12 @@ export default function Form({
   } else {
     return (
       <>
-        {aiDefaultData &&
-        aiDefaultData.title === "" &&
-        aiDefaultData.subtasks.length === 0 &&
-        aiDefaultData.tags.length === 0 &&
-        aiDefaultData.priority === "" &&
-        aiDefaultData.deadline === null ? (
+        {newAiTaskData &&
+        newAiTaskData.title === "" &&
+        newAiTaskData.subtasks.length === 0 &&
+        newAiTaskData.tags.length === 0 &&
+        newAiTaskData.priority === "" &&
+        newAiTaskData.deadline === null ? (
           <StyledErrorDiv>try again</StyledErrorDiv>
         ) : null}
         <FormContainer
@@ -372,7 +376,7 @@ export default function Form({
             wrap="hard"
             maxLength={400}
             defaultValue={
-              aiDefaultData ? aiDefaultData.originalTaskDescription : ""
+              newAiTaskData ? newAiTaskData.originalTaskDescription : ""
             }
           />
           <StyledButton type="submit">create</StyledButton>

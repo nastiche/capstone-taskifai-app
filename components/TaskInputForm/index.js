@@ -241,6 +241,7 @@ export default function Form({
       titleInputRef.current.value = "";
       setSubtasks([]);
       document.getElementById("deadline").value = "";
+      titleInputRef.current.focus();
     } else {
       document.getElementById("add-task").reset();
       const taskDescriptionInput = document.getElementById("task-description");

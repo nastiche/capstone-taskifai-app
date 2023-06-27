@@ -1,4 +1,4 @@
-import { OpenAI } from "langchain/llms/openai";
+import { OpenAI, OpenAIChat } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
 import { z } from "zod";
@@ -7,7 +7,7 @@ import {
   OutputFixingParser,
 } from "langchain/output_parsers";
 
-const openAIModel = new OpenAI({
+const openAIModel = new OpenAIChat({
   modelName: "gpt-3.5-turbo",
   temperature: 0,
   maxTokens: 2000,

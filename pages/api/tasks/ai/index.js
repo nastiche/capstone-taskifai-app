@@ -8,16 +8,16 @@ import {
 } from "langchain/output_parsers";
 
 const apiKey = process.env.OPENAI_API_KEY;
-const azureApiKey = process.env.AZURE_OPENAI_API_KEY;
+// const azureApiKey = process.env.AZURE_OPENAI_API_KEY;
 
-console.log(apiKey);
-console.log(azureApiKey);
+// console.log(apiKey);
+// console.log(azureApiKey);
 
 const openAIModel = new OpenAI({
   modelName: "gpt-3.5-turbo",
   temperature: 0,
   maxTokens: 2000,
-  apiKey: apiKey,
+  openAIApiKey: apiKey,
 });
 
 const outputParser = StructuredOutputParser.fromZodSchema(

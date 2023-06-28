@@ -17,12 +17,10 @@ const openAIModel = new OpenAI({
 
 // Creating a structured output parser using the zod library to define the expected output schema
 const outputParser = StructuredOutputParser.fromZodSchema(
-  z
-    .object({
-      Title: z.string().optional().default(""),
-      Subtasks: z.array(z.string()).optional().default([]),
-    })
-    .nonstrict()
+  z.object({
+    Title: z.string().default(""),
+    Subtasks: z.array(z.string()).default([]),
+  })
 );
 
 // Creating an output fixing parser using the OpenAIChat instance and the output parser
@@ -35,7 +33,7 @@ const outputFixingParser = OutputFixingParser.fromLLM(
 export default async function handler(request, response) {
   try {
     // Extracting the task description from the request body
-    const query = await request.body.taskDescription;
+    const query = await request.body.original_task_description;
 
     // Creating a prompt template with the necessary instructions and input variables
     const promptTemplate = new PromptTemplate({
@@ -63,17 +61,18 @@ export default async function handler(request, response) {
     const object = result.task;
 
     // Creating an AI task data object with the extracted task details and other information
-    const aiTaskData = {
+    const newAiTaskData = {
       title: object.Title,
       subtasks: object.Subtasks,
-      deadline: null,
       tags: [],
+      deadline: null,
       priority: "",
       originalTaskDescription: query,
     };
 
-    // Sending the AI task data as a JSON response
-    response.status(200).json(aiTaskData);
+    // Sending the AI task data as a JSON response to front-end
+    response.status(200).json(newAiTaskData);
+    console.log(newAiTaskData);
   } catch (error) {
     console.error(error);
 
@@ -81,5 +80,3 @@ export default async function handler(request, response) {
     response.status(500).json({ error: "Failed to generate task" });
   }
 }
-
-

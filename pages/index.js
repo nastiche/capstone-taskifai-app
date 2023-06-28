@@ -6,8 +6,8 @@ export default function TasksListPage() {
   const { data } = useSWR("/api/tasks", { fallbackData: [] });
 
   const sortedTasks = data.sort((taskA, taskB) => {
-    const dateA = new Date(taskA.creationDate);
-    const dateB = new Date(taskB.creationDate);
+    const dateA = new Date(taskA.creation_date);
+    const dateB = new Date(taskB.creation_date);
 
     return dateB - dateA;
   });

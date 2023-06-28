@@ -1,78 +1,110 @@
 import React, { useState } from "react";
 import useSWR from "swr";
-import Form from "../components/TaskInputForm";
 import Switch from "react-switch";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import RegularTaskInputForm from "../components/RegularTaskInputForm";
+import AiTaskInputForm from "../components/AiTaskInputForm";
 
 export default function CreateTaskPage() {
-  // State variables
-  const [aiMode, setAiMode] = useState(true);
   const { mutate } = useSWR("api/tasks");
-  const [aiTaskDetails, setAiTaskDetails] = useState({});
+  // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
+  const [aiMode, setAiMode] = useState(true);
+
+  // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
   const [isLoading, setIsLoading] = useState(false);
-  const [giveAiTaskDataToForm, setGiveAiTaskDataToForm] = useState(false);
+
+  // State for task data which is coming from OpenAI API
+  const [aiTaskData, setAiTaskData] = useState({});
+
+  // State to check whether newAiTaskData should be given to the RegularTaskInputForm
+  // This stay is needed only in case if previously RegularTaskInputForm was filled with newAiTaskData (after ok Open AI API response) and the form was submitted
+  // After form submit the form should have empty fields, but if the form still gets newAiTaskData prop, it's being filled with newAiTaskData again after submit --> not good
+  const [doNotGiveNewAiTaskDataToForm, setDoNotGiveNewAiTaskDataToForm] =
+    useState(false);
 
   // Function to add a task
-  async function addTask(taskData, clearAiTaskDataAfterSave) {
+  async function addTask(newTaskData) {
+    // While app is waiting for API response (isLoading === true) user sees an animation
     setIsLoading(true);
+    // If the user sends post request in regular mode the post request goes directly to the data base
     if (!aiMode) {
-      // Send a POST request to create a task
+      // Send a POST request to the database to create a new task
       const response = await fetch("/api/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(taskData),
+        body: JSON.stringify(newTaskData),
       });
       if (response.ok) {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
       }
-      setGiveAiTaskDataToForm(!clearAiTaskDataAfterSave);
+      setAiMode(true);
+
+      // If the user sends post request in aiMode mode the post request goes directly to the OpenAI API
     } else {
       try {
-        // Send a POST request to generate an AI task
+        // Send a POST request to OpenAI API to generate task details
         const response = await fetch("/api/tasks/ai", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(taskData),
+          body: JSON.stringify(newTaskData),
         });
+
+        // Check if response from OpenAI API is ok
         if (response.ok) {
-          const aiTaskData = await response.json();
-          if (aiTaskData.title !== "" && aiTaskData.subtasks !== []) {
+          // Save response from OpenAI API in a variable newAiTaskData
+          const newAiTaskData = await response.json();
+
+          // Check whether newAiTaskData has a title and subtasks
+          if (
+            newAiTaskData.title &&
+            newAiTaskData.title !== "" &&
+            newAiTaskData.subtasks &&
+            newAiTaskData.subtasks.length > 0
+          ) {
             // Add unique ID and a value key to each subtask
-            aiTaskData.subtasks = aiTaskData.subtasks.map((subtask) => ({
-              ...subtask,
+            newAiTaskData.subtasks = newAiTaskData.subtasks.map((subtask) => ({
               value: subtask,
               id: uuidv4(),
             }));
-            setAiTaskDetails(aiTaskData);
+
+            // Set aiTaskData variable to the populated OpenAI API response (newAiTaskData)
+            setAiTaskData(newAiTaskData);
+
+            // Switch to regular mode where regular input form prefilled with AI task data is displayed
+            // In this regular mode user can add additional details to the task
             setAiMode(false);
           } else {
-            // Handle case when AI task generation does not provide valid data
-            setAiTaskDetails({
+            // Handle case when OpenAI API does not provide valid data
+            setAiTaskData({
               title: "",
               subtasks: [],
               tags: [],
               deadline: null,
               priority: "",
-              originalTaskDescription: taskData.taskDescription,
+              original_task_description: newTaskData.original_task_description,
             });
+
+            // Stay in aiMode where ai task input form prefilled with original task description (query)
+            // Here the user can edit the query and send a post request on OpenAI API again to get a better response
             setAiMode(true);
           }
         } else {
-          console.error("Failed to generate task");
           // Handle case when AI task generation fails
-          setAiTaskDetails({
+          setAiTaskData({
             title: "",
             subtasks: [],
             tags: [],
             deadline: null,
             priority: "",
-            originalTaskDescription: taskData.taskDescription,
+            originalTaskDescription: newTaskData.taskDescription,
+            // Stay in aiMode where ai task input form prefilled with original task description (query)
+            // Here the user can edit the query and send a post request on OpenAI API again to get a better response
           });
           setAiMode(true);
         }
@@ -80,6 +112,7 @@ export default function CreateTaskPage() {
         console.error("Error:", error);
       }
     }
+
     setIsLoading(false);
   }
 
@@ -92,7 +125,7 @@ export default function CreateTaskPage() {
           <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
         </>
       ) : (
-        // Display the task input form and switch for AI mode
+        // Display switch for AI mode
         <>
           <SwitchWrapper>
             <label>
@@ -112,21 +145,22 @@ export default function CreateTaskPage() {
               />
             </label>
           </SwitchWrapper>
-          {giveAiTaskDataToForm ? (
-            // Render the task input form without AI-generated data
-            <Form
+          {aiMode ? (
+            <AiTaskInputForm
               onSubmit={addTask}
-              formName={"add-task"}
-              aiMode={aiMode}
-            ></Form>
+              formName={"create-task"}
+              newAiTaskData={
+                Object.keys(aiTaskData).length > 0 ? aiTaskData : null
+              }
+            />
           ) : (
-            // Render the task input form with AI-generated data
-            <Form
+            <RegularTaskInputForm
               onSubmit={addTask}
-              formName={"add-task"}
-              newAiTaskData={aiTaskDetails}
-              aiMode={aiMode}
-            ></Form>
+              formName={"create-task"}
+              newAiTaskData={
+                Object.keys(aiTaskData).length > 0 ? aiTaskData : null
+              }
+            />
           )}
         </>
       )}

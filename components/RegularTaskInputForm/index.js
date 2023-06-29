@@ -153,13 +153,15 @@ export default function RegularTaskInputForm({
     const formData = new FormData(event.target);
     const taskFormData = Object.fromEntries(formData);
 
-    // Populate form data with subtasks' id's, tags array and creation date
-    const subtasksNotEmpty = taskData.subtasks.filter(
+    // Populate form data with filtered subtasks array, tags array,
+    // original task description (user's query) and creation date
+    const subtasksNotEmptyStrings = taskData.subtasks.filter(
       (subtask) => subtask.value !== ""
     );
-    taskFormData.subtasks = subtasksNotEmpty;
+    taskFormData.subtasks = subtasksNotEmptyStrings;
     taskFormData.tags = taskData.tags.map((tag) => tag.text);
     taskFormData.creation_date = new Date();
+    taskFormData.original_task_description = taskData.original_task_description;
 
     // Reset form
     setTaskData(initialTaskData);

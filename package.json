@@ -24,6 +24,7 @@
     "react-tag-input": "^6.8.1",
     "styled-components": "^5.3.8",
     "swr": "^2.1.5",
+    "use-local-storage-state": "^18.3.3",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },

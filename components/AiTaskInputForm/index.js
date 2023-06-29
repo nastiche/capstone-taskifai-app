@@ -3,9 +3,21 @@ import { StyledButton } from "../StyledButton/StyledButton";
 import styled from "styled-components";
 
 // Task data for initial state
-const initialTaskData = { original_task_description: "" };
+const initialTaskData = {
+  title: "",
+  subtasks: [],
+  tags: [],
+  deadline: "",
+  priority: "",
+  original_task_description: "",
+};
 
-export default function AiTaskInputForm({ onSubmit, formName, aiQuery }) {
+export default function AiTaskInputForm({
+  onSubmit,
+  formName,
+  newAiTaskData,
+  aiResponseStatus,
+}) {
   // Reference for original_task_description form input field
   const original_task_descriptionInputRef = useRef(null);
 
@@ -17,15 +29,15 @@ export default function AiTaskInputForm({ onSubmit, formName, aiQuery }) {
     original_task_descriptionInputRef.current.focus();
   }, []);
 
-  // Hook used to check whether the input form gets the prop aiQuery
-  // (aiQuery comes in when AI gives bad response back)
+  // Hook used to check whether the input form gets the prop newAiTaskData
+  // (newAiTaskData comes in when AI gives bad response back)
   useEffect(() => {
-    // Set taskData to user's query if AI gave a bad response back.
+    // Set taskData to incoming newAiTaskData (is has with original task description in it which is user's query).
     // In this case the user gets a chance to edit the query and send the post request to AI again
-    if (aiQuery) {
-      setTaskData(aiQuery);
+    if (newAiTaskData) {
+      setTaskData(newAiTaskData);
     }
-  }, [aiQuery]);
+  }, [newAiTaskData]);
 
   // Handle original_task_description field change
   function handleChangeTaskDescription(event) {
@@ -55,29 +67,32 @@ export default function AiTaskInputForm({ onSubmit, formName, aiQuery }) {
     original_task_descriptionInputRef.current.focus();
   }
   return (
-    <FormContainer
-      id={formName}
-      aria-labelledby={formName}
-      onSubmit={handleSubmit}
-    >
-      <Label htmlFor="original_task_description">task description</Label>
-      <Textarea
-        id="original_task_description"
-        name="original_task_description"
-        type="text"
-        rows="17"
-        required
-        wrap="hard"
-        maxLength={500}
-        value={taskData.original_task_description}
-        onChange={handleChangeTaskDescription}
-        ref={original_task_descriptionInputRef}
-      />
-      <StyledButton type="submit">create</StyledButton>
-      <StyledButton type="button" onClick={resetForm}>
-        reset
-      </StyledButton>
-    </FormContainer>
+    <>
+      {!aiResponseStatus ? <StyledErrorDiv>try again</StyledErrorDiv> : null}
+      <FormContainer
+        id={formName}
+        aria-labelledby={formName}
+        onSubmit={handleSubmit}
+      >
+        <Label htmlFor="original_task_description">task description</Label>
+        <Textarea
+          id="original_task_description"
+          name="original_task_description"
+          type="text"
+          rows="17"
+          required
+          wrap="hard"
+          maxLength={500}
+          value={taskData.original_task_description}
+          onChange={handleChangeTaskDescription}
+          ref={original_task_descriptionInputRef}
+        />
+        <StyledButton type="submit">create</StyledButton>
+        <StyledButton type="button" onClick={resetForm}>
+          reset
+        </StyledButton>
+      </FormContainer>
+    </>
   );
 }
 
@@ -96,4 +111,10 @@ const Textarea = styled.textarea`
   font-size: inherit;
   border: 3px solid black;
   border-radius: 0.5rem;
+`;
+
+const StyledErrorDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: red;
 `;

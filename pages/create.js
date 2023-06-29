@@ -5,23 +5,32 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
+import useLocalStorageState from "use-local-storage-state";
+
+// Task data for initial state
+const initialTaskData = {
+  title: "",
+  subtasks: [],
+  tags: [],
+  deadline: "",
+  priority: "",
+  original_task_description: "",
+};
 
 export default function CreateTaskPage() {
   const { mutate } = useSWR("api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
-  const [aiMode, setAiMode] = useState(true);
+  const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
   // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
   const [isLoading, setIsLoading] = useState(false);
 
   // State for task data which is coming from OpenAI API
-  const [aiTaskData, setAiTaskData] = useState({});
+  const [aiTaskData, setAiTaskData] = useState(initialTaskData);
 
-  // State to check whether newAiTaskData should be given to the RegularTaskInputForm
-  // This stay is needed only in case if previously RegularTaskInputForm was filled with newAiTaskData (after ok Open AI API response) and the form was submitted
-  // After form submit the form should have empty fields, but if the form still gets newAiTaskData prop, it's being filled with newAiTaskData again after submit --> not good
-  const [doNotGiveNewAiTaskDataToForm, setDoNotGiveNewAiTaskDataToForm] =
-    useState(false);
+  // State to check whether OpenAI gave a bad response
+  // If it is the case, user gets a chance to edit the query
+  const [aiResponseStatus, setAiResponseStatus] = useState(true);
 
   // Function to add a task
   async function addTask(newTaskData) {
@@ -41,7 +50,8 @@ export default function CreateTaskPage() {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
       }
-      setAiMode(true);
+      setAiTaskData(initialTaskData);
+      setAiResponseStatus(true);
 
       // If the user sends post request in aiMode mode the post request goes directly to the OpenAI API
     } else {
@@ -73,6 +83,9 @@ export default function CreateTaskPage() {
               id: uuidv4(),
             }));
 
+            newAiTaskData.original_task_description =
+              newTaskData.original_task_description;
+
             // Set aiTaskData variable to the populated OpenAI API response (newAiTaskData)
             setAiTaskData(newAiTaskData);
 
@@ -93,6 +106,7 @@ export default function CreateTaskPage() {
             // Stay in aiMode where ai task input form prefilled with original task description (query)
             // Here the user can edit the query and send a post request on OpenAI API again to get a better response
             setAiMode(true);
+            setAiResponseStatus(false);
           }
         } else {
           // Handle case when AI task generation fails
@@ -107,6 +121,7 @@ export default function CreateTaskPage() {
             // Here the user can edit the query and send a post request on OpenAI API again to get a better response
           });
           setAiMode(true);
+          setAiResponseStatus(false);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -131,7 +146,7 @@ export default function CreateTaskPage() {
             <label>
               AI mode
               <Switch
-                checked={aiMode}
+                checked={aiMode !== undefined ? aiMode : false}
                 onChange={() => setAiMode(!aiMode)}
                 onColor="#86d3ff"
                 onHandleColor="#2693e6"
@@ -149,17 +164,14 @@ export default function CreateTaskPage() {
             <AiTaskInputForm
               onSubmit={addTask}
               formName={"create-task"}
-              newAiTaskData={
-                Object.keys(aiTaskData).length > 0 ? aiTaskData : null
-              }
+              newAiTaskData={aiTaskData}
+              aiResponseStatus={aiResponseStatus}
             />
           ) : (
             <RegularTaskInputForm
               onSubmit={addTask}
               formName={"create-task"}
-              newAiTaskData={
-                Object.keys(aiTaskData).length > 0 ? aiTaskData : null
-              }
+              newAiTaskData={aiTaskData}
             />
           )}
         </>

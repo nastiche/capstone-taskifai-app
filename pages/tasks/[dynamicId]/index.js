@@ -45,6 +45,9 @@ export default function TaskDetailsPage() {
         tags={task.tags}
         deadline={task.deadline}
         priority={task.priority}
+        original_task_description={
+          task.original_task_description ? task.original_task_description : null
+        }
       />
 
       <StyledEditLinkDiv onClick={handleEditLinkDivClick}>

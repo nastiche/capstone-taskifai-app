@@ -117,4 +117,5 @@ const StyledErrorDiv = styled.div`
   display: flex;
   justify-content: center;
   background-color: red;
+  color: white;
 `;

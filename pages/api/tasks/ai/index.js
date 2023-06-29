@@ -72,7 +72,6 @@ export default async function handler(request, response) {
 
     // Sending the AI task data as a JSON response to front-end
     response.status(200).json(newAiTaskData);
-    console.log(newAiTaskData);
   } catch (error) {
     console.error(error);
 

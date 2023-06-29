@@ -11,6 +11,7 @@ const initialTaskData = {
   tags: [],
   deadline: "",
   priority: "",
+  original_task_description: "",
 };
 
 export default function RegularTaskInputForm({
@@ -18,6 +19,7 @@ export default function RegularTaskInputForm({
   formName,
   existingTaskData,
   newAiTaskData,
+  aiResponseStatus,
 }) {
   // Reference for title and subtasks form input fields
   const titleInputRef = useRef(null);
@@ -28,6 +30,15 @@ export default function RegularTaskInputForm({
 
   // State used to check whether a new subtask input field was added
   const [addingSubtask, setAddingSubtask] = useState(false);
+
+  // State used for reset of the tags input field value
+  // (in case the user enters text in the input field and doesn't press enter to create a tag, the text stays in the input field)
+  const [tagInputValue, setTagInputValue] = useState("");
+
+  // Focus on title input field after page refresh
+  useEffect(() => {
+    titleInputRef.current.focus();
+  }, []);
 
   // Hook used to check whether the input form gets the prop existingTaskData
   // (existingTaskData comes from TaskEditPage)
@@ -97,7 +108,6 @@ export default function RegularTaskInputForm({
       });
       return { ...prevTaskData, subtasks: updatedSubtasks };
     });
-    console.log(taskData);
   }
 
   // Handle deleting a subtask
@@ -123,6 +133,7 @@ export default function RegularTaskInputForm({
         tags: [...prevTaskData.tags, { id: uuidv4(), text: tagText }],
       }));
     }
+    setTagInputValue("");
   }
 
   // Handle deleting a tag
@@ -165,6 +176,7 @@ export default function RegularTaskInputForm({
 
     // Reset form
     setTaskData(initialTaskData);
+    setTagInputValue("");
     event.target.elements.title.focus();
 
     // Submit form data
@@ -174,8 +186,8 @@ export default function RegularTaskInputForm({
   // Resets the form to initial state (function for reset button)
   function resetForm() {
     setTaskData(initialTaskData);
+    setTagInputValue("");
     titleInputRef.current.focus();
-    console.log(taskData);
   }
 
   return (
@@ -241,6 +253,8 @@ export default function RegularTaskInputForm({
             delimiters={delimiters}
             placeholder="press enter to add new tag"
             maxLength={15}
+            inputValue={tagInputValue}
+            handleInputChange={(tag) => setTagInputValue(tag)}
             allowNew
           />
         </MyTagsWrapper>
@@ -289,6 +303,24 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
+        {(taskData.original_task_description !== "" && aiResponseStatus) ||
+        existingTaskData ? (
+          <>
+            <Label htmlFor="original_task_description">
+              original task description
+            </Label>
+            <Textarea
+              id="original_task_description"
+              name="original_task_description"
+              type="text"
+              required
+              wrap="hard"
+              value={taskData.original_task_description}
+              rows="5"
+              disabled
+            />
+          </>
+        ) : null}
         <StyledButton type="submit">
           {existingTaskData ? "save" : "create"}
         </StyledButton>
@@ -379,4 +411,11 @@ const DeleteSubtaskButton = styled.button`
   cursor: pointer;
   color: red;
   font-weight: bold;
+`;
+
+const Textarea = styled.textarea`
+  padding: 0.5rem;
+  font-size: inherit;
+  border: 3px solid black;
+  border-radius: 0.5rem;
 `;

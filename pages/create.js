@@ -144,21 +144,21 @@ export default function CreateTaskPage() {
         <>
           <SwitchWrapper>
             <label>
-              AI mode
-              <Switch
-                checked={aiMode !== undefined ? aiMode : false}
-                onChange={() => setAiMode(!aiMode)}
-                onColor="#86d3ff"
-                onHandleColor="#2693e6"
-                handleDiameter={24}
-                uncheckedIcon={false}
-                checkedIcon={false}
-                boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                height={16}
-                width={40}
-              />
+              <BoldText>AI mode</BoldText>{" "}
             </label>
+            <Switch
+              checked={aiMode !== undefined ? aiMode : false}
+              onChange={() => setAiMode(!aiMode)}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={24}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={16}
+              width={40}
+            />
           </SwitchWrapper>
           {aiMode ? (
             <AiTaskInputForm
@@ -172,6 +172,7 @@ export default function CreateTaskPage() {
               onSubmit={addTask}
               formName={"create-task"}
               newAiTaskData={aiTaskData}
+              aiResponseStatus={aiResponseStatus}
             />
           )}
         </>
@@ -183,6 +184,9 @@ export default function CreateTaskPage() {
 // Styled components
 const SwitchWrapper = styled.div`
   display: flex;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 10px;
 `;
 
 const EmptyDiv = styled.div`
@@ -193,4 +197,9 @@ const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   background-color: green;
+  color: white;
+`;
+
+const BoldText = styled.span`
+  font-weight: 700;
 `;

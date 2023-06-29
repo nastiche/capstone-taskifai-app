@@ -20,7 +20,7 @@ const initialTaskData = {
 export default function CreateTaskPage() {
   const { mutate } = useSWR("api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
-  const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
+  const [aiMode, setAiMode] = useLocalStorageState("aiMode", true);
 
   // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
   const [isLoading, setIsLoading] = useState(false);

@@ -40,8 +40,8 @@ export default function RegularTaskInputForm({
     titleInputRef.current.focus();
   }, []);
 
-  // Hook used to check whether the input form gets the prop existingTaskData
-  // (existingTaskData comes from TaskEditPage)
+  // Hook used to check whether the input form gets
+  //  the prop existingTaskData (comes from TaskEditPage) or the prop newAiTaskData (comes from CreateTaskPage)
   useEffect(() => {
     if (existingTaskData) {
       // Set taskData to existingTaskData
@@ -97,7 +97,7 @@ export default function RegularTaskInputForm({
     }));
   }
 
-  // Handle changes in subtask values
+  // Handle subtask input field change
   function handleChangeSubtask(subtaskId, subtaskValue) {
     setTaskData((prevTaskData) => {
       const updatedSubtasks = prevTaskData.subtasks.map((subtask) => {

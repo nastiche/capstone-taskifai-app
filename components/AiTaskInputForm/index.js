@@ -21,7 +21,7 @@ export default function AiTaskInputForm({
   // Reference for original_task_description form input field
   const original_task_descriptionInputRef = useRef(null);
 
-  // State for form input field value
+  // State for form input field's value
   const [taskData, setTaskData] = useState(initialTaskData);
 
   // Focusing on original_task_description input field on page load
@@ -32,7 +32,7 @@ export default function AiTaskInputForm({
   // Hook used to check whether the input form gets the prop newAiTaskData
   // (newAiTaskData comes in when AI gives bad response back)
   useEffect(() => {
-    // Set taskData to incoming newAiTaskData (is has with original task description in it which is user's query).
+    // Set taskData to incoming newAiTaskData (is comes with original task description in it which is user's query).
     // In this case the user gets a chance to edit the query and send the post request to AI again
     if (newAiTaskData) {
       setTaskData(newAiTaskData);

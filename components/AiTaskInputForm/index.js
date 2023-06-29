@@ -86,6 +86,7 @@ export default function AiTaskInputForm({
           value={taskData.original_task_description}
           onChange={handleChangeTaskDescription}
           ref={original_task_descriptionInputRef}
+          placeholder="e.g. plan a trip to Mallorca"
         />
         <StyledButton type="submit">create</StyledButton>
         <StyledButton type="button" onClick={resetForm}>
@@ -111,6 +112,9 @@ const Textarea = styled.textarea`
   font-size: inherit;
   border: 3px solid black;
   border-radius: 0.5rem;
+  :placeholder {
+    white-space: pre-line;
+  }
 `;
 
 const StyledErrorDiv = styled.div`

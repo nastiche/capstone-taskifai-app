@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import styled from "styled-components";
 import TaskPreviewCard from "../components/TaskPreviewCard";
+import { useEffect } from "react";
 
 export default function TasksListPage() {
   const { data, isLoading } = useSWR("/api/tasks", { fallbackData: [] });

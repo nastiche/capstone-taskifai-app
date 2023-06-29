@@ -122,7 +122,7 @@ export default function TaskDetails({
         <ListItem>
           <BoldText>priority:</BoldText> {priority}
         </ListItem>
-        {original_task_description !== "" ? (
+        {original_task_description !== null ? (
           <ListItem>
             <BoldText>original task description: </BoldText>
             {original_task_description}

@@ -303,8 +303,12 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
-        {(taskData.original_task_description !== "" && aiResponseStatus) ||
-        existingTaskData ? (
+        {(taskData.original_task_description !== null &&
+          taskData.original_task_description !== "" &&
+          aiResponseStatus) ||
+        (taskData.original_task_description !== null &&
+          taskData.original_task_description !== "" &&
+          existingTaskData) ? (
           <>
             <Label htmlFor="original_task_description">
               original task description

@@ -61,11 +61,9 @@ const SubtaskText = styled.span`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-all;
-  font-weight: 700;
 `;
 
 const TitleText = styled.span`
-  font-weight: 700;
   white-space: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -82,6 +80,7 @@ export default function TaskDetails({
   tags,
   deadline,
   priority,
+  original_task_description,
 }) {
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString()
@@ -91,10 +90,11 @@ export default function TaskDetails({
     <Article>
       <List>
         <ListItem>
-          task: <TitleText>{title}</TitleText>
+          <BoldText>task: </BoldText>
+          <TitleText>{title}</TitleText>
         </ListItem>
         <ListItem>
-          subtasks:
+          <BoldText>subtasks: </BoldText>
           <List>
             {subtasks.map((subtask) => (
               <ListItem key={subtask.id}>
@@ -107,7 +107,7 @@ export default function TaskDetails({
           </List>
         </ListItem>
         <ListItem>
-          tags:
+          <BoldText>tags: </BoldText>
           <TagList>
             {tags.map((tag) => (
               <TagItem key={tag}>
@@ -117,11 +117,17 @@ export default function TaskDetails({
           </TagList>
         </ListItem>
         <ListItem>
-          deadline:<BoldText> {formattedDeadline}</BoldText>
+          <BoldText>deadline:</BoldText> {formattedDeadline}
         </ListItem>
         <ListItem>
-          priority:<BoldText> {priority}</BoldText>
+          <BoldText>priority:</BoldText> {priority}
         </ListItem>
+        {original_task_description !== null ? (
+          <ListItem>
+            <BoldText>original task description: </BoldText>
+            {original_task_description}
+          </ListItem>
+        ) : null}
       </List>
     </Article>
   );

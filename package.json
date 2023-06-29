@@ -12,16 +12,21 @@
   },
   "dependencies": {
     "@next/font": "^13.4.6",
+    "dotenv": "^16.3.1",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "langchain": "^0.0.96",
     "mongoose": "^7.3.0",
     "next": "^13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-switch": "^7.0.0",
     "react-tag-input": "^6.8.1",
     "styled-components": "^5.3.8",
     "swr": "^2.1.5",
-    "uuid": "^9.0.0"
+    "use-local-storage-state": "^18.3.3",
+    "uuid": "^9.0.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",

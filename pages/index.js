@@ -2,6 +2,39 @@ import useSWR from "swr";
 import styled from "styled-components";
 import TaskPreviewCard from "../components/TaskPreviewCard";
 
+export default function TasksListPage() {
+  const { data, isLoading } = useSWR("/api/tasks", { fallbackData: [] });
+
+  const sortedTasks = data.sort((taskA, taskB) => {
+    const dateA = new Date(taskA.creation_date);
+    const dateB = new Date(taskB.creation_date);
+
+    return dateB - dateA;
+  });
+
+  if (isLoading) {
+    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
+  } else {
+    return (
+      <List role="list">
+        {sortedTasks.map((task) => {
+          return (
+            <ListItem key={task._id}>
+              <TaskPreviewCard
+                title={task.title}
+                tags={task.tags}
+                deadline={task.deadline}
+                priority={task.priority}
+                id={task._id}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+  }
+}
+
 const List = styled.ul`
   list-style: none;
   display: flex;
@@ -17,29 +50,9 @@ const ListItem = styled.li`
   width: 100%;
 `;
 
-export default function TasksListPage() {
-  const { data } = useSWR("/api/tasks", { fallbackData: [] });
-
-  const sortedTasks = data.sort((taskA, taskB) => {
-    const priorityMap = { high: 3, medium: 2, low: 1 };
-    return priorityMap[taskB.priority] - priorityMap[taskA.priority];
-  });
-
-  return (
-    <List role="list">
-      {sortedTasks.map((task) => {
-        return (
-          <ListItem key={task._id}>
-            <TaskPreviewCard
-              title={task.title}
-              tags={task.tags}
-              deadline={task.deadline}
-              priority={task.priority}
-              id={task._id}
-            />
-          </ListItem>
-        );
-      })}
-    </List>
-  );
-}
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: green;
+  color: white;
+`;

@@ -5,27 +5,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import { StyledButton } from "../../../components/StyledButton/StyledButton";
 
-const BackLinkWrapper = styled.div`
-  font-size: 3rem;
-  a {
-    text-decoration: none;
-  }
-`;
-
-const StyledEditLinkDiv = styled.div`
-  padding: 0.8rem;
-  border-radius: 0.6rem;
-  background-color: #f0f0f0;
-  color: black;
-  text-decoration: none;
-  font-weight: 700;
-  border: none;
-  font-size: inherit;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-`;
-
 export default function TaskDetailsPage() {
   const router = useRouter();
   const { isReady } = router;
@@ -38,7 +17,8 @@ export default function TaskDetailsPage() {
     mutate,
   } = useSWR(`/api/tasks/${dynamicId}`);
 
-  if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+  if (!isReady || isLoading || error)
+    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
 
   function handleEditLinkDivClick(event) {
     event.preventDefault();
@@ -66,6 +46,9 @@ export default function TaskDetailsPage() {
         tags={task.tags}
         deadline={task.deadline}
         priority={task.priority}
+        original_task_description={
+          task.original_task_description ? task.original_task_description : null
+        }
       />
 
       <StyledEditLinkDiv onClick={handleEditLinkDivClick}>
@@ -80,3 +63,31 @@ export default function TaskDetailsPage() {
     </>
   );
 }
+
+const BackLinkWrapper = styled.div`
+  font-size: 3rem;
+  a {
+    text-decoration: none;
+  }
+`;
+
+const StyledEditLinkDiv = styled.div`
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  background-color: #f0f0f0;
+  color: black;
+  text-decoration: none;
+  font-weight: 700;
+  border: none;
+  font-size: inherit;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: green;
+  color: white;
+`;

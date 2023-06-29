@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
+import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -17,8 +18,11 @@ const initialTaskData = {
   original_task_description: "",
 };
 
+// Mesagge for info banner
+const BannerMessage = () => <div>Task created!</div>;
+
 export default function CreateTaskPage() {
-  const { mutate } = useSWR("/api/tasks");
+  const { mutate, data } = useSWR("/api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
   const [aiMode, setAiMode] = useLocalStorageState("aiMode", true);
 
@@ -50,6 +54,19 @@ export default function CreateTaskPage() {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
       }
+
+      // Info banner
+      toast.success(<BannerMessage />, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      
       setAiTaskData(initialTaskData);
       setAiResponseStatus(true);
 

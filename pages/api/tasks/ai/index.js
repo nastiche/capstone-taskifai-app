@@ -69,7 +69,7 @@ export default async function handler(request, response) {
       priority: "",
       originalTaskDescription: query,
     };
-
+    console.log(newAiTaskData);
     // Sending the AI task data as a JSON response to front-end
     response.status(200).json(newAiTaskData);
   } catch (error) {

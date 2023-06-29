@@ -18,7 +18,7 @@ const initialTaskData = {
 };
 
 export default function CreateTaskPage() {
-  const { mutate } = useSWR("api/tasks");
+  const { mutate } = useSWR("/api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
   const [aiMode, setAiMode] = useLocalStorageState("aiMode", true);
 

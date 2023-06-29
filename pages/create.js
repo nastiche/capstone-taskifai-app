@@ -147,7 +147,7 @@ export default function CreateTaskPage() {
               <BoldText>AI mode</BoldText>{" "}
             </label>
             <Switch
-              checked={aiMode !== undefined ? aiMode : false}
+              checked={aiMode !== undefined ? aiMode : true}
               onChange={() => setAiMode(!aiMode)}
               onColor="#86d3ff"
               onHandleColor="#2693e6"

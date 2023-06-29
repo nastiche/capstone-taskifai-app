@@ -17,7 +17,8 @@ export default function TaskDetailsPage() {
     mutate,
   } = useSWR(`/api/tasks/${dynamicId}`);
 
-  if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+  if (!isReady || isLoading || error)
+    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
 
   function handleEditLinkDivClick(event) {
     event.preventDefault();
@@ -82,4 +83,11 @@ const StyledEditLinkDiv = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
+`;
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: green;
+  color: white;
 `;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TaskPreviewCard from "../components/TaskPreviewCard";
 
 export default function TasksListPage() {
-  const { data } = useSWR("/api/tasks", { fallbackData: [] });
+  const { data, isLoading } = useSWR("/api/tasks", { fallbackData: [] });
 
   const sortedTasks = data.sort((taskA, taskB) => {
     const dateA = new Date(taskA.creation_date);
@@ -12,7 +12,7 @@ export default function TasksListPage() {
     return dateB - dateA;
   });
 
-  if (!data) {
+  if (isLoading) {
     return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
   } else {
     return (
@@ -54,4 +54,5 @@ const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
   background-color: green;
+  color: white;
 `;

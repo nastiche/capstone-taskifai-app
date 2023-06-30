@@ -14,7 +14,10 @@ export default function TasksListPage() {
     "sortType",
     "creation_date"
   ); // Sort type state with local storage persistence
-  const [sortDirection, setSortDirection] = useState("asc"); // Sort direction state
+  const [sortDirection, setSortDirection] = useLocalStorageState(
+    "sort direction",
+    "asc"
+  ); // Sort direction state
 
   // Function to convert priority string to a corresponding number
   const priorityToNumber = (priority) => {
@@ -94,6 +97,7 @@ export default function TasksListPage() {
           <StyledButton
             onClick={toggleSortDirection}
             aria-label="sort-direction"
+            value={sortDirection}
           >
             <span aria-hidden="true">↕️</span>
           </StyledButton>

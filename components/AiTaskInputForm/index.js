@@ -16,7 +16,6 @@ export default function AiTaskInputForm({
   onSubmit,
   formName,
   newAiTaskData,
-  aiResponseStatus,
 }) {
   // Reference for original_task_description form input field
   const original_task_descriptionInputRef = useRef(null);
@@ -68,7 +67,6 @@ export default function AiTaskInputForm({
   }
   return (
     <>
-      {!aiResponseStatus ? <StyledErrorDiv>try again</StyledErrorDiv> : null}
       <FormContainer
         id={formName}
         aria-labelledby={formName}

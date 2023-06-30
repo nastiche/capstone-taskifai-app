@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
+import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -17,10 +18,15 @@ const initialTaskData = {
   original_task_description: "",
 };
 
+// Mesagges for info banners
+const BannerMessageCreated = () => <div>Task created!</div>;
+const BannerMessageFailed = () => <div>Complete your task description!</div>;
+const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
+
 export default function CreateTaskPage() {
-  const { mutate } = useSWR("/api/tasks");
+  const { mutate, data } = useSWR("/api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
-  const [aiMode, setAiMode] = useLocalStorageState("aiMode", true);
+  const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
   // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +56,19 @@ export default function CreateTaskPage() {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
       }
+
+      // Info banner
+      toast.success(<BannerMessageCreated />, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
       setAiTaskData(initialTaskData);
       setAiResponseStatus(true);
 
@@ -92,6 +111,18 @@ export default function CreateTaskPage() {
             // Switch to regular mode where regular input form prefilled with AI task data is displayed
             // In this regular mode user can add additional details to the task
             setAiMode(false);
+
+            // Info banner
+            toast.info(<BannerMessageAISuccess />, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
           } else {
             // Handle case when OpenAI API does not provide valid data
             setAiTaskData({
@@ -107,6 +138,18 @@ export default function CreateTaskPage() {
             // Here the user can edit the query and send a post request on OpenAI API again to get a better response
             setAiMode(true);
             setAiResponseStatus(false);
+
+            // Info banner
+            toast.error(<BannerMessageFailed />, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
           }
         } else {
           // Handle case when AI task generation fails
@@ -122,6 +165,18 @@ export default function CreateTaskPage() {
           });
           setAiMode(true);
           setAiResponseStatus(false);
+
+          // Info banner
+          toast.error(<BannerMessageFailed />, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
         console.error("Error:", error);
@@ -147,7 +202,7 @@ export default function CreateTaskPage() {
               <BoldText>AI mode</BoldText>{" "}
             </label>
             <Switch
-              checked={aiMode !== undefined ? aiMode : true}
+              checked={aiMode !== undefined ? aiMode : false}
               onChange={() => setAiMode(!aiMode)}
               onColor="#86d3ff"
               onHandleColor="#2693e6"
@@ -165,7 +220,6 @@ export default function CreateTaskPage() {
               onSubmit={addTask}
               formName={"create-task"}
               newAiTaskData={aiTaskData}
-              aiResponseStatus={aiResponseStatus}
             />
           ) : (
             <RegularTaskInputForm
@@ -196,8 +250,7 @@ const EmptyDiv = styled.div`
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: green;
-  color: white;
+  background-color: lightgray;
 `;
 
 const BoldText = styled.span`

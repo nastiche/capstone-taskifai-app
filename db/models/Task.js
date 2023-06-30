@@ -18,6 +18,7 @@ const taskSchema = new Schema({
   priority: { type: String },
   original_task_description: { type: String },
   creation_date: { type: Date },
+  edit_date: { type: Date },
 });
 
 const Task = mongoose.models.Task || mongoose.model("Task", taskSchema);

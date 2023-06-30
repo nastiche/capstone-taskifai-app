@@ -5,7 +5,6 @@ import Head from "next/head.js";
 import Header from "../Header";
 import { Roboto } from "@next/font/google";
 import Navigation from "../Navigation";
-import "react-toastify/dist/ReactToastify.css";
 
 const roboto = Roboto({
   subsets: ["latin"],

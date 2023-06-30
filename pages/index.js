@@ -79,7 +79,7 @@ export default function TasksListPage() {
     return (
       <>
         <StyledWrapper>
-          <BoldText>sorted by: </BoldText>
+          <BoldText>sort by: </BoldText>
           {/* Select input for choosing the sort type */}
           <StyledSelect
             onChange={(event) => setSortType(event.target.value)}

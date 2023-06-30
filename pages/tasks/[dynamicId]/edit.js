@@ -6,7 +6,7 @@ import RegularTaskInputForm from "../../../components/RegularTaskInputForm";
 import { toast } from "react-toastify";
 
 // Mesagge for info banner
-const BannerMessage = () => <div>Task saved!</div>;
+const BannerMessageSaved = () => <div>Task saved!</div>;
 
 export default function TaskEditPage() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function TaskEditPage() {
     router.push(`/tasks/${dynamicId}`);
     
     // Info banner
-    toast.success(<BannerMessage />, {
+    toast.success(<BannerMessageSaved />, {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,

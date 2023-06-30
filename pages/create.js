@@ -18,8 +18,10 @@ const initialTaskData = {
   original_task_description: "",
 };
 
-// Mesagge for info banner
-const BannerMessage = () => <div>Task created!</div>;
+// Mesagges for info banners
+const BannerMessageCreated = () => <div>Task created!</div>;
+const BannerMessageFailed = () => <div>Complete your task description!</div>;
+const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
 export default function CreateTaskPage() {
   const { mutate, data } = useSWR("/api/tasks");
@@ -56,9 +58,9 @@ export default function CreateTaskPage() {
       }
 
       // Info banner
-      toast.success(<BannerMessage />, {
+      toast.success(<BannerMessageCreated />, {
         position: "top-center",
-        autoClose: 3000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -66,7 +68,7 @@ export default function CreateTaskPage() {
         progress: undefined,
         theme: "colored",
       });
-      
+
       setAiTaskData(initialTaskData);
       setAiResponseStatus(true);
 
@@ -109,6 +111,18 @@ export default function CreateTaskPage() {
             // Switch to regular mode where regular input form prefilled with AI task data is displayed
             // In this regular mode user can add additional details to the task
             setAiMode(false);
+
+            // Info banner
+            toast.info(<BannerMessageAISuccess />, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
           } else {
             // Handle case when OpenAI API does not provide valid data
             setAiTaskData({
@@ -124,6 +138,18 @@ export default function CreateTaskPage() {
             // Here the user can edit the query and send a post request on OpenAI API again to get a better response
             setAiMode(true);
             setAiResponseStatus(false);
+
+            // Info banner
+            toast.error(<BannerMessageFailed />, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
           }
         } else {
           // Handle case when AI task generation fails
@@ -139,6 +165,18 @@ export default function CreateTaskPage() {
           });
           setAiMode(true);
           setAiResponseStatus(false);
+
+          // Info banner
+          toast.error(<BannerMessageFailed />, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
         console.error("Error:", error);
@@ -182,7 +220,6 @@ export default function CreateTaskPage() {
               onSubmit={addTask}
               formName={"create-task"}
               newAiTaskData={aiTaskData}
-              aiResponseStatus={aiResponseStatus}
             />
           ) : (
             <RegularTaskInputForm

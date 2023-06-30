@@ -250,8 +250,7 @@ const EmptyDiv = styled.div`
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: green;
-  color: white;
+  background-color: gray;
 `;
 
 const BoldText = styled.span`

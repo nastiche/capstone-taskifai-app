@@ -54,6 +54,5 @@ const ListItem = styled.li`
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: green;
-  color: white;
+  background-color: gray;
 `;

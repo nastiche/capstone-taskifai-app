@@ -26,7 +26,7 @@ const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 export default function CreateTaskPage() {
   const { mutate, data } = useSWR("/api/tasks");
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
-  const [aiMode, setAiMode] = useLocalStorageState("aiMode", true);
+  const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
   // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
   const [isLoading, setIsLoading] = useState(false);
@@ -202,7 +202,7 @@ export default function CreateTaskPage() {
               <BoldText>AI mode</BoldText>{" "}
             </label>
             <Switch
-              checked={aiMode !== undefined ? aiMode : true}
+              checked={aiMode !== undefined ? aiMode : false}
               onChange={() => setAiMode(!aiMode)}
               onColor="#86d3ff"
               onHandleColor="#2693e6"

@@ -173,7 +173,9 @@ export default function RegularTaskInputForm({
     taskFormData.tags = taskData.tags.map((tag) => tag.text);
     taskFormData.creation_date = new Date();
     taskFormData.original_task_description = taskData.original_task_description;
-
+    if (existingTaskData) {
+      taskFormData.edit_date = new Date();
+    }
     // Reset form
     setTaskData(initialTaskData);
     setTagInputValue("");
@@ -188,7 +190,6 @@ export default function RegularTaskInputForm({
     setTaskData(initialTaskData);
     setTagInputValue("");
     titleInputRef.current.focus();
-  
   }
 
   return (
@@ -424,4 +425,3 @@ const Textarea = styled.textarea`
   border: 3px solid black;
   border-radius: 0.5rem;
 `;
-

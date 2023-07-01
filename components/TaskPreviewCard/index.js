@@ -42,7 +42,6 @@ const TagItem = styled.li`
 `;
 
 const TitleText = styled.span`
-  font-weight: 700;
   white-space: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -92,10 +91,11 @@ export default function TaskPreviewCard({
     <Article>
       <List>
         <ListItem>
-          task: <TitleText>{title}</TitleText>
+          <BoldText>task: </BoldText>
+          <TitleText>{title}</TitleText>
         </ListItem>
         <ListItem>
-          tags:
+          <BoldText>tags: </BoldText>
           <TagList>
             {tags.map((tag) => (
               <TagItem key={tag}>
@@ -105,10 +105,12 @@ export default function TaskPreviewCard({
           </TagList>
         </ListItem>
         <ListItem>
-          deadline:<BoldText> {formattedDeadline}</BoldText>
+          <BoldText>deadline: </BoldText>
+          {formattedDeadline}
         </ListItem>
         <ListItem>
-          priority:<BoldText> {priority}</BoldText>
+          <BoldText>priority: </BoldText>
+          {priority}
         </ListItem>
       </List>
       <Link href={`tasks/${id}`} passHref legacyBehavior>

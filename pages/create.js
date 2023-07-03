@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
-import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -17,11 +16,6 @@ const initialTaskData = {
   priority: "",
   original_task_description: "",
 };
-
-// Mesagges for info banners
-const BannerMessageCreated = () => <div>Task created!</div>;
-const BannerMessageFailed = () => <div>Complete your task description!</div>;
-const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
 export default function CreateTaskPage() {
   const { mutate, data } = useSWR("/api/tasks");
@@ -49,21 +43,10 @@ export default function CreateTaskPage() {
           method: "POST",
           body: newTaskData,
         });
-        // once the file is uploaded (= the promise in our api upload is resolved)
+        // once the file is uploaded (= the promise in the api upload is resolved)
         if (response.ok) {
           mutate();
         }
-        // Info banner
-        toast.success(<BannerMessageCreated />, {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
 
         setAiTaskData(initialTaskData);
         setAiResponseStatus(true);
@@ -111,18 +94,6 @@ export default function CreateTaskPage() {
             // Switch to regular mode where regular input form prefilled with AI task data is displayed
             // In this regular mode user can add additional details to the task
             setAiMode(false);
-
-            // Info banner
-            toast.info(<BannerMessageAISuccess />, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
           } else {
             // Handle case when OpenAI API does not provide valid data
             setAiTaskData({
@@ -138,18 +109,6 @@ export default function CreateTaskPage() {
             // Here the user can edit the query and send a post request on OpenAI API again to get a better response
             setAiMode(true);
             setAiResponseStatus(false);
-
-            // Info banner
-            toast.error(<BannerMessageFailed />, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
           }
         } else {
           // Handle case when AI task generation fails
@@ -165,18 +124,6 @@ export default function CreateTaskPage() {
           });
           setAiMode(true);
           setAiResponseStatus(false);
-
-          // Info banner
-          toast.error(<BannerMessageFailed />, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
         }
       } catch (error) {
         console.error("Error:", error);

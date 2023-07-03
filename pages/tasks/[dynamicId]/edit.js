@@ -3,7 +3,6 @@ import useSWR from "swr";
 import Link from "next/link";
 import styled from "styled-components";
 import RegularTaskInputForm from "../../../components/RegularTaskInputForm";
-import { toast } from "react-toastify";
 
 // Mesagge for info banner
 const BannerMessageSaved = () => <div>Task saved!</div>;
@@ -31,18 +30,7 @@ export default function TaskEditPage() {
       mutate();
     }
     router.push(`/tasks/${dynamicId}`);
-    
-    // Info banner
-    toast.success(<BannerMessageSaved />, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+
   }
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;

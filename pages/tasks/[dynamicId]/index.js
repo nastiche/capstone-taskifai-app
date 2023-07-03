@@ -4,7 +4,6 @@ import TaskDetails from "../../../components/TaskDetails";
 import Link from "next/link";
 import styled from "styled-components";
 import { StyledButton } from "../../../components/StyledButton/StyledButton";
-import { toast } from "react-toastify";
 
 // Mesagge for info banner
 const BannerMessage = () => <div>Task deleted!</div>;
@@ -41,18 +40,6 @@ export default function TaskDetailsPage() {
       mutate();
     }
     router.push(`/`);
-
-    // Info banner
-    toast.success(<BannerMessage />, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
   }
   return (
     <>

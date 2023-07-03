@@ -183,7 +183,7 @@ export default function RegularTaskInputForm({
     let imageUrl = "";
     if (imageChosen) {
       const response = await fetch("/api/tasks/image", {
-        method: "POST",
+        method: "post",
         body: formData,
       });
 

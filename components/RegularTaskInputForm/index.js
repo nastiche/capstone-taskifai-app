@@ -12,6 +12,7 @@ const initialTaskData = {
   deadline: "",
   priority: "",
   original_task_description: "",
+  file: "",
 };
 
 export default function RegularTaskInputForm({
@@ -176,13 +177,38 @@ export default function RegularTaskInputForm({
     if (existingTaskData) {
       taskFormData.edit_date = new Date();
     }
+
+    // Make task form data have the format of FormData --> formattedTaskFormData
+    const formattedTaskFormData = new FormData();
+
+    formattedTaskFormData.append("title", taskFormData.title);
+    formattedTaskFormData.append("deadline", taskFormData.deadline);
+    formattedTaskFormData.append("file", taskFormData.file);
+    formattedTaskFormData.append("priority", taskFormData.priority);
+    formattedTaskFormData.append(
+      "original_task_description",
+      taskFormData.original_task_description
+    );
+    formattedTaskFormData.append("creation_date", taskFormData.creation_date);
+
+    for (let i = 0; i < taskFormData.subtasks.length; i++) {
+      formattedTaskFormData.append(
+        "subtasks",
+        JSON.stringify(taskFormData.subtasks[i])
+      );
+    }
+
+    for (let i = 0; i < taskFormData.tags.length; i++) {
+      formattedTaskFormData.append("tags", taskFormData.tags[i]);
+    }
+
+    // Submit form data
+    onSubmit(formattedTaskFormData);
+
     // Reset form
     setTaskData(initialTaskData);
     setTagInputValue("");
     event.target.elements.title.focus();
-
-    // Submit form data
-    onSubmit(taskFormData);
   }
 
   // Resets the form to initial state (function for reset button)
@@ -277,7 +303,7 @@ export default function RegularTaskInputForm({
               type="radio"
               name="priority"
               value="high"
-              checked={taskData.priority === "high"}
+              checked={taskData.priority === "high" ? true : false}
               onChange={() => handleRadioButtonChange("high")}
             />
             high
@@ -288,7 +314,7 @@ export default function RegularTaskInputForm({
               type="radio"
               name="priority"
               value="medium"
-              checked={taskData.priority === "medium"}
+              checked={taskData.priority === "medium" ? true : false}
               onChange={() => handleRadioButtonChange("medium")}
             />
             medium
@@ -299,7 +325,7 @@ export default function RegularTaskInputForm({
               type="radio"
               name="priority"
               value="low"
-              checked={taskData.priority === "low"}
+              checked={taskData.priority === "low" ? true : false}
               onChange={() => handleRadioButtonChange("low")}
             />
             low
@@ -327,6 +353,8 @@ export default function RegularTaskInputForm({
             />
           </>
         ) : null}
+        <Label htmlFor="file">file</Label>
+        <input type="file" name="file" defaultValue={taskData?.file} />
         <StyledButton type="submit">
           {existingTaskData ? "save" : "create"}
         </StyledButton>

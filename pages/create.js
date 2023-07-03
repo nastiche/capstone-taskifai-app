@@ -19,7 +19,7 @@ const initialTaskData = {
 };
 
 // Mesagges for info banners
-const BannerMessageCreated = () => <div>Task created!</div>;
+// const BannerMessageCreated = () => <div>Task created!</div>;
 const BannerMessageFailed = () => <div>Complete your task description!</div>;
 const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
@@ -44,33 +44,33 @@ export default function CreateTaskPage() {
     setIsLoading(true);
     // If the user sends post request in regular mode the post request goes directly to the data base
     if (!aiMode) {
-      // Send a POST request to the database to create a new task
-      const response = await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTaskData),
-      });
-      if (response.ok) {
-        // Trigger a re-fetch of tasks after successful creation
-        mutate();
+      try {
+        const response = await fetch("/api/tasks", {
+          method: "POST",
+          body: newTaskData,
+        });
+        // once the file is uploaded (= the promise in our api upload is resolved)
+        if (response.ok) {
+          mutate();
+        }
+        // // Info banner
+        // toast.success(<BannerMessageCreated />, {
+        //   position: "top-center",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "colored",
+        // });
+
+        setAiTaskData(initialTaskData);
+        setAiResponseStatus(true);
+      } catch (error) {
+        // in case of error, we set the state accordingly
+        console.log(error);
       }
-
-      // Info banner
-      toast.success(<BannerMessageCreated />, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-
-      setAiTaskData(initialTaskData);
-      setAiResponseStatus(true);
 
       // If the user sends post request in aiMode mode the post request goes directly to the OpenAI API
     } else {

@@ -19,6 +19,7 @@ const taskSchema = new Schema({
   original_task_description: { type: String },
   creation_date: { type: Date },
   edit_date: { type: Date },
+  file_url: { type: String },
 });
 
 const Task = mongoose.models.Task || mongoose.model("Task", taskSchema);

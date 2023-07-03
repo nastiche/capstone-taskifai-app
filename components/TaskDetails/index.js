@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 const Article = styled.article`
@@ -81,6 +82,7 @@ export default function TaskDetails({
   deadline,
   priority,
   original_task_description,
+  file_url,
 }) {
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString()
@@ -126,6 +128,12 @@ export default function TaskDetails({
           <ListItem>
             <BoldText>original task description: </BoldText>
             {original_task_description}
+          </ListItem>
+        ) : null}
+        {file_url !== null ? (
+          <ListItem>
+            <BoldText>image: </BoldText>
+            <Image alt="image" src={file_url} width={58.4} height={36} />
           </ListItem>
         ) : null}
       </List>

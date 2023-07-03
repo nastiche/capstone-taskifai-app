@@ -65,6 +65,7 @@ export default function TaskDetailsPage() {
         original_task_description={
           task.original_task_description ? task.original_task_description : null
         }
+        file_url={task.file_url ? task.file_url : null}
       />
 
       <StyledEditLinkDiv onClick={handleEditLinkDivClick}>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { StyledButton } from "../StyledButton/StyledButton";
 import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
 
 // Task data for initial state
 const initialTaskData = {
@@ -34,6 +35,9 @@ export default function RegularTaskInputForm({
   // State used for reset of the tags input field value
   // (in case the user enters text in the input field and doesn't press enter to create a tag, the text stays in the input field)
   const [tagInputValue, setTagInputValue] = useState("");
+
+  //  State to check whether user chose an image to attach to the task
+  const [imageChosen, setImageChosen] = useState(false);
 
   // Focus on title input field after page refresh
   useEffect(() => {
@@ -159,13 +163,13 @@ export default function RegularTaskInputForm({
   }
 
   // Handle form submission
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const taskFormData = Object.fromEntries(formData);
 
     // Populate form data with filtered subtasks array, tags array,
-    // original task description (user's query) and creation date
+    // original task description (user's query), and creation date
     const subtasksNotEmptyStrings = taskData.subtasks.filter(
       (subtask) => subtask.value !== ""
     );
@@ -176,19 +180,40 @@ export default function RegularTaskInputForm({
     if (existingTaskData) {
       taskFormData.edit_date = new Date();
     }
+    let imageUrl = "";
+    if (imageChosen) {
+      const response = await fetch("/api/tasks/image", {
+        method: "post",
+        body: formData,
+      });
+
+      const imageDetails = await response.json();
+      imageUrl = imageDetails.url;
+    }
+
+    // Add the image URL to the form data
+    taskFormData.image_url = imageUrl;
+
+    // Submit form data
+    onSubmit(taskFormData);
+
     // Reset form
     setTaskData(initialTaskData);
     setTagInputValue("");
     event.target.elements.title.focus();
-
-    // Submit form data
-    onSubmit(taskFormData);
+    setImageChosen(false);
   }
 
   // Resets the form to initial state (function for reset button)
   function resetForm() {
     setTaskData(initialTaskData);
     setTagInputValue("");
+
+    // Reset file input value
+    const fileInput = document.getElementById("image_upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
     titleInputRef.current.focus();
   }
 
@@ -305,6 +330,29 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
+        {taskData.image_url && taskData.image_url !== "" ? (
+          <>
+            <BoldText>image: </BoldText>
+            <TaskImage
+              alt="image"
+              src={taskData.image_url}
+              width="100"
+              height="100"
+            />
+          </>
+        ) : null}
+
+        <Label htmlFor="image_upload">
+          {existingTaskData && existingTaskData.image_url !== ""
+            ? "change image:"
+            : "upload image:"}
+        </Label>
+        <input
+          type="file"
+          id="image_upload"
+          name="file"
+          onChange={() => setImageChosen(true)}
+        ></input>
         {(taskData.original_task_description !== null &&
           taskData.original_task_description !== "" &&
           aiResponseStatus) ||
@@ -424,4 +472,9 @@ const Textarea = styled.textarea`
   font-size: inherit;
   border: 3px solid black;
   border-radius: 0.5rem;
+`;
+
+const TaskImage = styled(Image)`
+  width: 100%;
+  height: 100%;
 `;

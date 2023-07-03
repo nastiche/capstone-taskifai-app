@@ -208,6 +208,12 @@ export default function RegularTaskInputForm({
   function resetForm() {
     setTaskData(initialTaskData);
     setTagInputValue("");
+
+    // Reset file input value
+    const fileInput = document.getElementById("image_upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
     titleInputRef.current.focus();
   }
 

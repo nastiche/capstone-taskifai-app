@@ -188,7 +188,7 @@ export default function RegularTaskInputForm({
       });
 
       const imageDetails = await response.json();
-      imageUrl = imageDetails.url;
+      imageUrl = imageDetails.result.url;
     }
 
     // Add the image URL to the form data

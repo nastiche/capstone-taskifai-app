@@ -38,6 +38,6 @@ export default async function handler(req, res) {
     });
 
     // return our just uploaded image result from cloudinary upload
-    return res.status(201).json(result);
+    return res.status(201).json({ result: result });
   });
 }

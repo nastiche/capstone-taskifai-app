@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 const Article = styled.article`
@@ -74,6 +75,11 @@ const TagText = styled.span`
   white-space: normal;
 `;
 
+const TaskImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+`;
+
 export default function TaskDetails({
   title,
   subtasks,
@@ -81,6 +87,7 @@ export default function TaskDetails({
   deadline,
   priority,
   original_task_description,
+  image_url,
 }) {
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString()
@@ -122,6 +129,12 @@ export default function TaskDetails({
         <ListItem>
           <BoldText>priority:</BoldText> {priority}
         </ListItem>
+        {image_url && image_url !== "" ? (
+          <ListItem>
+            <BoldText>image: </BoldText>
+            <TaskImage alt="image" src={image_url} width="100" height="100" />
+          </ListItem>
+        ) : null}
         {original_task_description !== null ? (
           <ListItem>
             <BoldText>original task description: </BoldText>

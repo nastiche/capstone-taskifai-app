@@ -243,15 +243,11 @@ export default function CreateTaskPage() {
 const SwitchWrapper = styled.div`
   display: flex;
   justify-content: center;
-  position: fixed;
-  padding-right: 0.5rem;
-  z-index: 1;
   gap: 10px;
   align-items: end;
   margin-bottom: 10px;
-  height: 50px;
+  height: 60px;
   width: 100%;
-  background-color: white;
 `;
 
 const EmptyDiv = styled.div`

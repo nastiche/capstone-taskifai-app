@@ -14,13 +14,21 @@ const HeaderContainer = styled.div`
   top: 0;
   z-index: 1;
   background-color: white;
-  height: 48px;
+  height: 66px;
 `;
 
 const LinkWrapper = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 100px;
+  background-color: black;
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 7px;
+  top: 7px;
 `;
 
 export default function Header({ headerText, font, homeButtonShow }) {
@@ -33,10 +41,10 @@ export default function Header({ headerText, font, homeButtonShow }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
-              stroke="black"
+              stroke="white"
               height="35px"
               width="35px"
-              fill="black"
+              fill="none"
               aria-label="go to the main page"
             >
               <path

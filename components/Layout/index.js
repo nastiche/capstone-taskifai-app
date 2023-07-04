@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Head from "next/head.js";
 import Header from "../Header";
 import { Roboto } from "@next/font/google";
-import Navigation from "../Navigation";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -14,22 +13,25 @@ const roboto = Roboto({
 const Main = styled.main`
   display: grid;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 2.5rem;
   margin-bottom: 3rem;
   padding: 0.5rem;
   position: relative;
   width: 100%;
 `;
 
-export default function Layout({ children }) {
+export default function Layout({ headerText, children, homeButtonShow }) {
   return (
     <>
       <Head>
         <title>taskifAI</title>
       </Head>
-      <Header font={roboto.className} />
+      <Header
+        font={roboto.className}
+        headerText={headerText}
+        homeButtonShow={homeButtonShow}
+      ></Header>
       <Main className={roboto.className}>{children}</Main>
-      <Navigation font={roboto.className}></Navigation>
       <ToastContainer
         position="top-center"
         autoClose={5000}

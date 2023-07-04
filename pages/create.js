@@ -7,6 +7,10 @@ import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
 import { toast } from "react-toastify";
+import Layout from "../components/Layout";
+
+const headerText = "create task";
+const homeButtonShow = true;
 
 // Task data for initial state
 const initialTaskData = {
@@ -187,7 +191,7 @@ export default function CreateTaskPage() {
   }
 
   return (
-    <>
+    <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
       {isLoading ? (
         // Display loading UI when the task is being created
         <>
@@ -199,7 +203,7 @@ export default function CreateTaskPage() {
         <>
           <SwitchWrapper>
             <label>
-              <BoldText>AI mode</BoldText>{" "}
+              <BoldText>AI</BoldText>
             </label>
             <Switch
               checked={aiMode !== undefined ? aiMode : false}
@@ -231,16 +235,23 @@ export default function CreateTaskPage() {
           )}
         </>
       )}
-    </>
+    </Layout>
   );
 }
 
 // Styled components
 const SwitchWrapper = styled.div`
   display: flex;
+  justify-content: center;
+  position: fixed;
+  padding-right: 0.5rem;
+  z-index: 1;
   gap: 10px;
   align-items: end;
   margin-bottom: 10px;
+  height: 50px;
+  width: 100%;
+  background-color: white;
 `;
 
 const EmptyDiv = styled.div`

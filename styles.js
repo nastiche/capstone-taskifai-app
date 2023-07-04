@@ -15,8 +15,20 @@ export default createGlobalStyle`
   }
 
 
-  /* Toastify styling */
+ 
   :root {
+  --black-color: black;
+  --low-priority-card: #a3ffb7;
+  --low-priority-icon: #ffd582;
+  --medium-priority-card: #cec7ff;
+  --medium-priority-icon: #ffcc68;
+  --high-priority-card: #f6c6d8;
+  --high-priority-icon: #d06e4e;
+
+
+
+
+     /* Toastify styling */
   --toastify-color-light: #fff;
   --toastify-color-dark: #121212;
   --toastify-color-info: #3498db;

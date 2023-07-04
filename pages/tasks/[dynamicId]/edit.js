@@ -4,6 +4,10 @@ import Link from "next/link";
 import styled from "styled-components";
 import RegularTaskInputForm from "../../../components/RegularTaskInputForm";
 import { toast } from "react-toastify";
+import Layout from "../../../components/Layout";
+
+const headerText = "edit task";
+const homeButtonShow = true;
 
 // Mesagge for info banner
 const BannerMessageSaved = () => <div>Task saved!</div>;
@@ -31,7 +35,7 @@ export default function TaskEditPage() {
       mutate();
     }
     router.push(`/tasks/${dynamicId}`);
-    
+
     // Info banner
     toast.success(<BannerMessageSaved />, {
       position: "top-center",
@@ -48,18 +52,13 @@ export default function TaskEditPage() {
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
 
   return (
-    <>
+    <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
       <RegularTaskInputForm
         onSubmit={editTask}
         formName={"edit-task"}
         existingTaskData={existingTaskData}
       />
-      <LinkWrapper>
-        <Link href={`/`} passHref legacyBehavior aria-label="go back">
-          <span aria-hidden="true">🔙</span>
-        </Link>
-      </LinkWrapper>
-    </>
+    </Layout>
   );
 }
 

@@ -5,6 +5,8 @@ const Article = styled.article`
   border: 3px solid black;
   border-radius: 0.8rem;
   padding: 0.5rem;
+  margin-top: 40px;
+  margin-bottom: 50px;
 `;
 
 const List = styled.ul`

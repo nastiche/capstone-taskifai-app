@@ -382,7 +382,7 @@ export default function RegularTaskInputForm({
         <ButtonsContainer>
           <NavigationLinkWrapper>
             <Link
-              href={`/tasks/${backLink}`}
+              href={backLink ? `/tasks/${backLink}` : `/`}
               passHref
               legacyBehavior
               aria-hidden="true"
@@ -395,7 +395,7 @@ export default function RegularTaskInputForm({
                 stroke="white"
                 width="30px"
                 height="30px"
-                aria-label="go to the main page"
+                aria-label="go to the previous page"
               >
                 <path
                   strokeLinecap="round"

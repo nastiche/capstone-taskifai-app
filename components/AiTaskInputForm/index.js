@@ -87,12 +87,7 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
         />
         <ButtonsContainer>
           <NavigationLinkWrapper>
-            <Link
-              href={`/`}
-              passHref
-              legacyBehavior
-              aria-label="go to the main page"
-            >
+            <Link href={`/`} passHref legacyBehavior aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -101,6 +96,7 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
                 stroke="white"
                 width="30px"
                 height="30px"
+                aria-label="go to the main page"
               >
                 <path
                   stroke-linecap="round"
@@ -119,6 +115,7 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
               stroke="white"
               width="40px"
               height="40px"
+              aria-label="create task"
             >
               <path
                 stroke-linecap="round"
@@ -136,6 +133,7 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
               stroke="white"
               width="30px"
               height="30px"
+              aria-label="reset form"
             >
               <path
                 stroke-linecap="round"

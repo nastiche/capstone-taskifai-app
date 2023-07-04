@@ -28,12 +28,7 @@ export default function Header({ headerText, font, homeButtonShow }) {
     <HeaderContainer>
       {homeButtonShow ? (
         <LinkWrapper>
-          <Link
-            href={`/`}
-            passHref
-            legacyBehavior
-            aria-label="go to the main page"
-          >
+          <Link href={`/`} passHref legacyBehavior aria-hidden="true">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -42,6 +37,7 @@ export default function Header({ headerText, font, homeButtonShow }) {
               height="35px"
               width="35px"
               fill="black"
+              aria-label="go to the main page"
             >
               <path
                 stroke-linecap="round"

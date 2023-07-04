@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import Link from "next/link";
 import styled from "styled-components";
 import RegularTaskInputForm from "../../../components/RegularTaskInputForm";
 import { toast } from "react-toastify";

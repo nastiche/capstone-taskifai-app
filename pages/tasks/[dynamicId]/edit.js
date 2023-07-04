@@ -57,6 +57,7 @@ export default function TaskEditPage() {
         onSubmit={editTask}
         formName={"edit-task"}
         existingTaskData={existingTaskData}
+        backLink={dynamicId}
       />
     </Layout>
   );

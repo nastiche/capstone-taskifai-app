@@ -183,6 +183,7 @@ export default function RegularTaskInputForm({
     if (existingTaskData) {
       taskFormData.edit_date = new Date();
     }
+
     let imageUrl = "";
     if (imageChosen) {
       const response = await fetch("/api/tasks/image", {
@@ -192,10 +193,9 @@ export default function RegularTaskInputForm({
 
       const imageDetails = await response.json();
       imageUrl = imageDetails.url;
+      // Add the image URL to the form data
+      taskFormData.image_url = imageUrl;
     }
-
-    // Add the image URL to the form data
-    taskFormData.image_url = imageUrl;
 
     // Submit form data
     onSubmit(taskFormData);

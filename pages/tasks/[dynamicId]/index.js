@@ -3,7 +3,6 @@ import useSWR from "swr";
 import TaskDetails from "../../../components/TaskDetails";
 import Link from "next/link";
 import styled from "styled-components";
-import { StyledButton } from "../../../components/StyledButton/StyledButton";
 import { toast } from "react-toastify";
 import Layout from "../../../components/Layout";
 import { Button, ButtonsContainer } from "../../../components/Button/Button";
@@ -46,7 +45,6 @@ export default function TaskDetailsPage() {
     if (response.ok) {
       mutate();
     }
-    router.push(`/`);
 
     // Info banner
     toast.success(<BannerMessage />, {
@@ -59,6 +57,7 @@ export default function TaskDetailsPage() {
       progress: undefined,
       theme: "colored",
     });
+    router.push(`/`);
   }
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>

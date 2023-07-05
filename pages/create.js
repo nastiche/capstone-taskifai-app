@@ -8,6 +8,7 @@ import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
+import { useRouter } from "next/router";
 
 const headerText = "create task";
 const homeButtonShow = true;
@@ -29,6 +30,8 @@ const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
 export default function CreateTaskPage() {
   const { mutate, data } = useSWR("/api/tasks");
+  const router = useRouter();
+
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
   const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
@@ -59,6 +62,7 @@ export default function CreateTaskPage() {
       if (response.ok) {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
+        router.push(`/`);
       }
 
       // Info banner

@@ -1,5 +1,4 @@
 import React from "react";
-// import { ToastContainer } from "react-toastify";
 import styled from "styled-components";
 import Head from "next/head.js";
 import Header from "../Header";
@@ -32,18 +31,6 @@ export default function Layout({ headerText, children, homeButtonShow }) {
         homeButtonShow={homeButtonShow}
       ></Header>
       <Main className={roboto.className}>{children}</Main>
-      {/* <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      /> */}
     </>
   );
 }

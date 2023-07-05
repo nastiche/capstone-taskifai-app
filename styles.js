@@ -14,8 +14,6 @@ export default createGlobalStyle`
     font-size: inherit;
   }
 
-
- 
   :root {
   --black-color: black;
   --low-priority-card: #a3ffb7;

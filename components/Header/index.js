@@ -21,8 +21,8 @@ const LinkWrapper = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 3.125rem;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border: none;
   border-radius: 100px;
   background-color: black;
@@ -42,8 +42,8 @@ export default function Header({ headerText, font, homeButtonShow }) {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="white"
-              height="35px"
-              width="35px"
+              height="30px"
+              width="30px"
               fill="none"
               aria-label="go to the main page"
             >

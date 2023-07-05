@@ -68,7 +68,7 @@ export default function CreateTaskPage() {
       // Info banner
       toast.success(<BannerMessageCreated />, {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -123,7 +123,7 @@ export default function CreateTaskPage() {
             // Info banner
             toast.info(<BannerMessageAISuccess />, {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -150,7 +150,7 @@ export default function CreateTaskPage() {
             // Info banner
             toast.error(<BannerMessageFailed />, {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -177,7 +177,7 @@ export default function CreateTaskPage() {
           // Info banner
           toast.error(<BannerMessageFailed />, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

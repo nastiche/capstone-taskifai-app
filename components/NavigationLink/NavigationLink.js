@@ -25,5 +25,5 @@ export const NavigationLinksContainer = styled.div`
   width: 100%;
   z-index: 1;
   bottom: 20px;
-  padding-right: 0.5rem;
+  padding-right: 0.625rem;
 `;

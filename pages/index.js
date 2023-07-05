@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import styled from "styled-components";
-import TaskPreviewCard from "../components/TaskPreviewCard";
+import TaskCard from "../components/TaskCard";
 import { useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import Layout from "../components/Layout";
@@ -117,12 +117,15 @@ export default function TasksListPage() {
             {sortedTasks.map((task) => {
               return (
                 <ListItem key={task._id}>
-                  <TaskPreviewCard
+                  <TaskCard
                     title={task.title}
                     tags={task.tags}
                     deadline={task.deadline}
                     priority={task.priority}
                     id={task._id}
+                    subtasks={task.subtasks}
+                    original_task_description={task.original_task_description}
+                    image_url={task.image_url}
                   />
                 </ListItem>
               );
@@ -162,10 +165,11 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 3rem;
   padding-left: 0;
   margin-bottom: 50px;
   margin-top: 90px;
+  margin-left: 0px;
 `;
 
 const ListItem = styled.li`

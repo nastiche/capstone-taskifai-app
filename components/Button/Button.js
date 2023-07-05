@@ -23,9 +23,30 @@ export const ButtonsContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 50px;
-  position: fixed;
   width: 100%;
-  z-index: 1;
-  bottom: 20px;
-  padding-right: 0.5rem;
+
+  ${({ variant }) =>
+    variant === "fixed" &&
+    css`
+      position: fixed;
+      z-index: 1;
+      bottom: 20px;
+      padding-right: 0.625rem;
+    `}
+
+  ${({ variant }) =>
+    variant === "absolute" &&
+    css`
+      position: absolute;
+      padding-right: 1rem;
+      bottom: -25px;
+      padding-right: 0.625rem;
+    `}
+
+
+  ${({ variant }) =>
+    variant === "none" &&
+    css`
+      padding-left: 0.475rem;
+    `}
 `;

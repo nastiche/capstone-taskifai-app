@@ -24,7 +24,6 @@ export default function RegularTaskInputForm({
   existingTaskData,
   newAiTaskData,
   aiResponseStatus,
-  backLink,
 }) {
   // Reference for title and subtasks form input fields
   const titleInputRef = useRef(null);
@@ -379,14 +378,9 @@ export default function RegularTaskInputForm({
             />
           </>
         ) : null}
-        <ButtonsContainer>
+        <ButtonsContainer variant="fixed">
           <NavigationLinkWrapper>
-            <Link
-              href={backLink ? `/tasks/${backLink}` : `/`}
-              passHref
-              legacyBehavior
-              aria-hidden="true"
-            >
+            <Link href={`/`} passHref legacyBehavior aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

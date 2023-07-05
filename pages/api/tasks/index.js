@@ -7,6 +7,8 @@ export default async function handler(request, response) {
   // Connecting to the database
   await dbConnect();
 
+  const { id } = request.query;
+
   // Handling POST requests
   if (request.method === "POST") {
     try {
@@ -34,5 +36,10 @@ export default async function handler(request, response) {
     // Sending a success response with a status code of 200 and a JSON array containing the tasks
     response.status(200).json(tasks);
     return;
+  }
+
+  if (request.method === "DELETE") {
+    await Task.findByIdAndDelete(id);
+    response.status(200).json({ status: `Task ${id} deleted` });
   }
 }

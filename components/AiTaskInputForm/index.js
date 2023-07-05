@@ -85,7 +85,7 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
           ref={original_task_descriptionInputRef}
           placeholder="e.g. plan a trip to Mallorca"
         />
-        <ButtonsContainer>
+        <ButtonsContainer variant="fixed">
           <NavigationLinkWrapper>
             <Link href={`/`} passHref legacyBehavior aria-hidden="true">
               <svg

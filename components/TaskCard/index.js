@@ -74,9 +74,9 @@ export default function TaskCard({
           </TagList>
         </ListItem>
         <ListItem>until {formattedDeadline}</ListItem>
-        <ListItem>
+        <PriorityContainer variant={priority}>
           <BoldText>{priority}</BoldText>
-        </ListItem>
+        </PriorityContainer>
       </List>
       {!taskDetailsDisplay && (
         <ButtonsContainer variant="absolute">
@@ -254,13 +254,42 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  position: relative;
   width: 100%;
 `;
 
 const BoldText = styled.span`
   font-weight: 700;
   white-space: normal;
+`;
+
+const PriorityContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+  width: 5rem;
+  height: 2rem;
+  bottom: 1.3rem;
+  right: 1.3rem;
+
+  ${({ variant }) =>
+    variant === "low" &&
+    css`
+      background-color: var(--low-priority-icon);
+    `}
+
+  ${({ variant }) =>
+    variant === "medium" &&
+    css`
+      background-color: var(--medium-priority-icon);
+    `}
+
+  ${({ variant }) =>
+    variant === "high" &&
+    css`
+      background-color: var(--high-priority-icon);
+    `}
 `;
 
 const TagList = styled.ul`

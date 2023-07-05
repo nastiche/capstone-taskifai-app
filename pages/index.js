@@ -92,16 +92,16 @@ export default function TasksListPage() {
       <>
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
           <StyledWrapper>
-            <BoldText>sort by: </BoldText>
+            <BoldText></BoldText>
             {/* Select input for choosing the sort type */}
             <StyledSelect
               onChange={(event) => setSortType(event.target.value)}
               value={sortType}
             >
-              <option value="deadline">deadline</option>
-              <option value="priority">priority</option>
-              <option value="creation_date">created</option>
-              <option value="edit_date_date">edited</option>
+              <option value="deadline">sort by deadline</option>
+              <option value="priority">sort by priority</option>
+              <option value="creation_date">sort by creation date</option>
+              <option value="edit_date_date">sort by edit date</option>
             </StyledSelect>
             {/* Button to toggle the sort direction */}
             <StyledButton
@@ -192,6 +192,9 @@ const StyledSelect = styled.select`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 17.8rem;
+  padding-left: 0.5rem;
+  padding-right: 1rem;
 `;
 
 const StyledButton = styled.button`

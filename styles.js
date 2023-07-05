@@ -18,12 +18,12 @@ export default createGlobalStyle`
   :root {
   --black-color: black;
   --low-priority-card: #a3ffb7;
-  --low-priority-icon: #ffd582;
+  --low-priority-icon: #5cce5a;
   --medium-priority-card: #cec7ff;
   --medium-priority-icon: #ffcc68;
   --high-priority-card: #f6c6d8;
-  --high-priority-icon: #d06e4e;
-  --small-button-width: 
+  --high-priority-icon: #de957d;
+ 
 
 
 

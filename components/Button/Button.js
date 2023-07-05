@@ -45,7 +45,7 @@ export const ButtonsContainer = styled.div`
     variant === "absolute" &&
     css`
       position: absolute;
-      bottom: -25px;
+      bottom: -20px;
       padding-right: 1.5rem;
     `}
 

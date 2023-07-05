@@ -1,6 +1,6 @@
 import { SWRConfig } from "swr";
-import Layout from "../components/Layout";
 import GlobalStyle from "../styles";
+import { ToastContainer } from "react-toastify";
 
 export default function App({ Component, pageProps }) {
   //define fetcher
@@ -14,10 +14,20 @@ export default function App({ Component, pageProps }) {
 
   return (
     <SWRConfig value={{ fetcher }}>
-      <Layout>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </Layout>
+      <GlobalStyle />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Component {...pageProps} />
     </SWRConfig>
   );
 }

@@ -7,6 +7,11 @@ import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import AiTaskInputForm from "../components/AiTaskInputForm";
 import useLocalStorageState from "use-local-storage-state";
 import { toast } from "react-toastify";
+import Layout from "../components/Layout";
+import { useRouter } from "next/router";
+
+const headerText = "create task";
+const homeButtonShow = true;
 
 // Task data for initial state
 const initialTaskData = {
@@ -25,6 +30,8 @@ const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
 export default function CreateTaskPage() {
   const { mutate, data } = useSWR("/api/tasks");
+  const router = useRouter();
+
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
   const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
@@ -55,6 +62,7 @@ export default function CreateTaskPage() {
       if (response.ok) {
         // Trigger a re-fetch of tasks after successful creation
         mutate();
+        router.push(`/`);
       }
 
       // Info banner
@@ -187,7 +195,7 @@ export default function CreateTaskPage() {
   }
 
   return (
-    <>
+    <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
       {isLoading ? (
         // Display loading UI when the task is being created
         <>
@@ -199,7 +207,7 @@ export default function CreateTaskPage() {
         <>
           <SwitchWrapper>
             <label>
-              <BoldText>AI mode</BoldText>{" "}
+              <BoldText>AI</BoldText>
             </label>
             <Switch
               checked={aiMode !== undefined ? aiMode : false}
@@ -231,16 +239,19 @@ export default function CreateTaskPage() {
           )}
         </>
       )}
-    </>
+    </Layout>
   );
 }
 
 // Styled components
 const SwitchWrapper = styled.div`
   display: flex;
+  justify-content: center;
   gap: 10px;
   align-items: end;
-  margin-bottom: 10px;
+
+  height: 60px;
+  width: 100%;
 `;
 
 const EmptyDiv = styled.div`

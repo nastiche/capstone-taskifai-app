@@ -14,7 +14,7 @@ const Main = styled.main`
   gap: 0.5rem;
   margin-top: 2.5rem;
   margin-bottom: 3rem;
-  padding: 0.5rem;
+  padding: 1rem;
   position: relative;
   width: 100%;
 `;

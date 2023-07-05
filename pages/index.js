@@ -169,7 +169,6 @@ const List = styled.ul`
   padding-left: 0;
   margin-bottom: 50px;
   margin-top: 90px;
-  margin-left: 0px;
 `;
 
 const ListItem = styled.li`

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { NavigationLinkWrapper } from "../NavigationLink/NavigationLink";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import css from "styled-jsx/css";
 
 // Mesagge for info banner
 const BannerMessageSaved = () => <div>Task deleted!</div>;
@@ -58,7 +59,7 @@ export default function TaskCard({
   }
 
   return (
-    <Article>
+    <Article variant={priority}>
       <List>
         <ListItem>
           <BoldText>task: </BoldText>
@@ -225,10 +226,28 @@ export default function TaskCard({
 
 // Styled components
 const Article = styled.article`
-  border: 3px solid black;
   border-radius: 0.8rem;
   padding: 0.5rem;
   position: relative;
+  border: none;
+
+  ${({ variant }) =>
+    variant === "low" &&
+    css`
+      background-color: var(--low-priority-card);
+    `}
+
+  ${({ variant }) =>
+    variant === "medium" &&
+    css`
+      background-color: var(--medium-priority-card);
+    `}
+
+  ${({ variant }) =>
+    variant === "high" &&
+    css`
+      background-color: var(--high-priority-card);
+    `}
 `;
 
 const List = styled.ul`

@@ -62,11 +62,9 @@ export default function TaskCard({
     <Article variant={priority}>
       <List>
         <ListItem>
-          <BoldText>task: </BoldText>
-          <TitleText>{title}</TitleText>
+          <BoldText>{title}</BoldText>
         </ListItem>
         <ListItem>
-          <BoldText>tags: </BoldText>
           <TagList>
             {tags.map((tag) => (
               <TagItem key={tag}>
@@ -75,13 +73,9 @@ export default function TaskCard({
             ))}
           </TagList>
         </ListItem>
+        <ListItem>until {formattedDeadline}</ListItem>
         <ListItem>
-          <BoldText>deadline: </BoldText>
-          {formattedDeadline}
-        </ListItem>
-        <ListItem>
-          <BoldText>priority: </BoldText>
-          {priority}
+          <BoldText>{priority}</BoldText>
         </ListItem>
       </List>
       {!taskDetailsDisplay && (
@@ -226,8 +220,8 @@ export default function TaskCard({
 
 // Styled components
 const Article = styled.article`
-  border-radius: 0.8rem;
-  padding: 0.5rem;
+  border-radius: 2.5rem;
+  padding: 1.3rem;
   position: relative;
   border: none;
 
@@ -282,13 +276,6 @@ const TagItem = styled.li`
   border-radius: 0.3rem;
   padding: 0.3rem 0.5rem;
   white-space: normal;
-`;
-
-const TitleText = styled.span`
-  white-space: normal;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
 `;
 
 const TagText = styled.span`

@@ -16,6 +16,13 @@ export const Button = styled.button`
       height: 60px;
       width: 60px;
     `}
+
+  ${({ variant }) =>
+    variant === "small" &&
+    css`
+      height: 40px;
+      width: 40px;
+    `}
 `;
 
 export const ButtonsContainer = styled.div`

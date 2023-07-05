@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import styled from "styled-components";
-import RegularTaskInputForm from "../../components/RegularTaskInputForm";
+import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import { toast } from "react-toastify";
-import Layout from "../../components/Layout";
+import Layout from "../components/Layout";
 
 const headerText = "edit task";
 const homeButtonShow = true;

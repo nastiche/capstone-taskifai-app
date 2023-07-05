@@ -91,6 +91,7 @@ export default function TaskCard({
             onClick={() => {
               setTaskDetailsDisplay((prevState) => !prevState);
             }}
+            variant="small"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -146,6 +147,7 @@ export default function TaskCard({
               onClick={() => {
                 setTaskDetailsDisplay((prevState) => !prevState);
               }}
+              variant="small"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -16,6 +16,7 @@ export const NavigationLinkWrapper = styled.span`
       height: 60px;
       width: 60px;
     `}
+
 `;
 
 export const NavigationLinksContainer = styled.div`

@@ -245,7 +245,7 @@ const SwitchWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   align-items: end;
-  margin-bottom: 10px;
+
   height: 60px;
   width: 100%;
 `;

@@ -21,7 +21,7 @@ const LinkWrapper = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 3.125rem;
   width: 50px;
   border: none;
   border-radius: 100px;

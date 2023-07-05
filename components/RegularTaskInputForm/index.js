@@ -450,7 +450,7 @@ export default function RegularTaskInputForm({
 // Styled components for the form layout
 const FormContainer = styled.form`
   display: grid;
-  margin-top: 63px;
+
   margin-bottom: 50px;
   gap: 0.5rem;
 `;

@@ -24,6 +24,7 @@ export default createGlobalStyle`
   --medium-priority-icon: #ffcc68;
   --high-priority-card: #f6c6d8;
   --high-priority-icon: #d06e4e;
+  --small-button-width: 
 
 
 

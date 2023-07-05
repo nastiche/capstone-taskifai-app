@@ -38,7 +38,7 @@ export const ButtonsContainer = styled.div`
       position: fixed;
       z-index: 1;
       bottom: 20px;
-      padding-right: 0.625rem;
+      padding-right: 1.625rem;
     `}
 
   ${({ variant }) =>
@@ -46,13 +46,13 @@ export const ButtonsContainer = styled.div`
     css`
       position: absolute;
       bottom: -24px;
-      padding-right: 1rem;
+      padding-right: 2rem;
     `}
 
 
   ${({ variant }) =>
     variant === "none" &&
     css`
-      padding-left: 1.6rem;
+      padding-left: 0.6rem;
     `}
 `;

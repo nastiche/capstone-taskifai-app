@@ -23,7 +23,16 @@ export default function TaskCard({
   image_url,
 }) {
   const router = useRouter();
-
+  console.log(
+    id,
+    title,
+    subtasks,
+    tags,
+    deadline,
+    priority,
+    original_task_description,
+    image_url
+  );
   const { mutate } = useSWR(`/api/tasks`);
 
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
@@ -62,7 +71,7 @@ export default function TaskCard({
     <Article variant={priority}>
       <List>
         <ListItem>
-          <BoldText>{title}</BoldText>
+          <TitleText>{title}</TitleText>
         </ListItem>
         <ListItem>
           <TagList>
@@ -73,21 +82,22 @@ export default function TaskCard({
             ))}
           </TagList>
         </ListItem>
-        <ListItem>until {formattedDeadline}</ListItem>
+        {deadline ? <ListItem>until {formattedDeadline}</ListItem> : null}
         <PriorityContainer variant={priority}>
           <BoldText>{priority !== "none" ? priority : null}</BoldText>
         </PriorityContainer>
       </List>
-      {!taskDetailsDisplay && (
-        <ButtonsContainer variant="absolute">
-          <Button
-            type="button"
-            aria-hidden="true"
-            onClick={() => {
-              setTaskDetailsDisplay((prevState) => !prevState);
-            }}
-            variant="small"
-          >
+
+      <ButtonsContainer variant="absolute">
+        <Button
+          type="button"
+          aria-hidden="true"
+          onClick={() => {
+            setTaskDetailsDisplay((prevState) => !prevState);
+          }}
+          variant="small"
+        >
+          {!taskDetailsDisplay ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -104,9 +114,26 @@ export default function TaskCard({
                 d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5"
               />
             </svg>
-          </Button>
-        </ButtonsContainer>
-      )}
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="white"
+              width="30px"
+              height="30px"
+              aria-label="hide task details"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5"
+              />
+            </svg>
+          )}
+        </Button>
+      </ButtonsContainer>
 
       {taskDetailsDisplay && (
         <>
@@ -181,19 +208,21 @@ export default function TaskCard({
             </Button>
           </ButtonsContainer>
           <List>
-            <ListItem>
-              <BoldText>subtasks: </BoldText>
-              <List>
-                {subtasks.map((subtask) => (
-                  <ListItem key={subtask.id}>
-                    <SubtaskContainer>
-                      <BulletPoint />
-                      <SubtaskText>{subtask.value}</SubtaskText>
-                    </SubtaskContainer>
-                  </ListItem>
-                ))}
-              </List>
-            </ListItem>
+            {subtasks.length > 0 ? (
+              <ListItem>
+                <BoldText>subtasks: </BoldText>
+                <List>
+                  {subtasks.map((subtask) => (
+                    <ListItem key={subtask.id}>
+                      <SubtaskContainer>
+                        <BulletPoint />
+                        <SubtaskText>{subtask.value}</SubtaskText>
+                      </SubtaskContainer>
+                    </ListItem>
+                  ))}
+                </List>
+              </ListItem>
+            ) : null}
             {image_url && image_url !== "" ? (
               <ListItem>
                 <BoldText>image: </BoldText>
@@ -205,7 +234,7 @@ export default function TaskCard({
                 />
               </ListItem>
             ) : null}
-            {original_task_description !== null ? (
+            {original_task_description !== "" ? (
               <ListItem>
                 <BoldText>original task description: </BoldText>
                 {original_task_description}
@@ -269,6 +298,15 @@ const BoldText = styled.span`
   white-space: normal;
 `;
 
+const TitleText = styled.span`
+  font-weight: 700;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
+`;
+
 const PriorityContainer = styled.div`
   position: absolute;
   display: flex;
@@ -277,7 +315,7 @@ const PriorityContainer = styled.div`
   border-radius: 1.5rem;
   width: 5rem;
   height: 2rem;
-  bottom: 1.3rem;
+  top: 5.5rem;
   right: 1.3rem;
 
   ${({ variant }) =>
@@ -331,11 +369,11 @@ const SubtaskContainer = styled.div`
 `;
 
 const SubtaskText = styled.span`
-  margin-left: 8px;
-  white-space: normal;
-  overflow-wrap: break-word;
+  white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
 `;
 const BulletPoint = styled.div`
   display: inline-block;

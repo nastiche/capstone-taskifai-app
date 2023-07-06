@@ -244,6 +244,7 @@ export default function RegularTaskInputForm({
           value={taskData.title}
           onChange={handleChangeTitle}
           autoFocus
+          maxLength={44}
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
@@ -254,6 +255,7 @@ export default function RegularTaskInputForm({
                   value={subtask.value}
                   rows="1"
                   wrap="hard"
+                  maxLength={84}
                   onChange={(event) =>
                     handleChangeSubtask(subtask.id, event.target.value)
                   }

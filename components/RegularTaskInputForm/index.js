@@ -127,19 +127,39 @@ export default function RegularTaskInputForm({
     }));
   }
 
-  // Handle adding a tag
+  // Handle input change in the tags input field
+  function handleChangeTag(input) {
+    const lastCharacter = input.slice(-1);
+    const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
+    const isValidDelimiter = [",", ";"].includes(lastCharacter);
+
+    if (!isValidCharacter && !isValidDelimiter) {
+      // Show a warning or error message to the user
+      console.log("Invalid character entered!");
+      return;
+    }
+
+    setTagInputValue(input);
+  }
+
   function handleTagAddition(tag) {
-    const tagText = tag.text.trim();
+    let tagText = tag.text.trim().toLowerCase();
     const isTagAlreadyAdded = taskData.tags.some(
-      (existingTag) => existingTag.text.trim() === tagText
+      (existingTag) => existingTag.text.trim().toLowerCase() === tagText
     );
 
     if (!isTagAlreadyAdded) {
+      if (!/^[a-zA-Z0-9-_]+$/.test(tagText)) {
+        // Remove the last character if it doesn't match the pattern
+        tagText = tagText.slice(0, -1);
+      }
+
       setTaskData((prevTaskData) => ({
         ...prevTaskData,
         tags: [...prevTaskData.tags, { id: uuidv4(), text: tagText }],
       }));
     }
+
     setTagInputValue("");
   }
 
@@ -291,7 +311,7 @@ export default function RegularTaskInputForm({
             placeholder="press enter to add new tag"
             maxLength={15}
             inputValue={tagInputValue}
-            handleInputChange={(tag) => setTagInputValue(tag)}
+            handleInputChange={(event) => handleChangeTag(event)}
             allowNew
           />
         </MyTagsWrapper>

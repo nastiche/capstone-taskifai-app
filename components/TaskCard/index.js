@@ -68,7 +68,10 @@ export default function TaskCard({
   }
 
   return (
-    <Article variant={priority}>
+    <Article
+      priorityVariant={priority}
+      sizeVariant={taskDetailsDisplay ? "details" : "preview"}
+    >
       <List>
         <ListItem>
           <TitleText>{title}</TitleText>
@@ -83,7 +86,7 @@ export default function TaskCard({
           </TagList>
         </ListItem>
         {deadline ? <ListItem>until {formattedDeadline}</ListItem> : null}
-        <PriorityContainer variant={priority}>
+        <PriorityContainer priorityVariant={priority}>
           <BoldText>{priority !== "none" ? priority : null}</BoldText>
         </PriorityContainer>
       </List>
@@ -254,29 +257,42 @@ const Article = styled.article`
   position: relative;
   border: none;
 
-  ${({ variant }) =>
-    variant === "low" &&
+  max-width: 100%;
+
+  ${({ priorityVariant }) =>
+    priorityVariant === "low" &&
     css`
       background-color: var(--low-priority-card);
     `}
 
-  ${({ variant }) =>
-    variant === "medium" &&
+  ${({ priorityVariant }) =>
+    priorityVariant === "medium" &&
     css`
       background-color: var(--medium-priority-card);
     `}
 
-  ${({ variant }) =>
-    variant === "high" &&
+  ${({ priorityVariant }) =>
+    priorityVariant === "high" &&
     css`
       background-color: var(--high-priority-card);
     `}
 
-
-    ${({ variant }) =>
-    variant === "none" &&
+    ${({ priorityVariant }) =>
+    priorityVariant === "none" &&
     css`
       background-color: var(--no-priority-card);
+    `}
+
+    ${({ sizeVariant }) =>
+    sizeVariant === "preview" &&
+    css`
+      height: 12rem;
+    `}
+
+    ${({ sizeVariant }) =>
+    sizeVariant === "details" &&
+    css`
+      min-height: 12rem;
     `}
 `;
 
@@ -302,9 +318,21 @@ const TitleText = styled.span`
   font-weight: 700;
   white-space: pre-wrap;
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  display: inline-block;
+  max-width: 100%;
+`;
+
+const SubtaskText = styled.span`
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  display: inline-block;
+  max-width: 100%;
 `;
 
 const PriorityContainer = styled.div`
@@ -315,45 +343,50 @@ const PriorityContainer = styled.div`
   border-radius: 1.5rem;
   width: 5rem;
   height: 2rem;
-  top: 5.5rem;
+  top: 8.5rem;
   right: 1.3rem;
 
-  ${({ variant }) =>
-    variant === "low" &&
+  ${({ priorityVariant }) =>
+    priorityVariant === "low" &&
     css`
       background-color: var(--low-priority-icon);
     `}
 
-  ${({ variant }) =>
-    variant === "medium" &&
+  ${({ priorityVariant }) =>
+    priorityVariant === "medium" &&
     css`
       background-color: var(--medium-priority-icon);
     `}
 
-  ${({ variant }) =>
-    variant === "high" &&
+  ${({ priorityVariant }) =>
+    priorityVariant === "high" &&
     css`
       background-color: var(--high-priority-icon);
     `}
 `;
 
 const TagList = styled.ul`
-  list-style: none;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
   gap: 0.5rem;
   padding: 0;
 `;
 
 const TagItem = styled.li`
-  background-color: lightgray;
-  border-radius: 0.3rem;
-  padding: 0.3rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eeeded;
+  border-radius: 1rem;
+  padding: 0.2rem 0.4rem;
   white-space: normal;
 `;
 
 const TagText = styled.span`
   white-space: normal;
+  font-size: 0.9rem;
 `;
 
 // Styled components for Task Details
@@ -368,13 +401,6 @@ const SubtaskContainer = styled.div`
   align-items: center;
 `;
 
-const SubtaskText = styled.span`
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-all;
-  overflow-wrap: break-word;
-  hyphens: auto;
-`;
 const BulletPoint = styled.div`
   display: inline-block;
   width: 8px;

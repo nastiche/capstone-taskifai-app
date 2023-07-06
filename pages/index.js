@@ -201,8 +201,9 @@ const TasksList = styled.ul`
   padding-left: 0;
   margin-bottom: 110px;
   margin-top: 70px;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 22.438rem;
 `;
 
 const ListItem = styled.li`
@@ -227,7 +228,8 @@ const StyledWrapper = styled.div`
   height: 60px;
   padding-top: 25px;
   background-color: white;
-  width: 100%;
+  width: 100vw;
+  max-width: 100%;
   padding-bottom: 3px;
   justify-content: space-between;
 `;
@@ -264,3 +266,4 @@ const StyledButton = styled.button`
 const BoldText = styled.span`
   font-weight: 700;
 `;
+

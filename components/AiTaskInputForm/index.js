@@ -153,6 +153,8 @@ const FormContainer = styled.form`
   display: grid;
   margin-bottom: 50px;
   gap: 0.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 `;
 
 const Label = styled.label`

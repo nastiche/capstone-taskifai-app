@@ -11,11 +11,9 @@ const roboto = Roboto({
 
 const Main = styled.main`
   display: grid;
-  gap: 0.5rem;
-  margin-top: 2.5rem;
-  margin-bottom: 3rem;
-  padding: 1rem;
+
   position: relative;
+  margin-top: 3rem;
   width: 100%;
 `;
 

@@ -104,15 +104,47 @@ export default function TasksListPage() {
               <option value="edit_date_date">sort by edit date</option>
             </StyledSelect>
             {/* Button to toggle the sort direction */}
-            <StyledButton
-              onClick={toggleSortDirection}
-              aria-label="sort-direction"
-              value={sortDirection}
-            >
-              <span aria-hidden="true">↕️</span>
+            <StyledButton onClick={toggleSortDirection} value={sortDirection}>
+              {sortDirection === "asc" ? (
+                <span aria-label="ascendent sort direction">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="black"
+                    height="1rem"
+                    width="1rem"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+                    />
+                  </svg>
+                </span>
+              ) : (
+                <span aria-label="descendent sort direction">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="black"
+                    height="1rem"
+                    width="1rem"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75"
+                    />
+                  </svg>
+                </span>
+              )}
             </StyledButton>
           </StyledWrapper>
-          <List role="list">
+          <TasksList role="list">
             {/* Render task preview cards for each sorted task */}
             {sortedTasks.map((task) => {
               return (
@@ -130,7 +162,7 @@ export default function TasksListPage() {
                 </ListItem>
               );
             })}
-          </List>
+          </TasksList>
           <NavigationLinksContainer>
             <NavigationLinkWrapper variant="positive">
               <Link href={`/create`} passHref legacyBehavior aria-hidden="true">
@@ -160,15 +192,17 @@ export default function TasksListPage() {
 }
 
 // Styled components for styling
-const List = styled.ul`
+const TasksList = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
   padding-left: 0;
-  margin-bottom: 50px;
-  margin-top: 90px;
+  margin-bottom: 110px;
+  margin-top: 70px;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const ListItem = styled.li`
@@ -182,46 +216,49 @@ const StyledLoadingDiv = styled.div`
   background-color: lightgray;
 `;
 
+const StyledWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  position: fixed;
+  top: 3;
+  z-index: 1;
+  height: 60px;
+  padding-top: 25px;
+  background-color: white;
+  width: 100%;
+  padding-bottom: 3px;
+  justify-content: space-between;
+`;
+
 const StyledSelect = styled.select`
   padding: 0.5;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
+  border: none;
+  background-color: #eeeded;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 17.8rem;
-  padding-left: 0.5rem;
+  width: 100%;
+  border-radius: 1.5rem;
+  padding: 0.3rem;
+  padding-left: 1rem;
   padding-right: 1rem;
+  font-weight: 700;
 `;
 
 const StyledButton = styled.button`
   padding: 1rem;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
+  border: none;
+  background-color: #eeeded;
   height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const StyledWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-  position: fixed;
-
-  top: 3;
-  z-index: 1;
-  height: 60px;
-  padding-top: 20px;
-  background-color: white;
-  width: 100%;
-  padding-bottom: 3px;
+  border-radius: 1.5rem;
 `;
 
 const BoldText = styled.span`

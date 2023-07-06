@@ -30,7 +30,6 @@ export const ButtonsContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 50px;
-  width: 100%;
 
   ${({ variant }) =>
     variant === "fixed" &&
@@ -38,21 +37,15 @@ export const ButtonsContainer = styled.div`
       position: fixed;
       z-index: 1;
       bottom: 20px;
-      padding-right: 1.625rem;
+      left: 0;
+      right: 0;
     `}
-
   ${({ variant }) =>
     variant === "absolute" &&
     css`
       position: absolute;
       bottom: -24px;
-      padding-right: 2rem;
-    `}
-
-
-  ${({ variant }) =>
-    variant === "none" &&
-    css`
-      padding-left: 0.6rem;
-    `}
+      left: 0;
+      right: 0;
+    `};
 `;

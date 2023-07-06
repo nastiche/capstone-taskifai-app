@@ -15,6 +15,8 @@ export default createGlobalStyle`
     font-size: inherit;
   }
 
+
+
   :root {
   --black-color: black;
   --low-priority-card: #a3ffb7;
@@ -23,6 +25,9 @@ export default createGlobalStyle`
   --medium-priority-icon: #ffcc68;
   --high-priority-card: #f6c6d8;
   --high-priority-icon: #de957d;
+  --no-priority-card: #7cded0;
+  --no-priority-icon: #31b9a5
+  --light-background: black;
  
 
 

@@ -75,7 +75,7 @@ export default function TaskCard({
         </ListItem>
         <ListItem>until {formattedDeadline}</ListItem>
         <PriorityContainer variant={priority}>
-          <BoldText>{priority}</BoldText>
+          <BoldText>{priority !== "none" ? priority : null}</BoldText>
         </PriorityContainer>
       </List>
       {!taskDetailsDisplay && (
@@ -241,6 +241,13 @@ const Article = styled.article`
     variant === "high" &&
     css`
       background-color: var(--high-priority-card);
+    `}
+
+
+    ${({ variant }) =>
+    variant === "none" &&
+    css`
+      background-color: var(--no-priority-card);
     `}
 `;
 

@@ -184,6 +184,11 @@ export default function RegularTaskInputForm({
       taskFormData.edit_date = new Date();
     }
 
+    if (!taskFormData.priority) {
+      taskFormData.priority = "none";
+    }
+
+    console.log(taskFormData);
     let imageUrl = "";
     if (imageChosen) {
       const response = await fetch("/api/tasks/image", {
@@ -445,8 +450,11 @@ export default function RegularTaskInputForm({
 const FormContainer = styled.form`
   display: grid;
 
-  margin-bottom: 50px;
+  grid-template-columns: auto;
+  margin-bottom: 110px;
   gap: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const SubtaskWrapper = styled.div`

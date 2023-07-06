@@ -52,6 +52,7 @@ export default function TaskEditPage() {
 
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
+      <EmptyDiv></EmptyDiv>
       <RegularTaskInputForm
         onSubmit={editTask}
         formName={"edit-task"}
@@ -62,6 +63,9 @@ export default function TaskEditPage() {
   );
 }
 
+const EmptyDiv = styled.div`
+  height: 60px;
+`;
 const LinkWrapper = styled.div`
   font-size: 3rem;
   a {

@@ -22,8 +22,7 @@ export const NavigationLinksContainer = styled.div`
   display: flex;
   justify-content: center;
   position: fixed;
-  width: 100%;
   z-index: 1;
   bottom: 20px;
-  padding-right: 1.625rem;
+  width: 100%;
 `;

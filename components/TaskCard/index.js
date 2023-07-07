@@ -38,6 +38,7 @@ export default function TaskCard({
 
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
 
+  const [showImage, setShowImage] = useState(false);
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString("en-US", {
         day: "numeric",
@@ -71,8 +72,21 @@ export default function TaskCard({
     });
   }
 
-  return (
+  return showImage ? (
+    <ShowImageContainer>
+      <ImageButtonContainer>
+        <TaskImage alt="image" src={image_url} width="300" height="300" />
+        <ExpandImageButton
+          onClick={() => setShowImage(false)}
+          variant="extra-small"
+        >
+          <Icon labelText={"hide image"} />
+        </ExpandImageButton>
+      </ImageButtonContainer>
+    </ShowImageContainer>
+  ) : (
     <>
+      {" "}
       <TaskCardContainer priorityVariant={priority}>
         <TaskPreviewContainer sizeVariant="preview">
           <TitleContainer>
@@ -133,7 +147,10 @@ export default function TaskCard({
                       width="100"
                       height="100"
                     />
-                    <ExpandImageButton variant="extra-small">
+                    <ExpandImageButton
+                      onClick={() => setShowImage(true)}
+                      variant="extra-small"
+                    >
                       <Icon labelText={"show image"} />
                     </ExpandImageButton>
                   </ImageButtonContainer>
@@ -239,8 +256,8 @@ const PriorityContainer = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 1.5rem;
-  width: 5rem;
-  height: 2rem;
+  width: 5.5rem;
+  height: 2.2rem;
   bottom: 3.3rem;
   right: 0;
   color: white;
@@ -350,7 +367,7 @@ const TagItem = styled.li`
   height: 2rem;
   justify-content: center;
   align-items: center;
-  background-color: #eeeded;
+  background-color: white;
   border-radius: 1rem;
   padding: 0.4rem 0.6rem;
   white-space: normal;
@@ -383,4 +400,17 @@ const ExpandImageButton = styled(Button)`
   position: absolute;
   right: -0.6rem;
   top: -0.6rem;
+`;
+
+const ShowImageContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--light-gray-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure the container appears above other elements */
 `;

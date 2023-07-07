@@ -261,6 +261,7 @@ const PriorityContainer = styled.div`
   bottom: 3.3rem;
   right: 0;
   color: white;
+
   ${({ priorityVariant }) =>
     priorityVariant === "low" &&
     css`
@@ -391,16 +392,6 @@ const TaskImageFull = styled(Image)`
   height: 100vh; /* Set the height to the full viewport height */
   object-fit: contain; /* Preserve the aspect ratio of the image while fitting it within the container */
   border-radius: 0; /* Remove the border radius */
-`;
-
-const BulletPoint = styled.div`
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: black;
-  border-radius: 50%;
-  margin-right: 4px;
-  flex-shrink: 0;
 `;
 
 const ExpandImageButton = styled(Button)`

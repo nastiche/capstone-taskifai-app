@@ -159,7 +159,7 @@ const TasksList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.7rem;
+  gap: 2.3rem;
   padding-left: 0;
   margin-bottom: 110px;
   margin-top: 70px;

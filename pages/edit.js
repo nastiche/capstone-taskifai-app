@@ -48,7 +48,13 @@ export default function TaskEditPage() {
     });
   }
 
-  if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+  if (!isReady || isLoading || error)
+    return (
+      <>
+        <EmptyDivLoading></EmptyDivLoading>
+        <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
+      </>
+    );
 
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
@@ -71,4 +77,14 @@ const LinkWrapper = styled.div`
   a {
     text-decoration: none;
   }
+`;
+
+const EmptyDivLoading = styled.div`
+  height: 28px;
+`;
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: #a3ffb7;
 `;

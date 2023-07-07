@@ -212,8 +212,9 @@ export default function CreateTaskPage() {
             <Switch
               checked={aiMode !== undefined ? aiMode : false}
               onChange={() => setAiMode(!aiMode)}
-              onColor="#86d3ff"
-              onHandleColor="#2693e6"
+              onColor="#a3ffb7"
+              onHandleColor="#5cce5a"
+              offColor="000000"
               handleDiameter={24}
               uncheckedIcon={false}
               checkedIcon={false}
@@ -260,7 +261,7 @@ const EmptyDiv = styled.div`
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: lightgray;
+  background-color: #a3ffb7;
 `;
 
 const BoldText = styled.span`

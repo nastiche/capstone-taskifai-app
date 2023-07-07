@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
-import { StyledButton } from "../StyledButton/StyledButton";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
-import { Button, ButtonsContainer } from "../Button/Button";
-import { NavigationLinkWrapper } from "../NavigationLink/NavigationLink";
-import Link from "next/link";
+import { Button } from "../Button/Button";
+import { IconContainer } from "../IconContainer";
+import { Icon } from "../Icon";
+import { StyledLink } from "../NavigationLink/NavigationLink";
 
 // Task data for initial state
 const initialTaskData = {
@@ -291,14 +291,18 @@ export default function RegularTaskInputForm({
               </SubtaskWrapper>
             ))
           : null}
-        <StyledButton
-          type="button"
-          onClick={() => {
-            handleAddSubtask();
-          }}
-        >
-          add subtask
-        </StyledButton>
+        <IconContainer>
+          <Button
+            variant="small"
+            type="button"
+            onClick={() => {
+              handleAddSubtask();
+            }}
+            aria-hidden="true"
+          >
+            <Icon labelText={"add subtask"} />
+          </Button>
+        </IconContainer>
         <Label htmlFor="tags">tags</Label>
         <MyTagsWrapper>
           <ReactTags
@@ -309,7 +313,7 @@ export default function RegularTaskInputForm({
             handleAddition={handleTagAddition}
             delimiters={delimiters}
             placeholder="press enter to add new tag"
-            maxLength={15}
+            maxLength={12}
             inputValue={tagInputValue}
             handleInputChange={(event) => handleChangeTag(event)}
             allowNew
@@ -405,64 +409,22 @@ export default function RegularTaskInputForm({
             />
           </>
         ) : null}
-        <ButtonsContainer variant="fixed">
-          <NavigationLinkWrapper>
-            <Link href={`/`} passHref legacyBehavior aria-hidden="true">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="white"
-                width="30px"
-                height="30px"
-                aria-label="go to the previous page"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-                />
-              </svg>
-            </Link>
-          </NavigationLinkWrapper>
-          <Button type="submit" variant="positive">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="40px"
-              height="40px"
-              aria-label="create task"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+        <IconContainer variant="fixed">
+          <StyledLink href={`/`} variant="medium" aria-hidden="true">
+            <Icon labelText={"go to the previous page"} />
+          </StyledLink>
+          <Button type="submit" variant="big" aria-hidden="true">
+            <Icon labelText={"save task details"} />
           </Button>
-          <Button type="button" onClick={resetForm}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="30px"
-              height="30px"
-              aria-label="reset form"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-              />
-            </svg>
+          <Button
+            type="button"
+            onClick={resetForm}
+            variant="medium"
+            aria-hidden="true"
+          >
+            <Icon labelText={"clear input form"} />
           </Button>
-        </ButtonsContainer>
+        </IconContainer>
       </FormContainer>
     </>
   );

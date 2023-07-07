@@ -18,16 +18,31 @@ export default createGlobalStyle`
 
 
   :root {
-  --black-color: black;
+  --black-color: #000000;
+  --light-gray-background: #eeeded;
   --low-priority-card: #a3ffb7;
-  --low-priority-icon: #5cce5a;
+  --low-priority-icon: #35b832;
   --medium-priority-card: #cec7ff;
-  --medium-priority-icon: #ffcc68;
+  --medium-priority-icon: #f1ac22;
   --high-priority-card: #f6c6d8;
-  --high-priority-icon: #de957d;
+  --high-priority-icon: #d07253;
   --no-priority-card: #7cded0;
   --no-priority-icon: #31b9a5
-  --light-background: black;
+ 
+
+  --icon-big: 2.5rem;
+  --icon-medium: 1.875rem;
+  --icon-small: 1.25rem;
+  --icon-extra-small: 0.625rem;
+
+  --button-big: 3.75rem;
+  --button-medium: 3.125rem;
+  --button-small: 2.5rem;
+  --button-extra-small: 1.875rem;
+
+  --link-big: 3.75rem;
+  --link-medium: 3.125rem;
+  --link-small: 2.5rem;
  
 
 
@@ -36,8 +51,8 @@ export default createGlobalStyle`
      /* Toastify styling */
   --toastify-color-light: #fff;
   --toastify-color-dark: #121212;
-  --toastify-color-info: #3498db;
-  --toastify-color-success: #07bc0c;
+  --toastify-color-info: #cec7ff;
+  --toastify-color-success: #a3ffb7;
   --toastify-color-warning: #f1c40f;
   --toastify-color-error: #e74c3c;
   --toastify-color-transparent: rgba(255, 255, 255, 0.7);
@@ -52,11 +67,11 @@ export default createGlobalStyle`
   --toastify-font-family: sans-serif;
   --toastify-z-index: 9999;
   --toastify-text-color-light: #757575;
-  --toastify-text-color-dark: #fff;
-  --toastify-text-color-info: #fff;
-  --toastify-text-color-success: #fff;
-  --toastify-text-color-warning: #fff;
-  --toastify-text-color-error: #fff;
+  --toastify-text-color-dark: #000000;
+  --toastify-text-color-info: #000000;
+  --toastify-text-color-success: #000000;
+  --toastify-text-color-warning: #000000;
+  --toastify-text-color-error: #000000;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
   --toastify-color-progress-light: linear-gradient(
@@ -231,13 +246,13 @@ export default createGlobalStyle`
   background: var(--toastify-color-progress-light);
 }
 .Toastify__progress-bar-theme--dark {
-  background: var(--toastify-color-progress-dark);
+  background: #000000;
 }
 .Toastify__progress-bar--info {
-  background: var(--toastify-color-progress-info);
+  background: #000000;
 }
 .Toastify__progress-bar--success {
-  background: var(--toastify-color-progress-success);
+  background: v#000000;
 }
 .Toastify__progress-bar--warning {
   background: var(--toastify-color-progress-warning);

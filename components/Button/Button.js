@@ -9,19 +9,37 @@ export const Button = styled.button`
   width: 50px;
   background-color: var(--black-color);
   border: none;
+  cursor: pointer;
+ 
 
   ${({ variant }) =>
-    variant === "positive" &&
+    variant === "big" &&
     css`
-      height: 60px;
-      width: 60px;
+      height: var(--button-big);
+      width: var(--button-big);
     `}
+
+  ${({ variant }) =>
+    variant === "medium" &&
+    css`
+      height: var(--button-medium);
+      width: var(--button-medium);
+    `}
+
 
   ${({ variant }) =>
     variant === "small" &&
     css`
-      height: 40px;
-      width: 40px;
+      height: var(--button-small);
+      width: var(--button-small);
+    `}
+
+
+  ${({ variant }) =>
+    variant === "extra-small" &&
+    css`
+      height: var(--button-extra-small);
+      width: var(--button-extra-small);
     `}
 `;
 

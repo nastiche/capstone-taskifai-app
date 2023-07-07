@@ -4,11 +4,10 @@ import TaskCard from "../components/TaskCard";
 import { useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import Layout from "../components/Layout";
-import {
-  NavigationLinkWrapper,
-  NavigationLinksContainer,
-} from "../components/NavigationLink/NavigationLink";
-import Link from "next/link";
+import { StyledLink } from "../components/NavigationLink/NavigationLink";
+import { IconContainer } from "../components/IconContainer";
+import { Icon } from "../components/Icon";
+import { Button } from "../components/Button/Button";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
@@ -86,63 +85,43 @@ export default function TasksListPage() {
   }, [sortType, sortDirection, data]);
 
   if (isLoading) {
-    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
+    return (
+      <>
+        <EmptyDiv></EmptyDiv>
+        <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
+      </>
+    );
   } else {
     return (
       <>
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
           <StyledWrapper>
-            <BoldText></BoldText>
-            {/* Select input for choosing the sort type */}
-            <StyledSelect
-              onChange={(event) => setSortType(event.target.value)}
-              value={sortType}
-            >
-              <option value="deadline">sort by deadline</option>
-              <option value="priority">sort by priority</option>
-              <option value="creation_date">sort by creation date</option>
-              <option value="edit_date_date">sort by edit date</option>
-            </StyledSelect>
+            <SortContainer>
+              <StyledSelect
+                onChange={(event) => setSortType(event.target.value)}
+                value={sortType}
+              >
+                <option value="deadline">sort by deadline</option>
+                <option value="priority">sort by priority</option>
+                <option value="creation_date">sort by creation date</option>
+                <option value="edit_date_date">sort by edit date</option>
+              </StyledSelect>
+              <StyledIcon>
+                <Icon labelText={`sort tasks list`} />
+              </StyledIcon>
+            </SortContainer>
             {/* Button to toggle the sort direction */}
-            <StyledButton onClick={toggleSortDirection} value={sortDirection}>
+            <Button
+              onClick={toggleSortDirection}
+              value={sortDirection}
+              variant="small"
+            >
               {sortDirection === "asc" ? (
-                <span aria-label="ascendent sort direction">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="black"
-                    height="1rem"
-                    width="1rem"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
-                    />
-                  </svg>
-                </span>
+                <Icon labelText={`sort tasks list in ascending order`} />
               ) : (
-                <span aria-label="descendent sort direction">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="black"
-                    height="1rem"
-                    width="1rem"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75"
-                    />
-                  </svg>
-                </span>
+                <Icon labelText={`sort tasks list in descending order`} />
               )}
-            </StyledButton>
+            </Button>
           </StyledWrapper>
           <TasksList role="list">
             {/* Render task preview cards for each sorted task */}
@@ -163,28 +142,11 @@ export default function TasksListPage() {
               );
             })}
           </TasksList>
-          <NavigationLinksContainer>
-            <NavigationLinkWrapper variant="positive">
-              <Link href={`/create`} passHref legacyBehavior aria-hidden="true">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="white"
-                  width="30px"
-                  height="30px"
-                  aria-label="go to the main page"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-              </Link>
-            </NavigationLinkWrapper>
-          </NavigationLinksContainer>
+          <IconContainer variant="fixed">
+            <StyledLink href={`/create`} aria-hidden="true" variant="big">
+              <Icon labelText={"go to the task creation page"} />
+            </StyledLink>
+          </IconContainer>
         </Layout>
       </>
     );
@@ -203,7 +165,6 @@ const TasksList = styled.ul`
   margin-top: 70px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 22.438rem;
 `;
 
 const ListItem = styled.li`
@@ -211,15 +172,20 @@ const ListItem = styled.li`
   width: 100%;
 `;
 
+const EmptyDiv = styled.div`
+  height: 28px;
+`;
+
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: lightgray;
+  background-color: #a3ffb7;
 `;
 
 const StyledWrapper = styled.div`
   display: flex;
   align-items: flex-end;
+  gap: 0.3rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   position: fixed;
@@ -227,43 +193,47 @@ const StyledWrapper = styled.div`
   z-index: 1;
   height: 60px;
   padding-top: 25px;
-  background-color: white;
   width: 100vw;
   max-width: 100%;
   padding-bottom: 3px;
-  justify-content: space-between;
+  justify-content: flex-end;
+`;
+
+const SortContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 40px;
+  width: 40px;
 `;
 
 const StyledSelect = styled.select`
-  padding: 0.5;
-  border-radius: 4px;
-  border: none;
-  background-color: #eeeded;
-  height: 36px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  border-radius: 1.5rem;
-  padding: 0.3rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-weight: 700;
-`;
-
-const StyledButton = styled.button`
-  padding: 1rem;
-  border-radius: 4px;
+  align-items: center;
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  background-color: var(--black-color);
   border: none;
-  background-color: #eeeded;
-  height: 36px;
+  height: var(--button-small);
+  width: var(--button-small);
+  position: absolute;
+  z-index: 2;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+
+const StyledIcon = styled.span`
+  position: absolute;
   display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 1.5rem;
+  align-items: center;
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 3;
+  pointer-events: none; /* Add pointer-events: none */
 `;
-
-const BoldText = styled.span`
-  font-weight: 700;
-`;
-

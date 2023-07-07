@@ -52,7 +52,7 @@ export default function TaskEditPage() {
     return (
       <>
         <EmptyDivLoading></EmptyDivLoading>
-        <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
+        <StyledLoadingDiv>...loading...</StyledLoadingDiv>
       </>
     );
 

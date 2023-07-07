@@ -200,7 +200,7 @@ export default function CreateTaskPage() {
         // Display loading UI when the task is being created
         <>
           <EmptyDiv></EmptyDiv>
-          <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
+          <StyledLoadingDiv>...loading...</StyledLoadingDiv>
         </>
       ) : (
         // Display switch for AI mode

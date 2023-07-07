@@ -88,7 +88,7 @@ export default function TasksListPage() {
     return (
       <>
         <EmptyDiv></EmptyDiv>
-        <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
+        <StyledLoadingDiv>...loading...</StyledLoadingDiv>
       </>
     );
   } else {

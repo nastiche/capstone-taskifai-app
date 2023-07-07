@@ -75,13 +75,13 @@ export default function TaskCard({
   return showImage ? (
     <ShowImageContainer>
       <ImageButtonContainer>
-        <TaskImage alt="image" src={image_url} width="300" height="300" />
-        <ExpandImageButton
+        <TaskImageFull alt="image" src={image_url} width="300" height="300" />
+        <ShrinkImageButton
           onClick={() => setShowImage(false)}
           variant="extra-small"
         >
           <Icon labelText={"hide image"} />
-        </ExpandImageButton>
+        </ShrinkImageButton>
       </ImageButtonContainer>
     </ShowImageContainer>
   ) : (
@@ -386,6 +386,13 @@ const TaskImage = styled(Image)`
   border-radius: 1.5rem;
 `;
 
+const TaskImageFull = styled(Image)`
+  width: 100vw; /* Set the width to the full viewport width */
+  height: 100vh; /* Set the height to the full viewport height */
+  object-fit: contain; /* Preserve the aspect ratio of the image while fitting it within the container */
+  border-radius: 0; /* Remove the border radius */
+`;
+
 const BulletPoint = styled.div`
   display: inline-block;
   width: 8px;
@@ -402,6 +409,11 @@ const ExpandImageButton = styled(Button)`
   top: -0.6rem;
 `;
 
+const ShrinkImageButton = styled(Button)`
+  position: absolute;
+  right: 0.6rem;
+  top: 0.6rem;
+`;
 const ShowImageContainer = styled.div`
   position: fixed;
   top: 0;

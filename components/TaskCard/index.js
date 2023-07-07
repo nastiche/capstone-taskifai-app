@@ -404,6 +404,7 @@ const ShrinkImageButton = styled(Button)`
   position: absolute;
   right: 0.6rem;
   top: 0.6rem;
+  border: 1.5px solid white;
 `;
 const ShowImageContainer = styled.div`
   position: fixed;

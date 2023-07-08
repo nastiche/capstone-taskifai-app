@@ -141,14 +141,13 @@ export default function RegularTaskInputForm({
 
     setTagInputValue(input);
   }
-
   function handleTagAddition(tag) {
     let tagText = tag.text.trim().toLowerCase();
     const isTagAlreadyAdded = taskData.tags.some(
       (existingTag) => existingTag.text.trim().toLowerCase() === tagText
     );
 
-    if (!isTagAlreadyAdded) {
+    if (taskData.tags.length < 2 && !isTagAlreadyAdded) {
       if (!/^[a-zA-Z0-9-_]+$/.test(tagText)) {
         // Remove the last character if it doesn't match the pattern
         tagText = tagText.slice(0, -1);
@@ -264,7 +263,7 @@ export default function RegularTaskInputForm({
           value={taskData.title}
           onChange={handleChangeTitle}
           autoFocus
-          maxLength={44}
+          maxLength={50}
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0

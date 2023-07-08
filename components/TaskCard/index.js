@@ -39,6 +39,10 @@ export default function TaskCard({
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
 
   const [showImage, setShowImage] = useState(false);
+
+  const [showOriginalTaskDescription, setShowOriginalTaskDescription] =
+    useState(false);
+
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString("en-US", {
         day: "numeric",
@@ -92,6 +96,11 @@ export default function TaskCard({
           <TitleContainer>
             <TitleText>{title}</TitleText>
           </TitleContainer>
+          {deadline ? (
+            <DeadlineContainer>
+              <DeadlineText>until {formattedDeadline}</DeadlineText>
+            </DeadlineContainer>
+          ) : null}
           <TagsContainer>
             <TagList>
               {tags.map((tag) => (
@@ -101,11 +110,6 @@ export default function TaskCard({
               ))}
             </TagList>
           </TagsContainer>
-          {deadline ? (
-            <DeadlineContainer>
-              <DeadlineText>until {formattedDeadline}</DeadlineText>
-            </DeadlineContainer>
-          ) : null}
           <PriorityContainer priorityVariant={priority}>
             {priority !== "none" ? priority : null}
           </PriorityContainer>
@@ -115,7 +119,7 @@ export default function TaskCard({
                 type="button"
                 aria-hidden="true"
                 onClick={() => {
-                  setTaskDetailsDisplay((prevState) => !prevState);
+                  setTaskDetailsDisplay(true);
                 }}
                 variant="small"
               >
@@ -156,12 +160,41 @@ export default function TaskCard({
                   </ImageButtonContainer>
                 </ImageContainer>
               ) : null}
+
               {original_task_description !== "" ? (
-                <OriginalTaskDescriptionContainer>
+                <>
                   <BoldText>original task description: </BoldText>
-                  {original_task_description}
-                </OriginalTaskDescriptionContainer>
-              ) : null}{" "}
+
+                  {showOriginalTaskDescription ? (
+                    <OriginalTaskDescriptionContainer>
+                      <OriginalTaskDescriptionInnerContainer>
+                        <OriginalTaskDescriptionText>
+                          {original_task_description}
+                        </OriginalTaskDescriptionText>
+                        <HideOriginalTaskDescriptionButton
+                          onClick={() => setShowOriginalTaskDescription(false)}
+                          variant="extra-small"
+                        >
+                          <Icon labelText={"hide original task description"} />
+                        </HideOriginalTaskDescriptionButton>
+                      </OriginalTaskDescriptionInnerContainer>
+                    </OriginalTaskDescriptionContainer>
+                  ) : (
+                    <>
+                      <OriginalTaskDescriptionHiddenContainer>
+                        {" "}
+                        <OriginalTaskDescriptionEmptyContainer />{" "}
+                        <ShowOriginalTaskDescriptionButton
+                          onClick={() => setShowOriginalTaskDescription(true)}
+                          variant="extra-small"
+                        >
+                          <Icon labelText={"show original task description"} />
+                        </ShowOriginalTaskDescriptionButton>
+                      </OriginalTaskDescriptionHiddenContainer>
+                    </>
+                  )}
+                </>
+              ) : null}
               <IconContainer variant="absolute">
                 <StyledLink
                   href={{ pathname: `/edit`, query: { id: id } }}
@@ -174,7 +207,8 @@ export default function TaskCard({
                   type="button"
                   aria-hidden="true"
                   onClick={() => {
-                    setTaskDetailsDisplay((prevState) => !prevState);
+                    setTaskDetailsDisplay(false);
+                    setShowOriginalTaskDescription(false);
                   }}
                   variant="small"
                 >
@@ -197,8 +231,13 @@ export default function TaskCard({
 }
 
 // Styled components
+
+const BoldText = styled.span`
+  font-weight: 700;
+  white-space: normal;
+`;
+
 const TaskCardContainer = styled.div`
-  position: relative;
   border-radius: 1.5rem;
   padding: 1rem;
   border: none;
@@ -227,7 +266,7 @@ const TaskCardContainer = styled.div`
 
 const TaskPreviewContainer = styled.div`
   position: relative;
-  height: 10rem;
+  min-height: 10rem;
 `;
 
 const TaskDetailsContainer = styled.div`
@@ -237,99 +276,13 @@ const TaskDetailsContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  position: absolute;
   width: 100%;
-  top: 0;
-  left: 0;
-`;
-
-const TagsContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 0.7rem;
-  left: 0;
-`;
-
-const PriorityContainer = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1.5rem;
-  width: 5.5rem;
-  height: 2.2rem;
-  bottom: 3.3rem;
-  right: 0;
-  color: white;
-
-  ${({ priorityVariant }) =>
-    priorityVariant === "low" &&
-    css`
-      background-color: var(--low-priority-icon);
-    `}
-  ${({ priorityVariant }) =>
-    priorityVariant === "medium" &&
-    css`
-      background-color: var(--medium-priority-icon);
-    `}
-    ${({ priorityVariant }) =>
-    priorityVariant === "high" &&
-    css`
-      background-color: var(--high-priority-icon);
-    `};
-`;
-
-const DeadlineContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 5rem;
-  left: 0;
-`;
-
-const SubtasksContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  background: white;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  margin-bottom: 0.7rem;
-  margin-top: 0.3rem;
-`;
-
-const SubtaskContainer = styled.div`
-  border: none;
-  border-radius: 1rem;
-  background: var(--light-gray-background);
-  width: 100%;
-  padding: 0.5rem;
-`;
-
-const ImageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  border-radius: 1.5rem;
-  margin-bottom: 0.5rem;
-  margin-top: 0.3rem;
-`;
-
-const ImageButtonContainer = styled.div`
-  position: relative;
-`;
-
-const OriginalTaskDescriptionContainer = styled.div`
-  width: 100%;
-`;
-
-const BoldText = styled.span`
-  font-weight: 700;
-  white-space: normal;
+  min-height: 4rem;
+  margin-bottom: 1rem;
 `;
 
 const TitleText = styled.span`
+  font-size: 1.2rem;
   font-weight: 700;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -340,18 +293,19 @@ const TitleText = styled.span`
   max-width: 100%;
 `;
 
-const SubtaskText = styled.span`
-  font-size: 0.9rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  display: inline-block;
+const DeadlineContainer = styled.div`
+  width: 100%;
 `;
 
 const DeadlineText = styled.span`
   color: gray;
+`;
+
+const TagsContainer = styled.div`
+  position: absolute;
+  top: 7.2rem;
+  left: 0;
+  width: 100%;
 `;
 
 const TagList = styled.ul`
@@ -379,7 +333,78 @@ const TagText = styled.span`
   font-size: 0.9rem;
 `;
 
-// Styled components for Task Details
+const PriorityContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+  width: 5.5rem;
+  height: 2.2rem;
+  top: 4.5rem;
+  right: 0;
+  color: white;
+
+  ${({ priorityVariant }) =>
+    priorityVariant === "low" &&
+    css`
+      background-color: var(--low-priority-icon);
+    `}
+  ${({ priorityVariant }) =>
+    priorityVariant === "medium" &&
+    css`
+      background-color: var(--medium-priority-icon);
+    `}
+    ${({ priorityVariant }) =>
+    priorityVariant === "high" &&
+    css`
+      background-color: var(--high-priority-icon);
+    `};
+`;
+
+const SubtasksContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const SubtaskContainer = styled.div`
+  border: none;
+  border-radius: 1rem;
+  background: var(--light-gray-background);
+  width: 100%;
+  padding: 0.5rem;
+`;
+
+const SubtaskText = styled.span`
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  display: inline-block;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-radius: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const ImageButtonContainer = styled.div`
+  position: relative;
+`;
 
 const TaskImage = styled(Image)`
   width: 100%;
@@ -418,3 +443,53 @@ const ShowImageContainer = styled.div`
   align-items: center;
   z-index: 9999; /* Ensure the container appears above other elements */
 `;
+
+const OriginalTaskDescriptionContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const OriginalTaskDescriptionEmptyContainer = styled.div`
+  border: solid white 1.5px;
+  height: 0.3rem;
+  width: 100%;
+  background-color: white;
+  border-radius: 5rem;
+  margin-top: 0.5rem;
+`;
+
+const OriginalTaskDescriptionHiddenContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  flex-direction: column;
+`;
+
+const ShowOriginalTaskDescriptionButton = styled(Button)``;
+
+const HideOriginalTaskDescriptionButton = styled(Button)`
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+const OriginalTaskDescriptionInnerContainer = styled.div`
+  border: none;
+  border-radius: 1rem;
+  background: var(--light-gray-background);
+  width: 100%;
+  padding: 0.5rem;
+`;
+const OriginalTaskDescriptionText = styled.span``;

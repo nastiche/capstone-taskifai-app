@@ -377,6 +377,8 @@ const SubtasksContainer = styled.div`
 `;
 
 const SubtaskContainer = styled.div`
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 1rem;
   background: var(--light-gray-background);
@@ -487,10 +489,14 @@ const HideOriginalTaskDescriptionButton = styled(Button)`
 `;
 
 const OriginalTaskDescriptionInnerContainer = styled.div`
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 1rem;
   background: var(--light-gray-background);
   width: 100%;
   padding: 0.5rem;
 `;
-const OriginalTaskDescriptionText = styled.span``;
+const OriginalTaskDescriptionText = styled.span`
+  font-size: 0.9rem;
+`;

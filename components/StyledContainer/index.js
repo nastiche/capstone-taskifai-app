@@ -6,5 +6,5 @@ export const StyledContainer = styled.div`
   margin-left: 0.3rem;
   margin-right: 0.3rem;
   margin-bottom: 0.3rem;
-  min-height: 37.938rem;
+  min-height: 38.3rem;
 `;

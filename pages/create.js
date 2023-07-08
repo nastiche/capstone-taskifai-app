@@ -9,6 +9,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
+import { StyledContainer } from "../components/StyledContainer";
 
 const headerText = "create task";
 const homeButtonShow = true;
@@ -68,7 +69,7 @@ export default function CreateTaskPage() {
       // Info banner
       toast.success(<BannerMessageCreated />, {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -123,7 +124,7 @@ export default function CreateTaskPage() {
             // Info banner
             toast.info(<BannerMessageAISuccess />, {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -150,7 +151,7 @@ export default function CreateTaskPage() {
             // Info banner
             toast.error(<BannerMessageFailed />, {
               position: "top-center",
-              autoClose: 5000,
+              autoClose: 3000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -177,7 +178,7 @@ export default function CreateTaskPage() {
           // Info banner
           toast.error(<BannerMessageFailed />, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -198,13 +199,13 @@ export default function CreateTaskPage() {
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
       {isLoading ? (
         // Display loading UI when the task is being created
-        <>
+        <StyledContainer>
           <EmptyDiv></EmptyDiv>
-          <StyledLoadingDiv>...creating task...</StyledLoadingDiv>
-        </>
+          <StyledLoadingDiv>...loading...</StyledLoadingDiv>
+        </StyledContainer>
       ) : (
         // Display switch for AI mode
-        <>
+        <StyledContainer>
           <SwitchWrapper>
             <label>
               <BoldText>AI</BoldText>
@@ -212,8 +213,9 @@ export default function CreateTaskPage() {
             <Switch
               checked={aiMode !== undefined ? aiMode : false}
               onChange={() => setAiMode(!aiMode)}
-              onColor="#86d3ff"
-              onHandleColor="#2693e6"
+              onColor="#a3ffb7"
+              onHandleColor="#5cce5a"
+              offColor="000000"
               handleDiameter={24}
               uncheckedIcon={false}
               checkedIcon={false}
@@ -237,20 +239,20 @@ export default function CreateTaskPage() {
               aiResponseStatus={aiResponseStatus}
             />
           )}
-        </>
+        </StyledContainer>
       )}
     </Layout>
   );
 }
 
 // Styled components
+
 const SwitchWrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
   align-items: end;
-
-  height: 60px;
+  padding: 25px;
   width: 100%;
 `;
 
@@ -261,7 +263,7 @@ const EmptyDiv = styled.div`
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: lightgray;
+  background-color: #a3ffb7;
 `;
 
 const BoldText = styled.span`

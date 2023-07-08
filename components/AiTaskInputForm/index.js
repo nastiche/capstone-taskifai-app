@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { StyledButton } from "../StyledButton/StyledButton";
 import styled from "styled-components";
-import { Button, ButtonsContainer } from "../Button/Button";
-import { NavigationLinkWrapper } from "../NavigationLink/NavigationLink";
-import Link from "next/link";
+import { Button } from "../Button/Button";
+import { Icon } from "../Icon";
+import { StyledLink } from "../NavigationLink/NavigationLink";
+import { IconContainer } from "../IconContainer";
 
 // Task data for initial state
 const initialTaskData = {
@@ -85,64 +85,22 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
           ref={original_task_descriptionInputRef}
           placeholder="e.g. plan a trip to Mallorca"
         />
-        <ButtonsContainer>
-          <NavigationLinkWrapper>
-            <Link href={`/`} passHref legacyBehavior aria-hidden="true">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="white"
-                width="30px"
-                height="30px"
-                aria-label="go to the main page"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-                />
-              </svg>
-            </Link>
-          </NavigationLinkWrapper>
-          <Button type="submit" variant="positive">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="40px"
-              height="40px"
-              aria-label="create task"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+        <IconContainer variant="fixed">
+          <StyledLink href={`/`} aria-hidden="true" variant="medium">
+            <Icon labelText={"go to the previous page"} />
+          </StyledLink>
+          <Button type="submit" aria-hidden="true" variant="big">
+            <Icon labelText={"let AI create task details"} />
           </Button>
-          <Button type="button" onClick={resetForm}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="30px"
-              height="30px"
-              aria-label="reset form"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-              />
-            </svg>
+          <Button
+            type="button"
+            onClick={resetForm}
+            aria-hidden="true"
+            variant="medium"
+          >
+            <Icon labelText={"clear input form"} />
           </Button>
-        </ButtonsContainer>
+        </IconContainer>
       </FormContainer>
     </>
   );
@@ -153,6 +111,8 @@ const FormContainer = styled.form`
   display: grid;
   margin-bottom: 50px;
   gap: 0.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 `;
 
 const Label = styled.label`
@@ -167,11 +127,4 @@ const Textarea = styled.textarea`
   :placeholder {
     white-space: pre-line;
   }
-`;
-
-const StyledErrorDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: red;
-  color: white;
 `;

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
-import { StyledButton } from "../StyledButton/StyledButton";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
-import { Button, ButtonsContainer } from "../Button/Button";
-import { NavigationLinkWrapper } from "../NavigationLink/NavigationLink";
-import Link from "next/link";
+import { Button } from "../Button/Button";
+import { IconContainer } from "../IconContainer";
+import { Icon } from "../Icon";
+import { StyledLink } from "../NavigationLink/NavigationLink";
 
 // Task data for initial state
 const initialTaskData = {
@@ -24,7 +24,6 @@ export default function RegularTaskInputForm({
   existingTaskData,
   newAiTaskData,
   aiResponseStatus,
-  backLink,
 }) {
   // Reference for title and subtasks form input fields
   const titleInputRef = useRef(null);
@@ -128,19 +127,39 @@ export default function RegularTaskInputForm({
     }));
   }
 
-  // Handle adding a tag
+  // Handle input change in the tags input field
+  function handleChangeTag(input) {
+    const lastCharacter = input.slice(-1);
+    const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
+    const isValidDelimiter = [",", ";"].includes(lastCharacter);
+
+    if (!isValidCharacter && !isValidDelimiter) {
+      // Show a warning or error message to the user
+      console.log("Invalid character entered!");
+      return;
+    }
+
+    setTagInputValue(input);
+  }
+
   function handleTagAddition(tag) {
-    const tagText = tag.text.trim();
+    let tagText = tag.text.trim().toLowerCase();
     const isTagAlreadyAdded = taskData.tags.some(
-      (existingTag) => existingTag.text.trim() === tagText
+      (existingTag) => existingTag.text.trim().toLowerCase() === tagText
     );
 
-    if (!isTagAlreadyAdded) {
+    if (taskData.tags.length < 2 && !isTagAlreadyAdded) {
+      if (!/^[a-zA-Z0-9-_]+$/.test(tagText)) {
+        // Remove the last character if it doesn't match the pattern
+        tagText = tagText.slice(0, -1);
+      }
+
       setTaskData((prevTaskData) => ({
         ...prevTaskData,
         tags: [...prevTaskData.tags, { id: uuidv4(), text: tagText }],
       }));
     }
+
     setTagInputValue("");
   }
 
@@ -184,6 +203,12 @@ export default function RegularTaskInputForm({
     if (existingTaskData) {
       taskFormData.edit_date = new Date();
     }
+
+    if (!taskFormData.priority) {
+      taskFormData.priority = "none";
+    }
+
+    console.log(taskFormData);
     let imageUrl = "";
     if (imageChosen) {
       const response = await fetch("/api/tasks/image", {
@@ -193,10 +218,9 @@ export default function RegularTaskInputForm({
 
       const imageDetails = await response.json();
       imageUrl = imageDetails.url;
+      // Add the image URL to the form data
+      taskFormData.image_url = imageUrl;
     }
-
-    // Add the image URL to the form data
-    taskFormData.image_url = imageUrl;
 
     // Submit form data
     onSubmit(taskFormData);
@@ -240,6 +264,7 @@ export default function RegularTaskInputForm({
           value={taskData.title}
           onChange={handleChangeTitle}
           autoFocus
+          maxLength={50}
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
@@ -250,6 +275,7 @@ export default function RegularTaskInputForm({
                   value={subtask.value}
                   rows="1"
                   wrap="hard"
+                  maxLength={84}
                   onChange={(event) =>
                     handleChangeSubtask(subtask.id, event.target.value)
                   }
@@ -265,14 +291,18 @@ export default function RegularTaskInputForm({
               </SubtaskWrapper>
             ))
           : null}
-        <StyledButton
-          type="button"
-          onClick={() => {
-            handleAddSubtask();
-          }}
-        >
-          add subtask
-        </StyledButton>
+        <IconContainer>
+          <Button
+            variant="small"
+            type="button"
+            onClick={() => {
+              handleAddSubtask();
+            }}
+            aria-hidden="true"
+          >
+            <Icon labelText={"add subtask"} />
+          </Button>
+        </IconContainer>
         <Label htmlFor="tags">tags</Label>
         <MyTagsWrapper>
           <ReactTags
@@ -283,9 +313,9 @@ export default function RegularTaskInputForm({
             handleAddition={handleTagAddition}
             delimiters={delimiters}
             placeholder="press enter to add new tag"
-            maxLength={15}
+            maxLength={12}
             inputValue={tagInputValue}
-            handleInputChange={(tag) => setTagInputValue(tag)}
+            handleInputChange={(event) => handleChangeTag(event)}
             allowNew
           />
         </MyTagsWrapper>
@@ -379,69 +409,22 @@ export default function RegularTaskInputForm({
             />
           </>
         ) : null}
-        <ButtonsContainer>
-          <NavigationLinkWrapper>
-            <Link
-              href={backLink ? `/tasks/${backLink}` : `/`}
-              passHref
-              legacyBehavior
-              aria-hidden="true"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="white"
-                width="30px"
-                height="30px"
-                aria-label="go to the previous page"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-                />
-              </svg>
-            </Link>
-          </NavigationLinkWrapper>
-          <Button type="submit" variant="positive">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="40px"
-              height="40px"
-              aria-label="create task"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+        <IconContainer variant="fixed">
+          <StyledLink href={`/`} variant="medium" aria-hidden="true">
+            <Icon labelText={"go to the previous page"} />
+          </StyledLink>
+          <Button type="submit" variant="big" aria-hidden="true">
+            <Icon labelText={"save task details"} />
           </Button>
-          <Button type="button" onClick={resetForm}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="white"
-              width="30px"
-              height="30px"
-              aria-label="reset form"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-              />
-            </svg>
+          <Button
+            type="button"
+            onClick={resetForm}
+            variant="medium"
+            aria-hidden="true"
+          >
+            <Icon labelText={"clear input form"} />
           </Button>
-        </ButtonsContainer>
+        </IconContainer>
       </FormContainer>
     </>
   );
@@ -450,9 +433,11 @@ export default function RegularTaskInputForm({
 // Styled components for the form layout
 const FormContainer = styled.form`
   display: grid;
-
-  margin-bottom: 50px;
+  grid-template-columns: auto;
+  margin-bottom: 110px;
   gap: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const SubtaskWrapper = styled.div`
@@ -507,14 +492,14 @@ const MyTagsWrapper = styled.div`
 `;
 
 // Key codes for tags delimiters
-const KeyCodes = {
+const keyCodes = {
   comma: 188,
   enter: 13,
   space: 32,
 };
 
 // Tags delimiters
-const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.space];
+const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 const BoldText = styled.span`
   font-weight: 700;

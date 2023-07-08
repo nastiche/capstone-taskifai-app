@@ -5,27 +5,53 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  height: 50px;
-  width: 50px;
   background-color: var(--black-color);
   border: none;
+  cursor: pointer;
 
   ${({ variant }) =>
-    variant === "positive" &&
+    variant === "big" &&
     css`
-      height: 60px;
-      width: 60px;
+      height: var(--button-big);
+      width: var(--button-big);
+      svg {
+        height: var(--icon-big);
+        width: var(--icon-big);
+      }
     `}
-`;
 
-export const ButtonsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-  position: fixed;
-  width: 100%;
-  z-index: 1;
-  bottom: 20px;
-  padding-right: 0.5rem;
+  ${({ variant }) =>
+    variant === "medium" &&
+    css`
+      height: var(--button-medium);
+      width: var(--button-medium);
+      svg {
+        height: var(--icon-medium);
+        width: var(--icon-medium);
+      }
+    `}
+
+
+  ${({ variant }) =>
+    variant === "small" &&
+    css`
+      height: var(--button-small);
+      width: var(--button-small);
+      svg {
+        height: var(--icon-small);
+        width: var(--icon-small);
+      }
+    `}
+
+
+  ${({ variant }) =>
+    variant === "extra-small" &&
+    css`
+      height: var(--button-extra-small);
+      width: var(--button-extra-small);
+      svg {
+        height: var(--icon-extra-small);
+        width: var(--icon-extra-small);
+      }
+    `}
 `;

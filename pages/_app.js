@@ -1,6 +1,7 @@
 import { SWRConfig } from "swr";
 import GlobalStyle from "../styles";
 import { ToastContainer } from "react-toastify";
+import styled from "styled-components";
 
 export default function App({ Component, pageProps }) {
   //define fetcher
@@ -17,12 +18,12 @@ export default function App({ Component, pageProps }) {
       <GlobalStyle />
       <ToastContainer
         position="top-center"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
+        pauseOnFocusLoss={false}
         draggable
         pauseOnHover
         theme="light"
@@ -31,3 +32,10 @@ export default function App({ Component, pageProps }) {
     </SWRConfig>
   );
 }
+
+// const StyledToastContainer = styled(ToastContainer).attrs({
+//   className: "toast-container",
+//   toastClassName: "toast",
+//   bodyClassName: "body",
+//   progressClassName: "progress",
+// });

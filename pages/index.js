@@ -1,14 +1,14 @@
 import useSWR from "swr";
 import styled from "styled-components";
-import TaskPreviewCard from "../components/TaskPreviewCard";
+import TaskCard from "../components/TaskCard";
 import { useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import Layout from "../components/Layout";
-import {
-  NavigationLinkWrapper,
-  NavigationLinksContainer,
-} from "../components/NavigationLink/NavigationLink";
-import Link from "next/link";
+import { StyledLink } from "../components/NavigationLink/NavigationLink";
+import { IconContainer } from "../components/IconContainer";
+import { Icon } from "../components/Icon";
+import { Button } from "../components/Button/Button";
+import { StyledContainer } from "../components/StyledContainer";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
@@ -86,70 +86,70 @@ export default function TasksListPage() {
   }, [sortType, sortDirection, data]);
 
   if (isLoading) {
-    return <StyledLoadingDiv>...loading...</StyledLoadingDiv>;
+    return (
+      <>
+        <EmptyDiv></EmptyDiv>
+        <StyledLoadingDiv>...loading...</StyledLoadingDiv>
+      </>
+    );
   } else {
     return (
       <>
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-          <StyledWrapper>
-            <BoldText>sort by: </BoldText>
-            {/* Select input for choosing the sort type */}
-            <StyledSelect
-              onChange={(event) => setSortType(event.target.value)}
-              value={sortType}
-            >
-              <option value="deadline">deadline</option>
-              <option value="priority">priority</option>
-              <option value="creation_date">created</option>
-              <option value="edit_date_date">edited</option>
-            </StyledSelect>
-            {/* Button to toggle the sort direction */}
-            <StyledButton
-              onClick={toggleSortDirection}
-              aria-label="sort-direction"
-              value={sortDirection}
-            >
-              <span aria-hidden="true">↕️</span>
-            </StyledButton>
-          </StyledWrapper>
-          <List role="list">
-            {/* Render task preview cards for each sorted task */}
-            {sortedTasks.map((task) => {
-              return (
-                <ListItem key={task._id}>
-                  <TaskPreviewCard
-                    title={task.title}
-                    tags={task.tags}
-                    deadline={task.deadline}
-                    priority={task.priority}
-                    id={task._id}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-          <NavigationLinksContainer>
-            <NavigationLinkWrapper variant="positive">
-              <Link href={`/create`} passHref legacyBehavior aria-hidden="true">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="white"
-                  width="30px"
-                  height="30px"
-                  aria-label="go to the main page"
+          <StyledContainer>
+            <StyledWrapper>
+              <SortContainer>
+                <StyledSelect
+                  onChange={(event) => setSortType(event.target.value)}
+                  value={sortType}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-              </Link>
-            </NavigationLinkWrapper>
-          </NavigationLinksContainer>
+                  <option value="deadline">sort by deadline</option>
+                  <option value="priority">sort by priority</option>
+                  <option value="creation_date">sort by creation date</option>
+                  <option value="edit_date_date">sort by edit date</option>
+                </StyledSelect>
+                <StyledIcon>
+                  <Icon labelText={`sort tasks list`} />
+                </StyledIcon>
+              </SortContainer>
+              {/* Button to toggle the sort direction */}
+              <Button
+                onClick={toggleSortDirection}
+                value={sortDirection}
+                variant="small"
+              >
+                {sortDirection === "asc" ? (
+                  <Icon labelText={`sort tasks list in ascending order`} />
+                ) : (
+                  <Icon labelText={`sort tasks list in descending order`} />
+                )}
+              </Button>
+            </StyledWrapper>
+            <TasksList role="list">
+              {/* Render task preview cards for each sorted task */}
+              {sortedTasks.map((task) => {
+                return (
+                  <ListItem key={task._id}>
+                    <TaskCard
+                      title={task.title}
+                      tags={task.tags}
+                      deadline={task.deadline}
+                      priority={task.priority}
+                      id={task._id}
+                      subtasks={task.subtasks}
+                      original_task_description={task.original_task_description}
+                      image_url={task.image_url}
+                    />
+                  </ListItem>
+                );
+              })}
+            </TasksList>
+            <IconContainer variant="fixed">
+              <StyledLink href={`/create`} aria-hidden="true" variant="big">
+                <Icon labelText={"go to the task creation page"} />
+              </StyledLink>
+            </IconContainer>
+          </StyledContainer>
         </Layout>
       </>
     );
@@ -157,15 +157,17 @@ export default function TasksListPage() {
 }
 
 // Styled components for styling
-const List = styled.ul`
+const TasksList = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2.3rem;
   padding-left: 0;
-  margin-bottom: 50px;
-  margin-top: 90px;
+  margin-bottom: 110px;
+  margin-top: 4.688rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const ListItem = styled.li`
@@ -173,51 +175,64 @@ const ListItem = styled.li`
   width: 100%;
 `;
 
+const EmptyDiv = styled.div`
+  height: 28px;
+`;
+
 const StyledLoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  background-color: lightgray;
-`;
-
-const StyledSelect = styled.select`
-  padding: 0.5;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledButton = styled.button`
-  padding: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #a3ffb7;
 `;
 
 const StyledWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 5px;
+  gap: 0.5rem;
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
   position: fixed;
-
   top: 3;
-  z-index: 1;
+  z-index: 100;
   height: 60px;
-  padding-top: 20px;
-  background-color: white;
   width: 100%;
-  padding-bottom: 3px;
+  padding-top: 25px;
+  justify-content: flex-end;
+  height: 2.5rem;
 `;
 
-const BoldText = styled.span`
-  font-weight: 700;
+const SortContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 40px;
+  width: 40px;
+`;
+
+const StyledSelect = styled.select`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  background-color: var(--black-color);
+  border: none;
+  height: var(--button-small);
+  width: var(--button-small);
+  position: absolute;
+  z-index: 200;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+
+const StyledIcon = styled.span`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 300;
+  pointer-events: none; /* Add pointer-events: none */
 `;

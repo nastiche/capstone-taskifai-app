@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { StyledLink } from "../NavigationLink/NavigationLink.js";
 import { Icon } from "../Icon";
 
-export default function Header({ headerText, font, homeButtonShow }) {
+export default function Header({ headerText, font }) {
   return (
-    <HeaderContainer>
-      <Heading className={font}>{headerText}</Heading>
-    </HeaderContainer>
+    <>
+      <HeaderContainer>
+        <Heading className={font}>{headerText}</Heading>
+      </HeaderContainer>
+      <DummyContainerLeft />
+      <DummyContainerRight />
+    </>
   );
 }
 
@@ -22,7 +26,31 @@ const HeaderContainer = styled.div`
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 1;
+  z-index: 9999;
   background-color: black;
   height: 3rem;
+`;
+
+const DummyContainerRight = styled.div`
+  position: fixed;
+  z-index: 9999;
+  top: 3rem;
+  right: 0.3rem;
+  background-color: transparent;
+  height: 50px;
+  width: 25px;
+  border-top-right-radius: 1.5rem;
+  box-shadow: 0 -1.5rem 0 0 black;
+`;
+
+const DummyContainerLeft = styled.div`
+  position: fixed;
+  z-index: 9999;
+  top: 3rem;
+  left: 0.3rem;
+  background-color: transparent;
+  height: 50px;
+  width: 25px;
+  border-top-left-radius: 1.5rem;
+  box-shadow: 0 -1.5rem 0 0 black;
 `;

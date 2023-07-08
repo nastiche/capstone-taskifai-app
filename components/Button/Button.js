@@ -5,18 +5,19 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  height: 50px;
-  width: 50px;
   background-color: var(--black-color);
   border: none;
   cursor: pointer;
- 
 
   ${({ variant }) =>
     variant === "big" &&
     css`
       height: var(--button-big);
       width: var(--button-big);
+      svg {
+        height: var(--icon-big);
+        width: var(--icon-big);
+      }
     `}
 
   ${({ variant }) =>
@@ -24,6 +25,10 @@ export const Button = styled.button`
     css`
       height: var(--button-medium);
       width: var(--button-medium);
+      svg {
+        height: var(--icon-medium);
+        width: var(--icon-medium);
+      }
     `}
 
 
@@ -32,6 +37,10 @@ export const Button = styled.button`
     css`
       height: var(--button-small);
       width: var(--button-small);
+      svg {
+        height: var(--icon-small);
+        width: var(--icon-small);
+      }
     `}
 
 
@@ -40,30 +49,9 @@ export const Button = styled.button`
     css`
       height: var(--button-extra-small);
       width: var(--button-extra-small);
+      svg {
+        height: var(--icon-extra-small);
+        width: var(--icon-extra-small);
+      }
     `}
-`;
-
-export const ButtonsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-
-  ${({ variant }) =>
-    variant === "fixed" &&
-    css`
-      position: fixed;
-      z-index: 1;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-    `}
-  ${({ variant }) =>
-    variant === "absolute" &&
-    css`
-      position: absolute;
-      bottom: -20px;
-      left: 0;
-      right: 0;
-    `};
 `;

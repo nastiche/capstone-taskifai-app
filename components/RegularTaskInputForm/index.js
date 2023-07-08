@@ -141,7 +141,7 @@ export default function RegularTaskInputForm({
 
     setTagInputValue(input);
   }
-  
+
   function handleTagAddition(tag) {
     let tagText = tag.text.trim().toLowerCase();
     const isTagAlreadyAdded = taskData.tags.some(
@@ -433,7 +433,6 @@ export default function RegularTaskInputForm({
 // Styled components for the form layout
 const FormContainer = styled.form`
   display: grid;
-
   grid-template-columns: auto;
   margin-bottom: 110px;
   gap: 0.5rem;

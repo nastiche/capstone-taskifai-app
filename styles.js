@@ -33,13 +33,13 @@ export default createGlobalStyle`
 
   --icon-big: 2.5rem;
   --icon-medium: 1.875rem;
-  --icon-small: 1.25rem;
-  --icon-extra-small: 0.625rem;
+  --icon-small: 1.5rem;
+  --icon-extra-small: 1rem;
 
   --button-big: 3.75rem;
   --button-medium: 3.125rem;
   --button-small: 2.5rem;
-  --button-extra-small: 1.875rem;
+  --button-extra-small: 2rem;
 
   --link-big: 3.75rem;
   --link-medium: 3.125rem;
@@ -149,7 +149,7 @@ export default createGlobalStyle`
 }
 .Toastify__toast {
   position: relative;
-  min-height: var(--toastify-toast-min-height);
+  min-height: 4.6rem;
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
@@ -174,6 +174,7 @@ export default createGlobalStyle`
   cursor: pointer;
 }
 .Toastify__toast-body {
+
   margin: auto 0;
   -ms-flex: 1 1 auto;
       flex: 1 1 auto;
@@ -182,6 +183,7 @@ export default createGlobalStyle`
   display: flex;
   -ms-flex-align: center;
       align-items: center;
+    
 }
 .Toastify__toast-body > div:last-child {
   word-break: break-word;

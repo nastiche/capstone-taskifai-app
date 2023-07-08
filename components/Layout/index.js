@@ -28,6 +28,7 @@ export default function Layout({ headerText, children, homeButtonShow }) {
         headerText={headerText}
         homeButtonShow={homeButtonShow}
       ></Header>
+
       <Main className={roboto.className}>{children}</Main>
     </>
   );

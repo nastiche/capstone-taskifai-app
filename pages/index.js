@@ -165,7 +165,7 @@ const TasksList = styled.ul`
   gap: 2.3rem;
   padding-left: 0;
   margin-bottom: 110px;
-  margin-top: 70px;
+  margin-top: 4.688rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 `;
@@ -192,12 +192,12 @@ const StyledWrapper = styled.div`
   padding-right: 1.1rem;
   position: fixed;
   top: 3;
-  z-index: 1;
+  z-index: 100;
   height: 60px;
   width: 100%;
   padding-top: 25px;
-  padding-bottom: 3px;
   justify-content: flex-end;
+  height: 2.5rem;
 `;
 
 const SortContainer = styled.div`
@@ -221,7 +221,7 @@ const StyledSelect = styled.select`
   height: var(--button-small);
   width: var(--button-small);
   position: absolute;
-  z-index: 2;
+  z-index: 200;
   &:focus {
     outline: none;
     box-shadow: none;
@@ -233,8 +233,6 @@ const StyledIcon = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1.5rem;
-  width: 1.5rem;
-  z-index: 3;
+  z-index: 300;
   pointer-events: none; /* Add pointer-events: none */
 `;

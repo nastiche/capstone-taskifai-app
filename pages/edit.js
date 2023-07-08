@@ -52,7 +52,6 @@ export default function TaskEditPage() {
   if (!isReady || isLoading || error)
     return (
       <>
-        <EmptyDivLoading></EmptyDivLoading>
         <StyledLoadingDiv>...loading...</StyledLoadingDiv>
       </>
     );
@@ -72,19 +71,8 @@ export default function TaskEditPage() {
   );
 }
 
-
 const EmptyDiv = styled.div`
-  height: 60px;
-`;
-const LinkWrapper = styled.div`
-  font-size: 3rem;
-  a {
-    text-decoration: none;
-  }
-`;
-
-const EmptyDivLoading = styled.div`
-  height: 28px;
+  height: 25px;
 `;
 
 const StyledLoadingDiv = styled.div`

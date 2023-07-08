@@ -19,8 +19,8 @@ export function Icon({ labelText }) {
           fill="none"
           stroke-width="1.5"
           stroke="white"
-          height="1.5rem"
-          width="1.5rem"
+          height="1.3rem"
+          width="1.3rem"
           viewBox="0 0 24 24"
           aria-label={labelText}
         >
@@ -38,8 +38,6 @@ export function Icon({ labelText }) {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="white"
-          width="1.5rem"
-          height="1.5rem"
           aria-label={labelText}
         >
           <path
@@ -56,8 +54,6 @@ export function Icon({ labelText }) {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="white"
-          width="1.5rem"
-          height="1.5rem"
           aria-label={labelText}
         >
           <path

@@ -242,7 +242,7 @@ const TaskCardContainer = styled.div`
   padding: 1rem;
   border: none;
   width: 100%;
- 
+
   ${({ priorityVariant }) =>
     priorityVariant === "low" &&
     css`
@@ -442,7 +442,7 @@ const ShowImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Ensure the container appears above other elements */
+  z-index: 9999;
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`

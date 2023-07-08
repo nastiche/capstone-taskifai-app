@@ -13,7 +13,6 @@ export const IconContainer = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1;
       bottom: 20px;
       left: 0;
       right: 0;

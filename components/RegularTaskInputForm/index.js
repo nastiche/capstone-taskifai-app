@@ -141,6 +141,7 @@ export default function RegularTaskInputForm({
 
     setTagInputValue(input);
   }
+  
   function handleTagAddition(tag) {
     let tagText = tag.text.trim().toLowerCase();
     const isTagAlreadyAdded = taskData.tags.some(
@@ -492,14 +493,14 @@ const MyTagsWrapper = styled.div`
 `;
 
 // Key codes for tags delimiters
-const KeyCodes = {
+const keyCodes = {
   comma: 188,
   enter: 13,
   space: 32,
 };
 
 // Tags delimiters
-const delimiters = [KeyCodes.comma, KeyCodes.enter, KeyCodes.space];
+const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 const BoldText = styled.span`
   font-weight: 700;

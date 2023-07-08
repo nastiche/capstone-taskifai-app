@@ -241,7 +241,8 @@ const TaskCardContainer = styled.div`
   border-radius: 1.5rem;
   padding: 1rem;
   border: none;
-  width: 22.5rem;
+  width: 100%;
+ 
   ${({ priorityVariant }) =>
     priorityVariant === "low" &&
     css`

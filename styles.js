@@ -9,6 +9,7 @@ export default createGlobalStyle`
   }
   body {
     margin: 0;
+    background: black;
   }
   textarea, input, button, select {
     font-family: inherit;

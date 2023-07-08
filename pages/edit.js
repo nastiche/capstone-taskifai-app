@@ -4,6 +4,7 @@ import styled from "styled-components";
 import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
+import { StyledContainer } from "../components/StyledContainer";
 
 const headerText = "edit task";
 const homeButtonShow = true;
@@ -58,16 +59,19 @@ export default function TaskEditPage() {
 
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-      <EmptyDiv></EmptyDiv>
-      <RegularTaskInputForm
-        onSubmit={editTask}
-        formName={"edit-task"}
-        existingTaskData={existingTaskData}
-        backLink={`/`}
-      />
+      <StyledContainer>
+        <EmptyDiv></EmptyDiv>
+        <RegularTaskInputForm
+          onSubmit={editTask}
+          formName={"edit-task"}
+          existingTaskData={existingTaskData}
+          backLink={`/`}
+        />
+      </StyledContainer>
     </Layout>
   );
 }
+
 
 const EmptyDiv = styled.div`
   height: 60px;

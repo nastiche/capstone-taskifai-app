@@ -8,6 +8,7 @@ import { StyledLink } from "../components/NavigationLink/NavigationLink";
 import { IconContainer } from "../components/IconContainer";
 import { Icon } from "../components/Icon";
 import { Button } from "../components/Button/Button";
+import { StyledContainer } from "../components/StyledContainer";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
@@ -95,58 +96,60 @@ export default function TasksListPage() {
     return (
       <>
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-          <StyledWrapper>
-            <SortContainer>
-              <StyledSelect
-                onChange={(event) => setSortType(event.target.value)}
-                value={sortType}
+          <StyledContainer>
+            <StyledWrapper>
+              <SortContainer>
+                <StyledSelect
+                  onChange={(event) => setSortType(event.target.value)}
+                  value={sortType}
+                >
+                  <option value="deadline">sort by deadline</option>
+                  <option value="priority">sort by priority</option>
+                  <option value="creation_date">sort by creation date</option>
+                  <option value="edit_date_date">sort by edit date</option>
+                </StyledSelect>
+                <StyledIcon>
+                  <Icon labelText={`sort tasks list`} />
+                </StyledIcon>
+              </SortContainer>
+              {/* Button to toggle the sort direction */}
+              <Button
+                onClick={toggleSortDirection}
+                value={sortDirection}
+                variant="small"
               >
-                <option value="deadline">sort by deadline</option>
-                <option value="priority">sort by priority</option>
-                <option value="creation_date">sort by creation date</option>
-                <option value="edit_date_date">sort by edit date</option>
-              </StyledSelect>
-              <StyledIcon>
-                <Icon labelText={`sort tasks list`} />
-              </StyledIcon>
-            </SortContainer>
-            {/* Button to toggle the sort direction */}
-            <Button
-              onClick={toggleSortDirection}
-              value={sortDirection}
-              variant="small"
-            >
-              {sortDirection === "asc" ? (
-                <Icon labelText={`sort tasks list in ascending order`} />
-              ) : (
-                <Icon labelText={`sort tasks list in descending order`} />
-              )}
-            </Button>
-          </StyledWrapper>
-          <TasksList role="list">
-            {/* Render task preview cards for each sorted task */}
-            {sortedTasks.map((task) => {
-              return (
-                <ListItem key={task._id}>
-                  <TaskCard
-                    title={task.title}
-                    tags={task.tags}
-                    deadline={task.deadline}
-                    priority={task.priority}
-                    id={task._id}
-                    subtasks={task.subtasks}
-                    original_task_description={task.original_task_description}
-                    image_url={task.image_url}
-                  />
-                </ListItem>
-              );
-            })}
-          </TasksList>
-          <IconContainer variant="fixed">
-            <StyledLink href={`/create`} aria-hidden="true" variant="big">
-              <Icon labelText={"go to the task creation page"} />
-            </StyledLink>
-          </IconContainer>
+                {sortDirection === "asc" ? (
+                  <Icon labelText={`sort tasks list in ascending order`} />
+                ) : (
+                  <Icon labelText={`sort tasks list in descending order`} />
+                )}
+              </Button>
+            </StyledWrapper>
+            <TasksList role="list">
+              {/* Render task preview cards for each sorted task */}
+              {sortedTasks.map((task) => {
+                return (
+                  <ListItem key={task._id}>
+                    <TaskCard
+                      title={task.title}
+                      tags={task.tags}
+                      deadline={task.deadline}
+                      priority={task.priority}
+                      id={task._id}
+                      subtasks={task.subtasks}
+                      original_task_description={task.original_task_description}
+                      image_url={task.image_url}
+                    />
+                  </ListItem>
+                );
+              })}
+            </TasksList>
+            <IconContainer variant="fixed">
+              <StyledLink href={`/create`} aria-hidden="true" variant="big">
+                <Icon labelText={"go to the task creation page"} />
+              </StyledLink>
+            </IconContainer>
+          </StyledContainer>
         </Layout>
       </>
     );
@@ -163,8 +166,8 @@ const TasksList = styled.ul`
   padding-left: 0;
   margin-bottom: 110px;
   margin-top: 70px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const ListItem = styled.li`
@@ -184,17 +187,15 @@ const StyledLoadingDiv = styled.div`
 
 const StyledWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 0.3rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  gap: 0.5rem;
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
   position: fixed;
   top: 3;
   z-index: 1;
   height: 60px;
+  width: 100%;
   padding-top: 25px;
-  width: 100vw;
-  max-width: 100%;
   padding-bottom: 3px;
   justify-content: flex-end;
 `;

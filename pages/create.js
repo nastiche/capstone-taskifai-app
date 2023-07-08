@@ -9,6 +9,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
+import { StyledContainer } from "../components/StyledContainer";
 
 const headerText = "create task";
 const homeButtonShow = true;
@@ -198,13 +199,13 @@ export default function CreateTaskPage() {
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
       {isLoading ? (
         // Display loading UI when the task is being created
-        <>
+        <StyledContainer>
           <EmptyDiv></EmptyDiv>
           <StyledLoadingDiv>...loading...</StyledLoadingDiv>
-        </>
+        </StyledContainer>
       ) : (
         // Display switch for AI mode
-        <>
+        <StyledContainer>
           <SwitchWrapper>
             <label>
               <BoldText>AI</BoldText>
@@ -238,13 +239,14 @@ export default function CreateTaskPage() {
               aiResponseStatus={aiResponseStatus}
             />
           )}
-        </>
+        </StyledContainer>
       )}
     </Layout>
   );
 }
 
 // Styled components
+
 const SwitchWrapper = styled.div`
   display: flex;
   justify-content: center;

@@ -5,25 +5,15 @@ import { Icon } from "../Icon";
 export default function Header({ headerText, font, homeButtonShow }) {
   return (
     <HeaderContainer>
-      {homeButtonShow ? (
-        <StyledHomeLink href={`/`} aria-hidden="true" variant="medium">
-          <Icon labelText={"go to the main page"} />
-        </StyledHomeLink>
-      ) : null}
       <Heading className={font}>{headerText}</Heading>
     </HeaderContainer>
   );
 }
 
-const StyledHomeLink = styled(StyledLink)`
-  position: absolute;
-  left: 7px;
-  top: 7px;
-`;
-
 const Heading = styled.h1`
   position: absolute;
   margin: 10px;
+  color: white;
 `;
 
 const HeaderContainer = styled.div`
@@ -33,6 +23,6 @@ const HeaderContainer = styled.div`
   width: 100%;
   top: 0;
   z-index: 1;
-  background-color: white;
+  background-color: black;
   height: 3rem;
 `;

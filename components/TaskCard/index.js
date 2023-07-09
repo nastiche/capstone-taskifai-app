@@ -4,14 +4,10 @@ import styled from "styled-components";
 import { Button } from "../Button/Button";
 import Image from "next/image";
 import { StyledLink } from "../NavigationLink/NavigationLink";
-import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import css from "styled-jsx/css";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
-
-// Mesagge for info banner
-const BannerMessageSaved = () => <div>Task deleted!</div>;
 
 export default function TaskCard({
   id,
@@ -22,9 +18,8 @@ export default function TaskCard({
   priority,
   original_task_description,
   image_url,
+  onDelete,
 }) {
-  const router = useRouter();
-
   const { mutate } = useSWR(`/api/tasks`);
 
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
@@ -40,32 +35,6 @@ export default function TaskCard({
         month: "short",
       })
     : "";
-
-  async function deleteTask(id) {
-    const response = await fetch(`/api/tasks?id=${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(id),
-    });
-    if (response.ok) {
-      mutate();
-    }
-    router.push(`/`);
-
-    // Info banner
-    toast.success(<BannerMessageSaved />, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  }
 
   return showImage ? (
     <ShowImageContainer>
@@ -211,7 +180,7 @@ export default function TaskCard({
                   <Icon labelText={"hide task details"} />
                 </Button>
                 <Button
-                  onClick={() => deleteTask(id)}
+                  onClick={() => onDelete(id)}
                   variant="medium"
                   aria-hidden="true"
                 >

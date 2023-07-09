@@ -43,12 +43,12 @@ export default function RegularTaskInputForm({
   const [tagInputValue, setTagInputValue] = useState("");
 
   //  State to check whether user chose an image to attach to the task
-  const [imageChosen, setImageChosen] = useState(false);
   const [currentImageValue, setCurrentImageValue] = useState("");
 
   // Focus on title input field after page refresh
   useEffect(() => {
     titleInputRef.current.focus();
+    setTaskData(initialTaskData);
   }, []);
   // Hook used to check whether the input form gets
   //  the prop existingTaskData (comes from TaskEditPage) or the prop newAiTaskData (comes from CreateTaskPage)
@@ -100,6 +100,10 @@ export default function RegularTaskInputForm({
 
   // Handle title field change
   function handleChangeTitle(event) {
+    const { scrollHeight, clientHeight } = event.target;
+    event.target.style.height = "auto";
+    event.target.style.height = `${Math.max(scrollHeight, clientHeight)}px`;
+
     const { name, value } = event.target;
     setTaskData((prevTaskData) => ({
       ...prevTaskData,
@@ -108,7 +112,11 @@ export default function RegularTaskInputForm({
   }
 
   // Handle subtask input field change
-  function handleChangeSubtask(subtaskId, subtaskValue) {
+  function handleChangeSubtask(event, subtaskId) {
+    const subtaskValue = event.target.value;
+    const { scrollHeight, clientHeight } = event.target;
+    event.target.style.height = "auto";
+    event.target.style.height = `${Math.max(scrollHeight, clientHeight)}px`;
     setTaskData((prevTaskData) => {
       const updatedSubtasks = prevTaskData.subtasks.map((subtask) => {
         if (subtask.id === subtaskId) {
@@ -249,7 +257,6 @@ export default function RegularTaskInputForm({
     setTaskData(initialTaskData);
     setTagInputValue("");
     event.target.elements.title.focus();
-    setImageChosen(false);
   }
 
   // Resets the form to initial state (function for reset button)
@@ -274,7 +281,7 @@ export default function RegularTaskInputForm({
         onSubmit={handleSubmit}
       >
         <Label htmlFor="title">title</Label>
-        <Input
+        <TitleInput
           id="title"
           name="title"
           type="text"
@@ -283,7 +290,7 @@ export default function RegularTaskInputForm({
           wrap="hard"
           ref={titleInputRef}
           value={taskData.title}
-          onChange={handleChangeTitle}
+          onChange={(event) => handleChangeTitle(event)}
           autoFocus
           maxLength={50}
         />
@@ -297,9 +304,7 @@ export default function RegularTaskInputForm({
                   rows="1"
                   wrap="hard"
                   maxLength={84}
-                  onChange={(event) =>
-                    handleChangeSubtask(subtask.id, event.target.value)
-                  }
+                  onChange={(event) => handleChangeSubtask(event, subtask.id)}
                   ref={(ref) => {
                     subtaskInputRef.current[index] = ref;
                   }}
@@ -401,7 +406,6 @@ export default function RegularTaskInputForm({
                 name="file"
                 ref={fileInputRef}
                 onChange={(event) => {
-                  setImageChosen(true);
                   setCurrentImageValue(event.target.value);
                 }}
               ></FileInput>
@@ -422,7 +426,6 @@ export default function RegularTaskInputForm({
                 name="file"
                 ref={fileInputRef}
                 onChange={(event) => {
-                  setImageChosen(true);
                   setCurrentImageValue(event.target.value);
                 }}
               ></FileInput>
@@ -495,12 +498,38 @@ const SubtaskWrapper = styled.div`
   border-radius: 1.5rem;
 `;
 
+const TitleInput = styled.textarea`
+  padding: 1rem;
+  font-size: inherit;
+  border: none;
+  border-radius: 1.5rem;
+  background-color: var(--light-gray-background);
+  flex: 1;
+  margin-right: 0.5rem;
+
+  min-height: 4.375rem;
+  height: auto;
+  resize: none;
+  overflow-y: hidden;
+
+  ::placeholder {
+    white-space: pre-line;
+    color: var(--light-gray-placeholder);
+  }
+  :focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #a194fa;
+    height: auto;
+  }
+`;
+
 const Input = styled.input`
   padding: 1rem;
   font-size: inherit;
   border: none;
   background-color: var(--light-gray-background);
   border-radius: 1.5rem;
+
   color: ${(props) =>
     props.value !== "" && props.value !== undefined && props.value
       ? "black"
@@ -615,7 +644,7 @@ const Input = styled.input`
     `}
 `;
 
-const SubtaskInput = styled.input`
+const SubtaskInput = styled.textarea`
   padding: 1rem;
   font-size: inherit;
   border: none;
@@ -623,6 +652,12 @@ const SubtaskInput = styled.input`
   background-color: var(--light-gray-background);
   flex: 1;
   margin-right: 0.5rem;
+
+  min-height: 5.563rem;
+  height: auto;
+  resize: none;
+  overflow-y: hidden;
+
   ::placeholder {
     white-space: pre-line;
     color: var(--light-gray-placeholder);
@@ -630,6 +665,7 @@ const SubtaskInput = styled.input`
   :focus {
     outline: none !important;
     box-shadow: 0 0 10px #a194fa;
+    height: auto;
   }
 `;
 

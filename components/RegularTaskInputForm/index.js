@@ -609,7 +609,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid #878282;
+        border: 0.2rem solid black;
       }
       :checked:after {
         width: 15px;
@@ -642,7 +642,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid #878282;
+        border: 0.2rem solid black;
       }
       :checked:after {
         width: 15px;
@@ -675,7 +675,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid #878282;
+        border: 0.2rem solid black;
       }
       :checked:after {
         width: 15px;

@@ -26,14 +26,14 @@ const HeaderContainer = styled.div`
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 9990;
+  z-index: 9900;
   background-color: black;
   height: 3rem;
 `;
 
 const DummyContainerRight = styled.div`
   position: fixed;
-  z-index: 9990;
+  z-index: 9900;
   top: 3rem;
   right: 0.3rem;
   background-color: transparent;
@@ -46,7 +46,7 @@ const DummyContainerRight = styled.div`
 
 const DummyContainerLeft = styled.div`
   position: fixed;
-  z-index: 9990;
+  z-index: 9900;
   top: 3rem;
   left: 0.3rem;
   border: none;

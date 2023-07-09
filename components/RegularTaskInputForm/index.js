@@ -159,7 +159,7 @@ export default function RegularTaskInputForm({
 
       setTaskData((prevTaskData) => ({
         ...prevTaskData,
-        tags: [...prevTaskData.tags, { id: uuidv4(), text: tagText }],
+        tags: [...prevTaskData.tags, { id: uuidv4(), text: `#${tagText}` }],
       }));
     }
 
@@ -190,12 +190,18 @@ export default function RegularTaskInputForm({
 
   function handleFileDelete() {
     setCurrentImageValue("");
+    setTaskData((prevTaskData) => ({
+      ...prevTaskData,
+      image_url: "",
+    }));
     const fileInput = document.getElementById("image_upload");
     if (fileInput) {
       fileInput.value = "";
     }
   }
-
+  console.log(
+    `currentImageValue: ${currentImageValue}; taskData.image_url: ${taskData.image_url}`
+  );
   // Handle form submission
   async function handleSubmit(event) {
     event.preventDefault();
@@ -217,6 +223,10 @@ export default function RegularTaskInputForm({
 
     if (!taskFormData.priority) {
       taskFormData.priority = "none";
+    }
+
+    if (taskData.image_url === "") {
+      taskFormData.image_url = "";
     }
 
     let imageUrl = "";
@@ -380,38 +390,9 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
-        {taskData.image_url && taskData.image_url !== "" ? (
-          <>
-            <BoldText>image: </BoldText>
-            <TaskImage
-              alt="image"
-              src={taskData.image_url}
-              width="100"
-              height="100"
-            />
-          </>
-        ) : null}
-
         <BoldText>image: </BoldText>
-        {currentImageValue === "" ? (
-          <FileUploadContainer>
-            <ChooseImageContainer>
-              <FileInput
-                type="file"
-                id="image_upload"
-                name="file"
-                ref={fileInputRef}
-                onChange={(event) => {
-                  setImageChosen(true);
-                  setCurrentImageValue(event.target.value);
-                }}
-              ></FileInput>
-              <StyledIcon variant="small">
-                <Icon labelText={"choose image for upload"} />
-              </StyledIcon>
-            </ChooseImageContainer>
-          </FileUploadContainer>
-        ) : (
+        {currentImageValue !== "" ||
+        (taskData.image_url && taskData.image_url !== "") ? (
           <FileUploadContainer>
             <ChooseImageContainer>
               <FileInput
@@ -431,6 +412,24 @@ export default function RegularTaskInputForm({
             <Button onClick={handleFileDelete} variant="small">
               <Icon labelText={"delete image"} />
             </Button>
+          </FileUploadContainer>
+        ) : (
+          <FileUploadContainer>
+            <ChooseImageContainer>
+              <FileInput
+                type="file"
+                id="image_upload"
+                name="file"
+                ref={fileInputRef}
+                onChange={(event) => {
+                  setImageChosen(true);
+                  setCurrentImageValue(event.target.value);
+                }}
+              ></FileInput>
+              <StyledIcon variant="small">
+                <Icon labelText={"choose image for upload"} />
+              </StyledIcon>
+            </ChooseImageContainer>
           </FileUploadContainer>
         )}
 
@@ -503,7 +502,9 @@ const Input = styled.input`
   background-color: var(--light-gray-background);
   border-radius: 1.5rem;
   color: ${(props) =>
-    props.value === "" || props.value === undefined ? "gray" : "black"};
+    props.value !== "" && props.value !== undefined && props.value
+      ? "black"
+      : " #878282"};
   :focus {
     outline: none !important;
     box-shadow: 0 0 10px #a194fa;
@@ -528,7 +529,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #878282;
       }
       :checked:after {
         width: 15px;
@@ -561,7 +562,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #878282;
       }
       :checked:after {
         width: 15px;
@@ -594,7 +595,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #878282;
       }
       :checked:after {
         width: 15px;
@@ -647,7 +648,7 @@ const RadioButtonLabel = styled.label`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: var(--light-gray-placeholder);
+  color: black;
 `;
 
 const MyTagsWrapper = styled.div`
@@ -676,7 +677,16 @@ const MyTagsWrapper = styled.div`
     margin: 0.1rem;
   }
   .ReactTags__tag {
+    display: inline-flex;
+    justify-content: center;
+
+    gap: 0.1rem;
+    align-items: center;
     margin-right: 0.3rem;
+    background-color: #cec7ff;
+    border-radius: 1.5rem;
+    padding: 0.3rem;
+    padding-left: 0.7rem;
   }
 `;
 
@@ -695,10 +705,12 @@ const BoldText = styled.span`
 `;
 
 const Textarea = styled.textarea`
-  padding: 0.5rem;
+  padding: 1rem;
   font-size: inherit;
-  border: 3px solid black;
-  border-radius: 0.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  background-color: var(--light-gray-background);
+  color: gray;
 `;
 
 const TaskImage = styled(Image)`
@@ -711,7 +723,7 @@ const StyledIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 300;
+
   height: 2.5rem;
   width: 2.5rem;
   pointer-events: none;
@@ -738,29 +750,29 @@ const FileInput = styled.input`
   border: none;
   height: 2.5rem;
   width: 2.5rem;
-  z-index: 400;
+
   &:focus {
     outline: none;
     box-shadow: none;
   }
 `;
 
-const ChooseImageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-  gap: 3rem;
-  height: 2.5rem;
-  width: 2.5rem;
-`;
-
 const FileUploadContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 200;
+
   gap: 4.4rem;
   width: 100%;
   height: 2.5rem;
+`;
+
+const ChooseImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 3rem;
+  height: 2.5rem;
+  width: 2.5rem;
 `;

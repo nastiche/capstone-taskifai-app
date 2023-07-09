@@ -151,7 +151,7 @@ export default createGlobalStyle`
 }
 .Toastify__toast {
   position: relative;
-  min-height: 4.6rem;
+  min-height: 4.4rem;
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;

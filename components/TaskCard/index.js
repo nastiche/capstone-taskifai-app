@@ -24,16 +24,7 @@ export default function TaskCard({
   image_url,
 }) {
   const router = useRouter();
-  console.log(
-    id,
-    title,
-    subtasks,
-    tags,
-    deadline,
-    priority,
-    original_task_description,
-    image_url
-  );
+
   const { mutate } = useSWR(`/api/tasks`);
 
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
@@ -105,7 +96,7 @@ export default function TaskCard({
             <TagList>
               {tags.map((tag) => (
                 <TagItem key={tag}>
-                  <TagText>#{tag}</TagText>
+                  <TagText>{tag}</TagText>
                 </TagItem>
               ))}
             </TagList>

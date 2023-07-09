@@ -192,7 +192,7 @@ const StyledWrapper = styled.div`
   padding-right: 1.1rem;
   position: fixed;
   top: 3;
-  z-index: 100;
+  z-index: 9500;
   height: 60px;
   width: 100%;
   padding-top: 25px;
@@ -207,32 +207,33 @@ const SortContainer = styled.div`
   position: relative;
   height: 40px;
   width: 40px;
+  z-index: 9600;
+  background-color: var(--black-color);
+  border-radius: 100%;
 `;
 
 const StyledSelect = styled.select`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
   height: 50px;
+  opacity: 0;
   width: 50px;
-  background-color: var(--black-color);
   border: none;
   height: var(--button-small);
   width: var(--button-small);
   position: absolute;
-  z-index: 200;
+  z-index: 9800;
   &:focus {
     outline: none;
     box-shadow: none;
   }
 `;
 
-const StyledIcon = styled.span`
+const StyledIcon = styled.div`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 300;
-  pointer-events: none; /* Add pointer-events: none */
+  z-index: 9700;
 `;

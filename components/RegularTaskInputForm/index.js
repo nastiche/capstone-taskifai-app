@@ -293,6 +293,7 @@ export default function RegularTaskInputForm({
           onChange={(event) => handleChangeTitle(event)}
           autoFocus
           maxLength={50}
+          variant={existingTaskData ? "edit" : "create"}
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
@@ -507,10 +508,15 @@ const TitleInput = styled.textarea`
   flex: 1;
   margin-right: 0.5rem;
 
-  min-height: 4.375rem;
   height: auto;
   resize: none;
   overflow-y: hidden;
+
+  ${({ variant }) =>
+    variant === "edit" &&
+    css`
+      min-height: 4.375rem;
+    `}
 
   ::placeholder {
     white-space: pre-line;

@@ -9,17 +9,13 @@ import { IconContainer } from "../components/IconContainer";
 import { Icon } from "../components/Icon";
 import { Button } from "../components/Button/Button";
 import { StyledContainer } from "../components/StyledContainer";
-import { toast } from "react-toastify";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
 
 export default function TasksListPage() {
-  // Mesagge for info banner
-  const BannerMessageSaved = () => <div>Task deleted!</div>;
-
   // Fetch task data using useSWR hook
-  const { data, mutate, isLoading } = useSWR("/api/tasks", {
+  const { data, isLoading } = useSWR("/api/tasks", {
     fallbackData: [],
   });
 
@@ -33,31 +29,6 @@ export default function TasksListPage() {
     "sort direction",
     "asc"
   ); // Sort direction state
-
-  async function deleteTask(id) {
-    const response = await fetch(`/api/tasks?id=${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(id),
-    });
-
-    if (response.ok) {
-      mutate();
-      // Info banner
-      toast.success(<BannerMessageSaved />, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  }
 
   // Function to convert priority string to a corresponding number
   const priorityToNumber = (priority) => {
@@ -170,7 +141,6 @@ export default function TasksListPage() {
                       subtasks={task.subtasks}
                       original_task_description={task.original_task_description}
                       image_url={task.image_url}
-                      onDelete={deleteTask}
                     />
                   </ListItem>
                 );

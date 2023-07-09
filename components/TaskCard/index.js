@@ -18,7 +18,6 @@ export default function TaskCard({
   priority,
   original_task_description,
   image_url,
-  onDelete,
 }) {
   const { mutate } = useSWR(`/api/tasks`);
 
@@ -29,28 +28,78 @@ export default function TaskCard({
   const [showOriginalTaskDescription, setShowOriginalTaskDescription] =
     useState(false);
 
+  const [deleteTaskMode, setDeleteTaskMode] = useState(false);
+
+  // Mesagge for info banner
+  const BannerMessageSaved = () => <div>Task deleted!</div>;
+
+  async function deleteTask(id) {
+    const response = await fetch(`/api/tasks?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(id),
+    });
+
+    if (response.ok) {
+      mutate();
+      // Info banner
+      toast.success(<BannerMessageSaved />, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  }
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString("en-US", {
         day: "numeric",
         month: "short",
       })
     : "";
-
-  return showImage ? (
-    <ShowImageContainer>
-      <ImageButtonContainer>
-        <TaskImageFull alt="image" src={image_url} width="300" height="300" />
-        <ShrinkImageButton
-          onClick={() => setShowImage(false)}
-          variant="extra-small"
-        >
-          <Icon labelText={"hide image"} />
-        </ShrinkImageButton>
-      </ImageButtonContainer>
-    </ShowImageContainer>
-  ) : (
-    <>
-      {" "}
+  if (showImage) {
+    return (
+      <ModalBackground>
+        <ImageButtonContainer>
+          <TaskImageFull alt="image" src={image_url} width="300" height="300" />
+          <ShrinkImageButton
+            onClick={() => setShowImage(false)}
+            variant="extra-small"
+          >
+            <Icon labelText={"hide image"} />
+          </ShrinkImageButton>
+        </ImageButtonContainer>
+      </ModalBackground>
+    );
+  } else if (deleteTaskMode) {
+    return (
+      <>
+        <ModalBackground>
+          <DeleteTaskModal>
+            <ModalText>delete task?</ModalText>
+          </DeleteTaskModal>
+          <DeleteTaskIconsContainer>
+            <StyledButton variant="medium" onClick={() => deleteTask(id)}>
+              <Icon labelText={"confirm task deletion"} />
+            </StyledButton>
+            <StyledButton
+              variant="medium"
+              onClick={() => setDeleteTaskMode(false)}
+            >
+              <Icon labelText={"abort task deletion"} />
+            </StyledButton>
+          </DeleteTaskIconsContainer>
+        </ModalBackground>
+      </>
+    );
+  } else {
+    return (
       <TaskCardContainer priorityVariant={priority}>
         <TaskPreviewContainer sizeVariant="preview">
           <TitleContainer>
@@ -180,7 +229,7 @@ export default function TaskCard({
                   <Icon labelText={"hide task details"} />
                 </Button>
                 <Button
-                  onClick={() => onDelete(id)}
+                  onClick={() => setDeleteTaskMode(true)}
                   variant="medium"
                   aria-hidden="true"
                 >
@@ -191,8 +240,8 @@ export default function TaskCard({
           </>
         ) : null}
       </TaskCardContainer>
-    </>
-  );
+    );
+  }
 }
 
 // Styled components
@@ -399,8 +448,12 @@ const ShrinkImageButton = styled(Button)`
   top: 0.6rem;
   border: 1.5px solid white;
 `;
-const ShowImageContainer = styled.div`
+const ModalBackground = styled.div`
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   top: 0;
   left: 0;
   height: 100vh;
@@ -410,6 +463,38 @@ const ShowImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9999;
+`;
+
+const DeleteTaskModal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+  height: 7rem;
+  width: 17rem;
+
+  background-color: #cec7ff;
+`;
+
+const StyledButton = styled(Button)`
+  border: 1.5px solid white;
+`;
+
+const ModalText = styled.span`
+  font-size: 1.2rem;
+  font-weight: 700;
+`;
+
+const DeleteTaskIconsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 7rem;
+  gap: 3.5rem;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
+  width: 17rem;
+  height: 3rem;
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`

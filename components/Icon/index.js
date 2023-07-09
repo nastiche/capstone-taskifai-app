@@ -67,7 +67,7 @@ export function Icon({ labelText }) {
           />
         </svg>
       ) : null}
-      {labelText === "delete subtask" ? (
+      {labelText === "delete subtask" || labelText === "abort task deletion" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -134,7 +134,8 @@ export function Icon({ labelText }) {
         </svg>
       ) : null}
       {labelText === "save task details" ||
-      labelText === "let AI create task details" ? (
+      labelText === "let AI create task details" ||
+      labelText === "confirm task deletion"  ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -293,7 +293,6 @@ export default function RegularTaskInputForm({
           onChange={(event) => handleChangeTitle(event)}
           autoFocus
           maxLength={50}
-          variant={existingTaskData ? "edit" : "create"}
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
@@ -308,7 +307,6 @@ export default function RegularTaskInputForm({
                   rows="1"
                   wrap="hard"
                   maxLength={84}
-                  variant={existingTaskData ? "edit" : "create"}
                   onChange={(event) => handleChangeSubtask(event, subtask.id)}
                   ref={(ref) => {
                     subtaskInputRef.current[index] = ref;
@@ -502,16 +500,10 @@ const TitleInput = styled.textarea`
   background-color: var(--light-gray-background);
   flex: 1;
   margin-right: 0.5rem;
+  min-height: 4.375rem;
 
-  height: auto;
   resize: none;
   overflow-y: hidden;
-
-  ${({ variant }) =>
-    variant === "edit" &&
-    css`
-      min-height: 4.375rem;
-    `}
 
   ::placeholder {
     white-space: pre-line;
@@ -532,12 +524,7 @@ const SubtaskWrapper = styled.div`
   border: none;
   background-color: var(--light-gray-background);
   border-radius: 1.5rem;
-  min-height: 51px;
-  ${({ variant }) =>
-    variant === "edit" &&
-    css`
-      min-height: 5.563rem;
-    `};
+  min-height: 5.563rem;
 `;
 
 const SubtaskInput = styled.textarea`
@@ -552,15 +539,9 @@ const SubtaskInput = styled.textarea`
   margin-right: 0.5rem;
   min-width: 21.838rem;
 
-  min-height: 51px;
+  min-height: 5.563rem;
   resize: none;
   overflow-y: hidden;
-
-  ${({ variant }) =>
-    variant === "edit" &&
-    css`
-      min-height: 5.563rem;
-    `}
 
   ::placeholder {
     white-space: pre-line;

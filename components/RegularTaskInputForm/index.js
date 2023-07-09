@@ -190,7 +190,7 @@ export default function RegularTaskInputForm({
       [name]: value,
     }));
   }
-  console.log(taskData.deadline);
+  console.log(`AI: ${newAiTaskData}, edit: ${existingTaskData}`);
   // Handle radio button change for priority selection
   function handleRadioButtonChange(newPriority) {
     setTaskData({ ...taskData, priority: newPriority });
@@ -293,14 +293,16 @@ export default function RegularTaskInputForm({
           onChange={(event) => handleChangeTitle(event)}
           autoFocus
           maxLength={50}
+          variant={
+            existingTaskData || newAiTaskData.title !== ""
+              ? "big-data"
+              : "empty data"
+          }
         />
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
           ? taskData.subtasks.map((subtask, index) => (
-              <SubtaskWrapper
-                key={subtask.id}
-                variant={existingTaskData ? "edit" : "create"}
-              >
+              <SubtaskWrapper key={subtask.id}>
                 <SubtaskInput
                   id={subtask.id}
                   value={subtask.value}
@@ -500,10 +502,17 @@ const TitleInput = styled.textarea`
   background-color: var(--light-gray-background);
   flex: 1;
   margin-right: 0.5rem;
-  min-height: 4.375rem;
 
+  height: auto;
+  width: 100%;
   resize: none;
   overflow-y: hidden;
+
+  ${({ variant }) =>
+    variant === "big-data" &&
+    css`
+      min-height: 4.375rem;
+    `};
 
   ::placeholder {
     white-space: pre-line;
@@ -522,6 +531,7 @@ const SubtaskWrapper = styled.div`
   align-items: center;
   font-size: inherit;
   border: none;
+  min-width: 21.838rem;
   background-color: var(--light-gray-background);
   border-radius: 1.5rem;
   min-height: 5.563rem;

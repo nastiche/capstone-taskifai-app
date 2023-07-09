@@ -305,6 +305,7 @@ export default function RegularTaskInputForm({
                   rows="1"
                   wrap="hard"
                   maxLength={84}
+                  variant={existingTaskData ? "edit" : "create"}
                   onChange={(event) => handleChangeSubtask(event, subtask.id)}
                   ref={(ref) => {
                     subtaskInputRef.current[index] = ref;
@@ -663,6 +664,12 @@ const SubtaskInput = styled.textarea`
   height: auto;
   resize: none;
   overflow-y: hidden;
+
+  ${({ variant }) =>
+    variant === "edit" &&
+    css`
+      min-height: 4.375rem;
+    `}
 
   ::placeholder {
     white-space: pre-line;

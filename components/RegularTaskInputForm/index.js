@@ -532,12 +532,12 @@ const SubtaskWrapper = styled.div`
   border: none;
   background-color: var(--light-gray-background);
   border-radius: 1.5rem;
-
+  min-height: 51px;
   ${({ variant }) =>
     variant === "edit" &&
     css`
       min-height: 5.563rem;
-    `}
+    `};
 `;
 
 const SubtaskInput = styled.textarea`
@@ -552,7 +552,7 @@ const SubtaskInput = styled.textarea`
   margin-right: 0.5rem;
   min-width: 21.838rem;
 
-  height: auto;
+  min-height: 51px;
   resize: none;
   overflow-y: hidden;
 

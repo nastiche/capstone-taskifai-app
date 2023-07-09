@@ -660,7 +660,6 @@ const SubtaskInput = styled.textarea`
   flex: 1;
   margin-right: 0.5rem;
 
-  min-height: 5.563rem;
   height: auto;
   resize: none;
   overflow-y: hidden;
@@ -668,7 +667,7 @@ const SubtaskInput = styled.textarea`
   ${({ variant }) =>
     variant === "edit" &&
     css`
-      min-height: 4.375rem;
+      min-height: 5.563rem;
     `}
 
   ::placeholder {

@@ -21,6 +21,7 @@ export default createGlobalStyle`
   :root {
   --black-color: #000000;
   --light-gray-background: #eeeded;
+  --light-gray-placeholder: #878282;
   --low-priority-card: #a3ffb7;
   --low-priority-icon: #35b832;
   --medium-priority-card: #cec7ff;
@@ -29,6 +30,7 @@ export default createGlobalStyle`
   --high-priority-icon: #d07253;
   --no-priority-card: #7cded0;
   --no-priority-icon: #31b9a5
+  --input-focus: #a194fa
  
 
   --icon-big: 2.5rem;

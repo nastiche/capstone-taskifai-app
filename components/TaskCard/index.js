@@ -131,34 +131,39 @@ export default function TaskCard({
         {taskDetailsDisplay ? (
           <>
             <TaskDetailsContainer>
-              <BoldText>subtasks: </BoldText>
               {subtasks.length > 0 ? (
-                <SubtasksContainer>
-                  {subtasks.map((subtask) => (
-                    <SubtaskContainer key={subtask.id}>
-                      <SubtaskText>{subtask.value}</SubtaskText>
-                    </SubtaskContainer>
-                  ))}
-                </SubtasksContainer>
+                <>
+                  <BoldText>subtasks: </BoldText>
+                  <SubtasksContainer>
+                    {subtasks.map((subtask) => (
+                      <SubtaskContainer key={subtask.id}>
+                        <SubtaskText>{subtask.value}</SubtaskText>
+                      </SubtaskContainer>
+                    ))}
+                  </SubtasksContainer>
+                </>
               ) : null}
-              <BoldText>image: </BoldText>
+
               {image_url && image_url !== "" ? (
-                <ImageContainer>
-                  <ImageButtonContainer>
-                    <TaskImage
-                      alt="image"
-                      src={image_url}
-                      width="100"
-                      height="100"
-                    />
-                    <ExpandImageButton
-                      onClick={() => setShowImage(true)}
-                      variant="extra-small"
-                    >
-                      <Icon labelText={"show image"} />
-                    </ExpandImageButton>
-                  </ImageButtonContainer>
-                </ImageContainer>
+                <>
+                  <BoldText>image: </BoldText>
+                  <ImageContainer>
+                    <ImageButtonContainer>
+                      <TaskImage
+                        alt="image"
+                        src={image_url}
+                        width="100"
+                        height="100"
+                      />
+                      <ExpandImageButton
+                        onClick={() => setShowImage(true)}
+                        variant="extra-small"
+                      >
+                        <Icon labelText={"show image"} />
+                      </ExpandImageButton>
+                    </ImageButtonContainer>
+                  </ImageContainer>
+                </>
               ) : null}
 
               {original_task_description !== "" ? (
@@ -377,6 +382,8 @@ const SubtasksContainer = styled.div`
 `;
 
 const SubtaskContainer = styled.div`
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 1rem;
   background: var(--light-gray-background);

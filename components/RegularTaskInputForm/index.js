@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import { Button } from "../Button/Button";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
 import { StyledLink } from "../NavigationLink/NavigationLink";
+import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -27,7 +28,9 @@ export default function RegularTaskInputForm({
 }) {
   // Reference for title and subtasks form input fields
   const titleInputRef = useRef(null);
-  const subtaskRef = useRef([]);
+  const subtaskInputRef = useRef([]);
+  const fileInputRef = useRef(null);
+  const deadlineInputRef = useRef(null);
 
   // State for form input fields' values
   const [taskData, setTaskData] = useState(initialTaskData);
@@ -41,12 +44,12 @@ export default function RegularTaskInputForm({
 
   //  State to check whether user chose an image to attach to the task
   const [imageChosen, setImageChosen] = useState(false);
+  const [currentImageValue, setCurrentImageValue] = useState("");
 
   // Focus on title input field after page refresh
   useEffect(() => {
     titleInputRef.current.focus();
   }, []);
-
   // Hook used to check whether the input form gets
   //  the prop existingTaskData (comes from TaskEditPage) or the prop newAiTaskData (comes from CreateTaskPage)
   useEffect(() => {
@@ -90,7 +93,7 @@ export default function RegularTaskInputForm({
   // Focus on the latest added subtask input field
   useEffect(() => {
     if (taskData.subtasks.length > 0) {
-      subtaskRef.current[taskData.subtasks.length - 1]?.focus();
+      subtaskInputRef.current[taskData.subtasks.length - 1]?.focus();
     }
     setAddingSubtask(false);
   }, [addingSubtask]);
@@ -179,10 +182,18 @@ export default function RegularTaskInputForm({
       [name]: value,
     }));
   }
-
+  console.log(taskData.deadline);
   // Handle radio button change for priority selection
   function handleRadioButtonChange(newPriority) {
     setTaskData({ ...taskData, priority: newPriority });
+  }
+
+  function handleFileDelete() {
+    setCurrentImageValue("");
+    const fileInput = document.getElementById("image_upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
   }
 
   // Handle form submission
@@ -208,9 +219,8 @@ export default function RegularTaskInputForm({
       taskFormData.priority = "none";
     }
 
-    console.log(taskFormData);
     let imageUrl = "";
-    if (imageChosen) {
+    if (currentImageValue !== "" && currentImageValue !== undefined) {
       const response = await fetch("/api/tasks/image", {
         method: "post",
         body: formData,
@@ -242,6 +252,7 @@ export default function RegularTaskInputForm({
     if (fileInput) {
       fileInput.value = "";
     }
+    setCurrentImageValue("");
     titleInputRef.current.focus();
   }
 
@@ -280,14 +291,15 @@ export default function RegularTaskInputForm({
                     handleChangeSubtask(subtask.id, event.target.value)
                   }
                   ref={(ref) => {
-                    subtaskRef.current[index] = ref;
+                    subtaskInputRef.current[index] = ref;
                   }}
                 />
-                <DeleteSubtaskButton
+                <Button
+                  variant="extra-small"
                   onClick={() => handleDeleteSubtask(subtask.id)}
                 >
-                  X
-                </DeleteSubtaskButton>
+                  <Icon labelText={"remove subtask"} />
+                </Button>
               </SubtaskWrapper>
             ))
           : null}
@@ -324,6 +336,7 @@ export default function RegularTaskInputForm({
           id="deadline"
           name="deadline"
           type="date"
+          ref={deadlineInputRef}
           rows="1"
           value={taskData.deadline}
           onChange={handleChangeDeadline}
@@ -331,35 +344,38 @@ export default function RegularTaskInputForm({
         <BoldText>priority</BoldText>
         <RadioButtonGroup id="priority" name="priority">
           <RadioButtonLabel htmlFor="priority-high">
-            <input
+            <Input
               id="priority-high"
               type="radio"
               name="priority"
               value="high"
               checked={taskData.priority === "high"}
               onChange={() => handleRadioButtonChange("high")}
+              variant="priority-high"
             />
             high
           </RadioButtonLabel>
           <RadioButtonLabel htmlFor="priority-medium">
-            <input
+            <Input
               id="priority-medium"
               type="radio"
               name="priority"
               value="medium"
               checked={taskData.priority === "medium"}
               onChange={() => handleRadioButtonChange("medium")}
+              variant="priority-medium"
             />
             medium
           </RadioButtonLabel>
           <RadioButtonLabel htmlFor="priority-low">
-            <input
+            <Input
               id="priority-low"
               type="radio"
               name="priority"
               value="low"
               checked={taskData.priority === "low"}
               onChange={() => handleRadioButtonChange("low")}
+              variant="priority-low"
             />
             low
           </RadioButtonLabel>
@@ -376,17 +392,48 @@ export default function RegularTaskInputForm({
           </>
         ) : null}
 
-        <Label htmlFor="image_upload">
-          {existingTaskData && existingTaskData.image_url !== ""
-            ? "change image:"
-            : "upload image:"}
-        </Label>
-        <input
-          type="file"
-          id="image_upload"
-          name="file"
-          onChange={() => setImageChosen(true)}
-        ></input>
+        <BoldText>image: </BoldText>
+        {currentImageValue === "" ? (
+          <FileUploadContainer>
+            <ChooseImageContainer>
+              <FileInput
+                type="file"
+                id="image_upload"
+                name="file"
+                ref={fileInputRef}
+                onChange={(event) => {
+                  setImageChosen(true);
+                  setCurrentImageValue(event.target.value);
+                }}
+              ></FileInput>
+              <StyledIcon variant="small">
+                <Icon labelText={"choose image for upload"} />
+              </StyledIcon>
+            </ChooseImageContainer>
+          </FileUploadContainer>
+        ) : (
+          <FileUploadContainer>
+            <ChooseImageContainer>
+              <FileInput
+                type="file"
+                id="image_upload"
+                name="file"
+                ref={fileInputRef}
+                onChange={(event) => {
+                  setImageChosen(true);
+                  setCurrentImageValue(event.target.value);
+                }}
+              ></FileInput>
+              <StyledIcon variant="small">
+                <Icon labelText={"change image for upload"} />
+              </StyledIcon>
+            </ChooseImageContainer>
+            <Button onClick={handleFileDelete} variant="small">
+              <Icon labelText={"delete image"} />
+            </Button>
+          </FileUploadContainer>
+        )}
+
         {(taskData.original_task_description !== null &&
           taskData.original_task_description !== "" &&
           aiResponseStatus) ||
@@ -434,7 +481,7 @@ export default function RegularTaskInputForm({
 const FormContainer = styled.form`
   display: grid;
   grid-template-columns: auto;
-  margin-bottom: 110px;
+  margin-bottom: 90px;
   gap: 0.5rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -443,35 +490,156 @@ const FormContainer = styled.form`
 const SubtaskWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  border: 3px solid black;
-  border-radius: 0.5rem;
+  font-size: inherit;
+  border: none;
+  background-color: var(--light-gray-background);
+  border-radius: 1.5rem;
 `;
 
 const Input = styled.input`
-  padding: 0.5rem;
+  padding: 1rem;
   font-size: inherit;
-  border: 3px solid black;
-  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--light-gray-background);
+  border-radius: 1.5rem;
+  color: ${(props) =>
+    props.value === "" || props.value === undefined ? "gray" : "black"};
+  :focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #a194fa;
+  }
+  ::placeholder {
+    white-space: pre-line;
+    color: var(--light-gray-placeholder);
+  }
+
+  ${({ variant }) =>
+    variant === "priority-high" &&
+    css`
+      margin-bottom: 0.3rem;
+      :after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: white;
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+      }
+      :checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: var(--high-priority-card);
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+        outline: 5px solid #f6c6d8;
+        box-shadow: 2px #f6c6d8;
+      }
+    `}
+  ${({ variant }) =>
+    variant === "priority-medium" &&
+    css`
+      margin-bottom: 0.3rem;
+      :after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: white;
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+      }
+      :checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: var(--medium-priority-card);
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+        outline: 5px solid #cec7ff;
+        box-shadow: 2px #cec7ff;
+      }
+    `}
+    ${({ variant }) =>
+    variant === "priority-low" &&
+    css`
+      margin-bottom: 0.3rem;
+      :after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: white;
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+      }
+      :checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -2px;
+        left: -1px;
+        position: relative;
+        background-color: var(--low-priority-card);
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 0.2rem solid black;
+        outline: 5px solid #a3ffb7;
+        box-shadow: 2px #a3ffb7;
+      }
+    `}
 `;
 
 const SubtaskInput = styled.input`
-  padding: 0.5rem;
+  padding: 1rem;
   font-size: inherit;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 1.5rem;
+  background-color: var(--light-gray-background);
   flex: 1;
   margin-right: 0.5rem;
+  ::placeholder {
+    white-space: pre-line;
+    color: var(--light-gray-placeholder);
+  }
+  :focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #a194fa;
+  }
 `;
 
 const Label = styled.label`
-  font-weight: 700;
+  font-size: 0.9rem;
 `;
 
 const RadioButtonGroup = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 2rem;
 `;
 
 const RadioButtonLabel = styled.label`
@@ -479,15 +647,36 @@ const RadioButtonLabel = styled.label`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  color: var(--light-gray-placeholder);
 `;
 
 const MyTagsWrapper = styled.div`
   .ReactTags__tagInputField {
+    padding: 1rem;
     width: 100%;
-    border: 3px solid black;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
     font-size: inherit;
+    border: none;
+    background-color: var(--light-gray-background);
+    border-radius: 1.5rem;
+    margin-top: 0.3rem;
+    :focus {
+      outline: none !important;
+      box-shadow: 0 0 10px #a194fa;
+    }
+    ::placeholder {
+      white-space: pre-line;
+      color: var(--light-gray-placeholder);
+    }
+  }
+  .ReactTags__remove {
+    border-radius: 1.5rem;
+    border: none;
+    background-color: black;
+    color: white;
+    margin: 0.1rem;
+  }
+  .ReactTags__tag {
+    margin-right: 0.3rem;
   }
 `;
 
@@ -502,17 +691,7 @@ const keyCodes = {
 const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 const BoldText = styled.span`
-  font-weight: 700;
-`;
-
-const DeleteSubtaskButton = styled.button`
-  padding: 0.5rem;
-  font-size: inherit;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  color: red;
-  font-weight: bold;
+  font-size: 0.9rem;
 `;
 
 const Textarea = styled.textarea`
@@ -525,4 +704,63 @@ const Textarea = styled.textarea`
 const TaskImage = styled(Image)`
   width: 100%;
   height: 100%;
+`;
+
+const StyledIcon = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 300;
+  height: 2.5rem;
+  width: 2.5rem;
+  pointer-events: none;
+  background-color: var(--black-color);
+  border-radius: 1.5rem;
+  ${({ variant }) =>
+    variant === "small" &&
+    css`
+      height: var(--button-small);
+      width: var(--button-small);
+      svg {
+        height: var(--icon-small);
+        width: var(--icon-small);
+      }
+    `}
+`;
+
+const FileInput = styled.input`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  opacity: 0;
+  border: none;
+  height: 2.5rem;
+  width: 2.5rem;
+  z-index: 400;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+`;
+
+const ChooseImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  gap: 3rem;
+  height: 2.5rem;
+  width: 2.5rem;
+`;
+
+const FileUploadContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  gap: 4.4rem;
+  width: 100%;
+  height: 2.5rem;
 `;

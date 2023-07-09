@@ -14,20 +14,24 @@ export const Button = styled.button`
     css`
       height: var(--button-big);
       width: var(--button-big);
+      z-index: 9000;
       svg {
         height: var(--icon-big);
         width: var(--icon-big);
+        z-index: 9001;
       }
     `}
 
   ${({ variant }) =>
     variant === "medium" &&
     css`
+      z-index: 9000;
       height: var(--button-medium);
       width: var(--button-medium);
       svg {
         height: var(--icon-medium);
         width: var(--icon-medium);
+        z-index: 9001;
       }
     `}
 

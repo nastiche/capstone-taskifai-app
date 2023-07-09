@@ -298,7 +298,10 @@ export default function RegularTaskInputForm({
         <BoldText>subtasks</BoldText>
         {taskData.subtasks && taskData.subtasks.length > 0
           ? taskData.subtasks.map((subtask, index) => (
-              <SubtaskWrapper key={subtask.id}>
+              <SubtaskWrapper
+                key={subtask.id}
+                variant={existingTaskData ? "edit" : "create"}
+              >
                 <SubtaskInput
                   id={subtask.id}
                   value={subtask.value}
@@ -311,12 +314,12 @@ export default function RegularTaskInputForm({
                     subtaskInputRef.current[index] = ref;
                   }}
                 />
-                <Button
+                <DeleteSubtaskButton
                   variant="extra-small"
                   onClick={() => handleDeleteSubtask(subtask.id)}
                 >
                   <Icon labelText={"remove subtask"} />
-                </Button>
+                </DeleteSubtaskButton>
               </SubtaskWrapper>
             ))
           : null}
@@ -491,15 +494,6 @@ const FormContainer = styled.form`
   margin-right: 0.5rem;
 `;
 
-const SubtaskWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: inherit;
-  border: none;
-  background-color: var(--light-gray-background);
-  border-radius: 1.5rem;
-`;
-
 const TitleInput = styled.textarea`
   padding: 1rem;
   font-size: inherit;
@@ -528,6 +522,65 @@ const TitleInput = styled.textarea`
     box-shadow: 0 0 10px #a194fa;
     height: auto;
   }
+`;
+
+const SubtaskWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: inherit;
+  border: none;
+  background-color: var(--light-gray-background);
+  border-radius: 1.5rem;
+
+  ${({ variant }) =>
+    variant === "edit" &&
+    css`
+      min-height: 5.563rem;
+    `}
+`;
+
+const SubtaskInput = styled.textarea`
+  position: absolute;
+  padding: 1rem;
+  padding-right: 1.5rem;
+  font-size: inherit;
+  border: none;
+  border-radius: 1.5rem;
+  background-color: var(--light-gray-background);
+  flex: 1;
+  margin-right: 0.5rem;
+  min-width: 21.838rem;
+
+  height: auto;
+  resize: none;
+  overflow-y: hidden;
+
+  ${({ variant }) =>
+    variant === "edit" &&
+    css`
+      min-height: 5.563rem;
+    `}
+
+  ::placeholder {
+    white-space: pre-line;
+    color: var(--light-gray-placeholder);
+  }
+  :focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #a194fa;
+    height: auto;
+  }
+`;
+
+const DeleteSubtaskButton = styled(Button)`
+  position: absolute;
+  right: -0.2rem;
+  bottom: -0.2rem;
+`;
+
+const Label = styled.label`
+  font-size: 0.9rem;
 `;
 
 const Input = styled.input`
@@ -649,40 +702,6 @@ const Input = styled.input`
         box-shadow: 2px #a3ffb7;
       }
     `}
-`;
-
-const SubtaskInput = styled.textarea`
-  padding: 1rem;
-  font-size: inherit;
-  border: none;
-  border-radius: 1.5rem;
-  background-color: var(--light-gray-background);
-  flex: 1;
-  margin-right: 0.5rem;
-
-  height: auto;
-  resize: none;
-  overflow-y: hidden;
-
-  ${({ variant }) =>
-    variant === "edit" &&
-    css`
-      min-height: 5.563rem;
-    `}
-
-  ::placeholder {
-    white-space: pre-line;
-    color: var(--light-gray-placeholder);
-  }
-  :focus {
-    outline: none !important;
-    box-shadow: 0 0 10px #a194fa;
-    height: auto;
-  }
-`;
-
-const Label = styled.label`
-  font-size: 0.9rem;
 `;
 
 const RadioButtonGroup = styled.div`

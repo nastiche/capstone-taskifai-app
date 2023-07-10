@@ -209,7 +209,7 @@ export default function RegularTaskInputForm({
       [name]: value,
     }));
   }
-  console.log(`AI: ${newAiTaskData}, edit: ${existingTaskData}`);
+
   // Handle radio button change for priority selection
   function handleRadioButtonChange(newPriority) {
     setTaskData({ ...taskData, priority: newPriority });
@@ -226,9 +226,7 @@ export default function RegularTaskInputForm({
       fileInput.value = "";
     }
   }
-  console.log(
-    `currentImageValue: ${currentImageValue}; taskData.image_url: ${taskData.image_url}`
-  );
+ 
   // Handle form submission
   async function handleSubmit(event) {
     event.preventDefault();
@@ -368,6 +366,7 @@ export default function RegularTaskInputForm({
             inputValue={tagInputValue}
             handleInputChange={(event) => handleChangeTag(event)}
             allowNew
+            allowDeleteFromEmptyInput="true"
           />
         </MyTagsWrapper>
         <Label htmlFor="deadline">deadline</Label>

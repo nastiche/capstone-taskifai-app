@@ -213,14 +213,15 @@ export default function CreateTaskPage() {
             <Switch
               checked={aiMode !== undefined ? aiMode : false}
               onChange={() => setAiMode(!aiMode)}
-              onColor="#a3ffb7"
-              onHandleColor="#5cce5a"
-              offColor="000000"
+              onColor="#cec7ff"
+              onHandleColor="#a194fa"
+              offColor="#bdbdbd"
+              offHandleColor="#000000"
               handleDiameter={24}
               uncheckedIcon={false}
               checkedIcon={false}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              // boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              // activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
               height={16}
               width={40}
             />
@@ -252,7 +253,7 @@ const SwitchWrapper = styled.div`
   justify-content: center;
   gap: 10px;
   align-items: end;
-  padding: 25px;
+  padding: 1rem;
   width: 100%;
 `;
 

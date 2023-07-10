@@ -15,9 +15,11 @@ export const StyledLink = styled(Link)`
     css`
       height: var(--link-big);
       width: var(--link-big);
+      z-index: 9500;
       svg {
         height: var(--icon-big);
         width: var(--icon-big);
+        z-index: 9600;
       }
     `}
 
@@ -26,20 +28,23 @@ export const StyledLink = styled(Link)`
     css`
       height: var(--link-medium);
       width: var(--link-medium);
+      z-index: 9500;
       svg {
         height: var(--icon-medium);
         width: var(--icon-medium);
+        z-index: 9600;
       }
     `}
-
-  ${({ variant }) =>
+    ${({ variant }) =>
     variant === "small" &&
     css`
-      height: var(--link-small);
-      width: var(--link-small);
+      height: var(--button-small);
+      width: var(--button-small);
+    
       svg {
         height: var(--icon-small);
         width: var(--icon-small);
+    
       }
     `}
 `;

@@ -14,9 +14,11 @@ export const Button = styled.button`
     css`
       height: var(--button-big);
       width: var(--button-big);
+      z-index: 9500;
       svg {
         height: var(--icon-big);
         width: var(--icon-big);
+        z-index: 9600;
       }
     `}
 
@@ -25,9 +27,11 @@ export const Button = styled.button`
     css`
       height: var(--button-medium);
       width: var(--button-medium);
+      z-index: 9500;
       svg {
         height: var(--icon-medium);
         width: var(--icon-medium);
+        z-index: 9600;
       }
     `}
 
@@ -37,6 +41,7 @@ export const Button = styled.button`
     css`
       height: var(--button-small);
       width: var(--button-small);
+
       svg {
         height: var(--icon-small);
         width: var(--icon-small);

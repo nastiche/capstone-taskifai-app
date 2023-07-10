@@ -76,10 +76,10 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
           id="original_task_description"
           name="original_task_description"
           type="text"
-          rows="21"
+          rows="20"
           required
           wrap="hard"
-          maxLength={450}
+          maxLength={400}
           value={taskData.original_task_description}
           onChange={handleChangeTaskDescription}
           ref={original_task_descriptionInputRef}
@@ -116,15 +116,22 @@ const FormContainer = styled.form`
 `;
 
 const Label = styled.label`
-  font-weight: 700;
+  font-size: 0.9rem;
 `;
 
 const Textarea = styled.textarea`
-  padding: 0.5rem;
   font-size: inherit;
-  border: 3px solid black;
-  border-radius: 0.5rem;
-  :placeholder {
+  padding: 1rem;
+  border: none;
+  background-color: var(--light-gray-background);
+  border-radius: 1.5rem;
+  ::placeholder {
     white-space: pre-line;
+    color: var(--light-gray-placeholder);
+  }
+
+  :focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #a194fa;
   }
 `;

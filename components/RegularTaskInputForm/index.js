@@ -226,7 +226,7 @@ export default function RegularTaskInputForm({
       fileInput.value = "";
     }
   }
- 
+
   // Handle form submission
   async function handleSubmit(event) {
     event.preventDefault();
@@ -418,7 +418,7 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
-        <SmallText>image: </SmallText>
+        <SmallText>image</SmallText>
         {currentImageValue !== "" ||
         (taskData.image_url && taskData.image_url !== "") ? (
           <FileUploadContainer>

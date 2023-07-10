@@ -16,11 +16,15 @@ export default createGlobalStyle`
   body {
     margin: 0;
     background: var(--black-color);
+    -ms-overflow-style: none;
+    
   }
   textarea, input, button, select {
     font-family: inherit;
     font-size: inherit;
   }
+
+
 
 
 

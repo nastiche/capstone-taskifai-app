@@ -99,7 +99,7 @@ export default function TaskCard({
           <PriorityContainer priorityVariant={priority}>
             {priority !== "none" ? priority : null}
           </PriorityContainer>
-          {!taskDetailsDisplay ? (
+          {/* {!taskDetailsDisplay ? (
             <IconContainer variant="absolute">
               <Button
                 type="button"
@@ -112,7 +112,7 @@ export default function TaskCard({
                 <Icon labelText={"show task details"} />
               </Button>
             </IconContainer>
-          ) : null}
+          ) : null} */}
         </TaskPreviewContainer>
         <TaskDetailsContainerWrap
           variant={taskDetailsDisplay ? "details" : "preview"}
@@ -168,8 +168,8 @@ export default function TaskCard({
             ) : null}
           </TaskDetailsContainer>
         </TaskDetailsContainerWrap>
-        {taskDetailsDisplay ? (
-          <DetailsIconContainer variant="absolute">
+        <DetailsIconContainer variant="absolute">
+          {taskDetailsDisplay ? (
             <StyledLink
               href={{ pathname: `/edit`, query: { id: id } }}
               variant="medium"
@@ -177,6 +177,19 @@ export default function TaskCard({
             >
               <Icon labelText={"go to the task edit page"} />
             </StyledLink>
+          ) : null}
+          {!taskDetailsDisplay ? (
+            <Button
+              type="button"
+              aria-hidden="true"
+              onClick={() => {
+                setTaskDetailsDisplay(true);
+              }}
+              variant="small"
+            >
+              <Icon labelText={"show task details"} />
+            </Button>
+          ) : (
             <Button
               type="button"
               aria-hidden="true"
@@ -188,6 +201,8 @@ export default function TaskCard({
             >
               <Icon labelText={"hide task details"} />
             </Button>
+          )}
+          {taskDetailsDisplay ? (
             <Button
               onClick={() => setDeleteTaskMode(true)}
               variant="medium"
@@ -195,8 +210,8 @@ export default function TaskCard({
             >
               <Icon labelText={"delete task"} />
             </Button>
-          </DetailsIconContainer>
-        ) : null}
+          ) : null}
+        </DetailsIconContainer>
       </TaskCardContainer>
     );
   }
@@ -265,7 +280,7 @@ const TaskDetailsContainer = styled.div`
 `;
 
 const DetailsIconContainer = styled(IconContainer)`
-  bottom: -1.6rem;
+  bottom: -1.5rem;
 `;
 
 const TitleContainer = styled.div`

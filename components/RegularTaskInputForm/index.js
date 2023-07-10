@@ -816,14 +816,11 @@ const ChooseImageContainer = styled.div`
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`
-  flex-direction: column;
-  gap: 0.5rem;
   width: 100%;
   background: white;
   border-radius: 1rem;
   padding: 1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  color: var(--light-gray-placeholder);
   border: none;
   background-color: var(--light-gray-background);
 `;

@@ -6,6 +6,7 @@ import { Button } from "../Button/Button";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
 import { StyledLink } from "../NavigationLink/NavigationLink";
+import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -16,6 +17,13 @@ const initialTaskData = {
   priority: "",
   original_task_description: "",
 };
+
+// Mesagges for info banners
+const BannerMessageWarning = () => (
+  <div>
+    Valid characters are <BoldText>a-z 0-9 _ -</BoldText>
+  </div>
+);
 
 export default function RegularTaskInputForm({
   onSubmit,
@@ -138,16 +146,29 @@ export default function RegularTaskInputForm({
 
   // Handle input change in the tags input field
   function handleChangeTag(input) {
-    const lastCharacter = input.slice(-1);
-    const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
-    const isValidDelimiter = [",", ";"].includes(lastCharacter);
+    if (input.length > 1) {
+      const inputCopy = input;
+      const lastCharacter = inputCopy.slice(-1);
+      const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
+      const isValidDelimiter = [",", ";"].includes(lastCharacter);
 
-    if (!isValidCharacter && !isValidDelimiter) {
-      // Show a warning or error message to the user
-      console.log("Invalid character entered!");
-      return;
+      if (!isValidCharacter && !isValidDelimiter) {
+        // Show a warning or error message to the user
+
+        // Info banner
+        toast.error(<BannerMessageWarning />, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return;
+      }
     }
-
     setTagInputValue(input);
   }
 
@@ -297,7 +318,7 @@ export default function RegularTaskInputForm({
               : "empty data"
           }
         />
-        <BoldText>subtasks</BoldText>
+        <SmallText>subtasks</SmallText>
         {taskData.subtasks && taskData.subtasks.length > 0
           ? taskData.subtasks.map((subtask, index) => (
               <SubtaskWrapper key={subtask.id}>
@@ -359,7 +380,7 @@ export default function RegularTaskInputForm({
           value={taskData.deadline}
           onChange={handleChangeDeadline}
         />
-        <BoldText>priority</BoldText>
+        <SmallText>priority</SmallText>
         <RadioButtonGroup id="priority" name="priority">
           <RadioButtonLabel htmlFor="priority-high">
             <Input
@@ -398,7 +419,7 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
-        <BoldText>image: </BoldText>
+        <SmallText>image: </SmallText>
         {currentImageValue !== "" ||
         (taskData.image_url && taskData.image_url !== "") ? (
           <FileUploadContainer>
@@ -751,6 +772,9 @@ const keyCodes = {
 const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 const BoldText = styled.span`
+  font-weight: 700;
+`;
+const SmallText = styled.span`
   font-size: 0.9rem;
 `;
 

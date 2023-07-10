@@ -448,19 +448,13 @@ export default function RegularTaskInputForm({
           taskData.original_task_description !== "" &&
           existingTaskData) ? (
           <>
-            <Label htmlFor="original_task_description">
+            <span htmlFor="original_task_description">
               original task description
-            </Label>
-            <Textarea
-              id="original_task_description"
-              name="original_task_description"
-              type="text"
-              required
-              wrap="hard"
-              value={taskData.original_task_description}
-              rows="5"
-              disabled
-            />
+            </span>
+            <OriginalTaskDescriptionContainer>
+              {" "}
+              {taskData.original_task_description}
+            </OriginalTaskDescriptionContainer>
           </>
         ) : null}
         <IconContainer variant="fixed">
@@ -762,20 +756,6 @@ const BoldText = styled.span`
   font-size: 0.9rem;
 `;
 
-const Textarea = styled.textarea`
-  padding: 1rem;
-  font-size: inherit;
-  border: none;
-  border-radius: 1.5rem;
-  background-color: var(--light-gray-background);
-  color: gray;
-`;
-
-const TaskImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-`;
-
 const StyledIcon = styled.div`
   position: relative;
   display: flex;
@@ -833,4 +813,17 @@ const ChooseImageContainer = styled.div`
   gap: 3rem;
   height: 2.5rem;
   width: 2.5rem;
+`;
+
+const OriginalTaskDescriptionContainer = styled.div`
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  background-color: var(--light-gray-background);
 `;

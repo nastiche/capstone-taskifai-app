@@ -501,13 +501,13 @@ const OriginalTaskDescriptionContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
   background: white;
   border-radius: 1rem;
   padding: 0.5rem;
+  padding-bottom: 0.7rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
 `;

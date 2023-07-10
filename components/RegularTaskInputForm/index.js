@@ -818,7 +818,7 @@ const ChooseImageContainer = styled.div`
 const OriginalTaskDescriptionContainer = styled.div`
   width: 100%;
   background: white;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   padding: 1rem;
   color: var(--light-gray-placeholder);
   border: none;

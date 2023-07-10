@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import { StyledContainer } from "../components/StyledContainer";
 import Image from "next/image";
+import { useState } from "react";
 
 const headerText = "edit task";
 const homeButtonShow = true;
@@ -14,6 +15,8 @@ const homeButtonShow = true;
 const BannerMessageSaved = () => <div>Task saved!</div>;
 
 export default function TaskEditPage() {
+  // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
+  const [pageIsLoading, setPageIsLoading] = useState(false);
   const router = useRouter();
   const { isReady } = router;
   const { id } = router.query;
@@ -25,6 +28,8 @@ export default function TaskEditPage() {
   } = useSWR(`/api/tasks/edit?id=${id}`);
 
   async function editTask(existingTaskData) {
+    // While app is waiting for API response (pageIsLoading === true) user sees an animation
+    setPageIsLoading(true);
     const response = await fetch(`/api/tasks/edit?id=${id}`, {
       method: "PATCH",
       headers: {
@@ -36,7 +41,7 @@ export default function TaskEditPage() {
       mutate();
     }
     router.push(`/`);
-
+    setPageIsLoading(false);
     // Info banner
     toast.success(<BannerMessageSaved />, {
       position: "top-center",
@@ -50,7 +55,7 @@ export default function TaskEditPage() {
     });
   }
 
-  if (!isReady || isLoading || error)
+  if (pageIsLoading || error || isLoading)
     return (
       // Display loading UI when the task is being created
       <LoadingBackground>

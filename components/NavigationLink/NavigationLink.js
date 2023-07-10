@@ -10,6 +10,12 @@ export const StyledLink = styled(Link)`
   border: none;
   cursor: pointer;
 
+  :active {
+    background-color: #cec7ff;
+    box-shadow: 0 5px #cec7ff;
+    transform: translateY(2px);
+  }
+
   ${({ variant }) =>
     variant === "big" &&
     css`
@@ -40,11 +46,10 @@ export const StyledLink = styled(Link)`
     css`
       height: var(--button-small);
       width: var(--button-small);
-    
+
       svg {
         height: var(--icon-small);
         width: var(--icon-small);
-    
       }
     `}
 `;

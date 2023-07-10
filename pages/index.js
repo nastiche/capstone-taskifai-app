@@ -11,6 +11,7 @@ import { Button } from "../components/Button/Button";
 import { StyledContainer } from "../components/StyledContainer";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
@@ -145,7 +146,7 @@ export default function TasksListPage() {
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
           <StyledContainer>
             <StyledWrapper>
-              <SortContainer>
+              <SortButton>
                 <StyledSelect
                   onChange={(event) => setSortType(event.target.value)}
                   value={sortType}
@@ -158,7 +159,7 @@ export default function TasksListPage() {
                 <StyledIcon>
                   <Icon labelText={`sort tasks list`} />
                 </StyledIcon>
-              </SortContainer>
+              </SortButton>
               {/* Button to toggle the sort direction */}
               <Button
                 onClick={toggleSortDirection}
@@ -238,7 +239,7 @@ const StyledWrapper = styled.div`
   height: 2.5rem;
 `;
 
-const SortContainer = styled.div`
+const SortButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;

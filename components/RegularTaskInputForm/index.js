@@ -2,12 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { v4 as uuidv4 } from "uuid";
-import Image from "next/image";
 import { Button } from "../Button/Button";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
 import { StyledLink } from "../NavigationLink/NavigationLink";
-import { toast } from "react-toastify";
 
 // Task data for initial state
 const initialTaskData = {
@@ -404,7 +402,7 @@ export default function RegularTaskInputForm({
         {currentImageValue !== "" ||
         (taskData.image_url && taskData.image_url !== "") ? (
           <FileUploadContainer>
-            <ChooseImageContainer>
+            <ChooseImageButton>
               <FileInput
                 type="file"
                 id="image_upload"
@@ -417,14 +415,14 @@ export default function RegularTaskInputForm({
               <StyledIcon variant="small">
                 <Icon labelText={"change image for upload"} />
               </StyledIcon>
-            </ChooseImageContainer>
+            </ChooseImageButton>
             <Button onClick={handleFileDelete} variant="small">
               <Icon labelText={"delete image"} />
             </Button>
           </FileUploadContainer>
         ) : (
           <FileUploadContainer>
-            <ChooseImageContainer>
+            <ChooseImageButton>
               <FileInput
                 type="file"
                 id="image_upload"
@@ -437,7 +435,7 @@ export default function RegularTaskInputForm({
               <StyledIcon variant="small">
                 <Icon labelText={"choose image for upload"} />
               </StyledIcon>
-            </ChooseImageContainer>
+            </ChooseImageButton>
           </FileUploadContainer>
         )}
 
@@ -805,14 +803,18 @@ const FileUploadContainer = styled.div`
   height: 2.5rem;
 `;
 
-const ChooseImageContainer = styled.div`
+const ChooseImageButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-
   gap: 3rem;
   height: 2.5rem;
   width: 2.5rem;
+  :active {
+    background-color: #cec7ff;
+    box-shadow: 0 5px #cec7ff;
+    transform: translateY(4px);
+  }
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`

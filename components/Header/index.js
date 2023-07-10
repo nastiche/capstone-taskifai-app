@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { StyledLink } from "../NavigationLink/NavigationLink.js";
-import { Icon } from "../Icon";
 
 export default function Header({ headerText, font }) {
   return (

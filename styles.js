@@ -7,6 +7,12 @@ export default createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
   }
+  *:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
   body {
     margin: 0;
     background: var(--black-color);

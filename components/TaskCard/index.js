@@ -18,9 +18,8 @@ export default function TaskCard({
   priority,
   original_task_description,
   image_url,
+  onDelete,
 }) {
-  const { mutate } = useSWR(`/api/tasks`);
-
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
 
   const [showImage, setShowImage] = useState(false);
@@ -30,39 +29,13 @@ export default function TaskCard({
 
   const [deleteTaskMode, setDeleteTaskMode] = useState(false);
 
-  // Mesagge for info banner
-  const BannerMessageSaved = () => <div>Task deleted!</div>;
-
-  async function deleteTask(id) {
-    const response = await fetch(`/api/tasks?id=${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(id),
-    });
-
-    if (response.ok) {
-      mutate();
-      // Info banner
-      toast.success(<BannerMessageSaved />, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  }
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString("en-US", {
         day: "numeric",
         month: "short",
       })
     : "";
+
   if (showImage) {
     return (
       <ModalBackground>
@@ -85,7 +58,7 @@ export default function TaskCard({
             <ModalText>delete task?</ModalText>
           </DeleteTaskModal>
           <DeleteTaskIconsContainer>
-            <StyledButton variant="medium" onClick={() => deleteTask(id)}>
+            <StyledButton variant="medium" onClick={() => onDelete(id)}>
               <Icon labelText={"confirm task deletion"} />
             </StyledButton>
             <StyledButton
@@ -100,7 +73,11 @@ export default function TaskCard({
     );
   } else {
     return (
-      <TaskCardContainer priorityVariant={priority}>
+      <TaskCardContainer
+        priorityVariant={priority}
+        sizeVariant={taskDetailsDisplay ? "details" : "preview"}
+        className="task-card-container"
+      >
         <TaskPreviewContainer sizeVariant="preview">
           <TitleContainer>
             <TitleText>{title}</TitleText>
@@ -122,7 +99,7 @@ export default function TaskCard({
           <PriorityContainer priorityVariant={priority}>
             {priority !== "none" ? priority : null}
           </PriorityContainer>
-          {!taskDetailsDisplay ? (
+          {/* {!taskDetailsDisplay ? (
             <IconContainer variant="absolute">
               <Button
                 type="button"
@@ -135,110 +112,106 @@ export default function TaskCard({
                 <Icon labelText={"show task details"} />
               </Button>
             </IconContainer>
-          ) : null}
+          ) : null} */}
         </TaskPreviewContainer>
-        {taskDetailsDisplay ? (
-          <>
-            <TaskDetailsContainer>
-              {subtasks.length > 0 ? (
-                <>
-                  <BoldText>subtasks: </BoldText>
-                  <SubtasksContainer>
-                    {subtasks.map((subtask) => (
-                      <SubtaskContainer key={subtask.id}>
-                        <SubtaskText>{subtask.value}</SubtaskText>
-                      </SubtaskContainer>
-                    ))}
-                  </SubtasksContainer>
-                </>
-              ) : null}
+        <TaskDetailsContainerWrap
+          variant={taskDetailsDisplay ? "details" : "preview"}
+        >
+          <TaskDetailsContainer
+            variant={taskDetailsDisplay ? "details" : "preview"}
+          >
+            {subtasks.length > 0 ? (
+              <>
+                <BoldText>subtasks: </BoldText>
+                <SubtasksContainer>
+                  {subtasks.map((subtask) => (
+                    <SubtaskContainer key={subtask.id}>
+                      <SubtaskText>{subtask.value}</SubtaskText>
+                    </SubtaskContainer>
+                  ))}
+                </SubtasksContainer>
+              </>
+            ) : null}
 
-              {image_url && image_url !== "" ? (
-                <>
-                  <BoldText>image: </BoldText>
-                  <ImageContainer>
-                    <ImageButtonContainer>
-                      <TaskImage
-                        alt="image"
-                        src={image_url}
-                        width="100"
-                        height="100"
-                      />
-                      <ExpandImageButton
-                        onClick={() => setShowImage(true)}
-                        variant="extra-small"
-                      >
-                        <Icon labelText={"show image"} />
-                      </ExpandImageButton>
-                    </ImageButtonContainer>
-                  </ImageContainer>
-                </>
-              ) : null}
+            {image_url && image_url !== "" ? (
+              <>
+                <BoldText>image: </BoldText>
+                <ImageContainer>
+                  <ImageButtonContainer>
+                    <TaskImage
+                      alt="image"
+                      src={image_url}
+                      width="100"
+                      height="100"
+                    />
+                    <ExpandImageButton
+                      onClick={() => setShowImage(true)}
+                      variant="extra-small"
+                    >
+                      <Icon labelText={"show image"} />
+                    </ExpandImageButton>
+                  </ImageButtonContainer>
+                </ImageContainer>
+              </>
+            ) : null}
 
-              {original_task_description !== "" ? (
-                <>
-                  <BoldText>original task description: </BoldText>
+            {original_task_description !== "" ? (
+              <>
+                <BoldText>original task description: </BoldText>
 
-                  {showOriginalTaskDescription ? (
-                    <OriginalTaskDescriptionContainer>
-                      <OriginalTaskDescriptionInnerContainer>
-                        <OriginalTaskDescriptionText>
-                          {original_task_description}
-                        </OriginalTaskDescriptionText>
-                        <HideOriginalTaskDescriptionButton
-                          onClick={() => setShowOriginalTaskDescription(false)}
-                          variant="extra-small"
-                        >
-                          <Icon labelText={"hide original task description"} />
-                        </HideOriginalTaskDescriptionButton>
-                      </OriginalTaskDescriptionInnerContainer>
-                    </OriginalTaskDescriptionContainer>
-                  ) : (
-                    <>
-                      <OriginalTaskDescriptionHiddenContainer>
-                        {" "}
-                        <OriginalTaskDescriptionEmptyContainer />{" "}
-                        <ShowOriginalTaskDescriptionButton
-                          onClick={() => setShowOriginalTaskDescription(true)}
-                          variant="extra-small"
-                        >
-                          <Icon labelText={"show original task description"} />
-                        </ShowOriginalTaskDescriptionButton>
-                      </OriginalTaskDescriptionHiddenContainer>
-                    </>
-                  )}
-                </>
-              ) : null}
-              <IconContainer variant="absolute">
-                <StyledLink
-                  href={{ pathname: `/edit`, query: { id: id } }}
-                  variant="medium"
-                  aria-hidden="true"
-                >
-                  <Icon labelText={"go to the task edit page"} />
-                </StyledLink>
-                <Button
-                  type="button"
-                  aria-hidden="true"
-                  onClick={() => {
-                    setTaskDetailsDisplay(false);
-                    setShowOriginalTaskDescription(false);
-                  }}
-                  variant="small"
-                >
-                  <Icon labelText={"hide task details"} />
-                </Button>
-                <Button
-                  onClick={() => setDeleteTaskMode(true)}
-                  variant="medium"
-                  aria-hidden="true"
-                >
-                  <Icon labelText={"delete task"} />
-                </Button>
-              </IconContainer>
-            </TaskDetailsContainer>
-          </>
-        ) : null}
+                <OriginalTaskDescriptionContainer>
+                  <OriginalTaskDescriptionText>
+                    {original_task_description}
+                  </OriginalTaskDescriptionText>
+                </OriginalTaskDescriptionContainer>
+              </>
+            ) : null}
+          </TaskDetailsContainer>
+        </TaskDetailsContainerWrap>
+        <DetailsIconContainer variant="absolute">
+          {taskDetailsDisplay ? (
+            <StyledLink
+              href={{ pathname: `/edit`, query: { id: id } }}
+              variant="medium"
+              aria-hidden="true"
+            >
+              <Icon labelText={"go to the task edit page"} />
+            </StyledLink>
+          ) : null}
+          {!taskDetailsDisplay ? (
+            <Button
+              type="button"
+              aria-hidden="true"
+              onClick={() => {
+                setTaskDetailsDisplay(true);
+              }}
+              variant="small"
+            >
+              <Icon labelText={"show task details"} />
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              aria-hidden="true"
+              onClick={() => {
+                setTaskDetailsDisplay(false);
+                setShowOriginalTaskDescription(false);
+              }}
+              variant="small"
+            >
+              <Icon labelText={"hide task details"} />
+            </Button>
+          )}
+          {taskDetailsDisplay ? (
+            <Button
+              onClick={() => setDeleteTaskMode(true)}
+              variant="medium"
+              aria-hidden="true"
+            >
+              <Icon labelText={"delete task"} />
+            </Button>
+          ) : null}
+        </DetailsIconContainer>
       </TaskCardContainer>
     );
   }
@@ -257,6 +230,11 @@ const TaskCardContainer = styled.div`
   border: none;
   width: 100%;
 
+  ${({ sizeVariant }) =>
+    sizeVariant === "details" &&
+    css`
+      padding-bottom: 2.3rem;
+    `};
   ${({ priorityVariant }) =>
     priorityVariant === "low" &&
     css`
@@ -284,10 +262,25 @@ const TaskPreviewContainer = styled.div`
   min-height: 10rem;
 `;
 
+const TaskDetailsContainerWrap = styled.div`
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s;
+
+  ${({ variant }) =>
+    variant === "details" &&
+    css`
+      grid-template-rows: 1fr;
+    `};
+`;
+
 const TaskDetailsContainer = styled.div`
   position: relative;
-  margin-top: 0.2rem;
-  padding-bottom: 2rem;
+  overflow: hidden;
+`;
+
+const DetailsIconContainer = styled(IconContainer)`
+  bottom: -1.5rem;
 `;
 
 const TitleContainer = styled.div`
@@ -497,39 +490,22 @@ const DeleteTaskIconsContainer = styled.div`
   height: 3rem;
 `;
 
-const OriginalTaskDescriptionContainer = styled.div`
+const OriginalTaskDescriptionHiddenContainer = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  background: white;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-`;
-
-const OriginalTaskDescriptionEmptyContainer = styled.div`
-  border: solid white 1.5px;
+  border: none;
   height: 0.3rem;
   width: 100%;
-  background-color: white;
+  background: var(--light-gray-background);
   border-radius: 5rem;
   margin-top: 0.5rem;
 `;
 
-const OriginalTaskDescriptionHiddenContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.3rem;
-  flex-direction: column;
+const ShowOriginalTaskDescriptionButton = styled(Button)`
+  position: absolute;
+  bottom: -2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
 `;
-
-const ShowOriginalTaskDescriptionButton = styled(Button)``;
 
 const HideOriginalTaskDescriptionButton = styled(Button)`
   position: absolute;
@@ -538,11 +514,21 @@ const HideOriginalTaskDescriptionButton = styled(Button)`
   transform: translateX(-50%);
 `;
 
-const OriginalTaskDescriptionInnerContainer = styled.div`
+const OriginalTaskDescriptionContainer = styled.div`
   border: none;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   background: var(--light-gray-background);
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
+  margin-top: 0.5rem;
 `;
-const OriginalTaskDescriptionText = styled.span``;
+const OriginalTaskDescriptionText = styled.span`
+  font-size: 0.9rem;
+  color: var(--black-color);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  display: inline-block;
+`;

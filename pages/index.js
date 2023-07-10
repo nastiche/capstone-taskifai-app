@@ -9,22 +9,33 @@ import { IconContainer } from "../components/IconContainer";
 import { Icon } from "../components/Icon";
 import { Button } from "../components/Button/Button";
 import { StyledContainer } from "../components/StyledContainer";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
 
 export default function TasksListPage() {
   // Fetch task data using useSWR hook
-  const { data, isLoading } = useSWR("/api/tasks", {
+  const { data, mutate } = useSWR("/api/tasks", {
     fallbackData: [],
   });
 
   // State variables
+
+  // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
+  const [pageIsLoading, setPageIsLoading] = useState(false);
+
   const [sortedTasks, setSortedTasks] = useState([]); // Array to store sorted tasks
   const [sortType, setSortType] = useLocalStorageState(
     "sortType",
     "creation_date"
   ); // Sort type state with local storage persistence
+
+  // Mesagge for info banner
+  const BannerMessageSaved = () => <div>Task deleted!</div>;
+
   const [sortDirection, setSortDirection] = useLocalStorageState(
     "sort direction",
     "asc"
@@ -87,12 +98,47 @@ export default function TasksListPage() {
     sortArray(sortType);
   }, [sortType, sortDirection, data]);
 
-  if (isLoading) {
+  async function deleteTask(id) {
+    // While app is waiting for API response (pageIsLoading === true) user sees an animation
+    setPageIsLoading(true);
+    const response = await fetch(`/api/tasks?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(id),
+    });
+
+    if (response.ok) {
+      mutate();
+    }
+    setPageIsLoading(false);
+    // Info banner
+    toast.success(<BannerMessageSaved />, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  }
+
+  if (pageIsLoading) {
     return (
-      <>
-        <EmptyDiv></EmptyDiv>
-        <StyledLoadingDiv>...loading...</StyledLoadingDiv>
-      </>
+      // Display loading UI when the task is being created
+      <LoadingBackground>
+        <LoadingContainer>
+          <Gif
+            src="/loading.gif"
+            alt="circle loading gif"
+            width={200}
+            height={200}
+          />
+        </LoadingContainer>
+      </LoadingBackground>
     );
   } else {
     return (
@@ -100,7 +146,7 @@ export default function TasksListPage() {
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
           <StyledContainer>
             <StyledWrapper>
-              <SortContainer>
+              <SortButton>
                 <StyledSelect
                   onChange={(event) => setSortType(event.target.value)}
                   value={sortType}
@@ -113,7 +159,7 @@ export default function TasksListPage() {
                 <StyledIcon>
                   <Icon labelText={`sort tasks list`} />
                 </StyledIcon>
-              </SortContainer>
+              </SortButton>
               {/* Button to toggle the sort direction */}
               <Button
                 onClick={toggleSortDirection}
@@ -141,6 +187,7 @@ export default function TasksListPage() {
                       subtasks={task.subtasks}
                       original_task_description={task.original_task_description}
                       image_url={task.image_url}
+                      onDelete={deleteTask}
                     />
                   </ListItem>
                 );
@@ -177,16 +224,6 @@ const ListItem = styled.li`
   width: 100%;
 `;
 
-const EmptyDiv = styled.div`
-  height: 28px;
-`;
-
-const StyledLoadingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #a3ffb7;
-`;
-
 const StyledWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -202,7 +239,7 @@ const StyledWrapper = styled.div`
   height: 2.5rem;
 `;
 
-const SortContainer = styled.div`
+const SortButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -238,4 +275,38 @@ const StyledIcon = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9700;
+`;
+
+const LoadingBackground = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const Gif = styled(Image)`
+  border-radius: 100%;
 `;

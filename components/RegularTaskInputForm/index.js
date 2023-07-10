@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { WithContext as ReactTags } from "react-tag-input";
 import { v4 as uuidv4 } from "uuid";
-import Image from "next/image";
 import { Button } from "../Button/Button";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
@@ -18,6 +17,13 @@ const initialTaskData = {
   priority: "",
   original_task_description: "",
 };
+
+// Mesagges for info banners
+const BannerMessageWarning = () => (
+  <div>
+    Valid characters are <BoldText>a-z 0-9 _ -</BoldText>
+  </div>
+);
 
 export default function RegularTaskInputForm({
   onSubmit,
@@ -140,16 +146,29 @@ export default function RegularTaskInputForm({
 
   // Handle input change in the tags input field
   function handleChangeTag(input) {
-    const lastCharacter = input.slice(-1);
-    const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
-    const isValidDelimiter = [",", ";"].includes(lastCharacter);
+    if (input.length > 1) {
+      const inputCopy = input;
+      const lastCharacter = inputCopy.slice(-1);
+      const isValidCharacter = /^[a-zA-Z0-9-_]+$/.test(lastCharacter);
+      const isValidDelimiter = [",", ";"].includes(lastCharacter);
 
-    if (!isValidCharacter && !isValidDelimiter) {
-      // Show a warning or error message to the user
-      console.log("Invalid character entered!");
-      return;
+      if (!isValidCharacter && !isValidDelimiter) {
+        // Show a warning or error message to the user
+
+        // Info banner
+        toast.error(<BannerMessageWarning />, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return;
+      }
     }
-
     setTagInputValue(input);
   }
 
@@ -190,7 +209,7 @@ export default function RegularTaskInputForm({
       [name]: value,
     }));
   }
-  console.log(`AI: ${newAiTaskData}, edit: ${existingTaskData}`);
+
   // Handle radio button change for priority selection
   function handleRadioButtonChange(newPriority) {
     setTaskData({ ...taskData, priority: newPriority });
@@ -207,9 +226,7 @@ export default function RegularTaskInputForm({
       fileInput.value = "";
     }
   }
-  console.log(
-    `currentImageValue: ${currentImageValue}; taskData.image_url: ${taskData.image_url}`
-  );
+
   // Handle form submission
   async function handleSubmit(event) {
     event.preventDefault();
@@ -299,7 +316,7 @@ export default function RegularTaskInputForm({
               : "empty data"
           }
         />
-        <BoldText>subtasks</BoldText>
+        <SmallText>subtasks</SmallText>
         {taskData.subtasks && taskData.subtasks.length > 0
           ? taskData.subtasks.map((subtask, index) => (
               <SubtaskWrapper key={subtask.id}>
@@ -349,6 +366,7 @@ export default function RegularTaskInputForm({
             inputValue={tagInputValue}
             handleInputChange={(event) => handleChangeTag(event)}
             allowNew
+            allowDeleteFromEmptyInput="true"
           />
         </MyTagsWrapper>
         <Label htmlFor="deadline">deadline</Label>
@@ -361,7 +379,7 @@ export default function RegularTaskInputForm({
           value={taskData.deadline}
           onChange={handleChangeDeadline}
         />
-        <BoldText>priority</BoldText>
+        <SmallText>priority</SmallText>
         <RadioButtonGroup id="priority" name="priority">
           <RadioButtonLabel htmlFor="priority-high">
             <Input
@@ -400,11 +418,11 @@ export default function RegularTaskInputForm({
             low
           </RadioButtonLabel>
         </RadioButtonGroup>
-        <BoldText>image: </BoldText>
+        <SmallText>image</SmallText>
         {currentImageValue !== "" ||
         (taskData.image_url && taskData.image_url !== "") ? (
           <FileUploadContainer>
-            <ChooseImageContainer>
+            <ChooseImageButton>
               <FileInput
                 type="file"
                 id="image_upload"
@@ -417,14 +435,14 @@ export default function RegularTaskInputForm({
               <StyledIcon variant="small">
                 <Icon labelText={"change image for upload"} />
               </StyledIcon>
-            </ChooseImageContainer>
+            </ChooseImageButton>
             <Button onClick={handleFileDelete} variant="small">
               <Icon labelText={"delete image"} />
             </Button>
           </FileUploadContainer>
         ) : (
           <FileUploadContainer>
-            <ChooseImageContainer>
+            <ChooseImageButton>
               <FileInput
                 type="file"
                 id="image_upload"
@@ -437,7 +455,7 @@ export default function RegularTaskInputForm({
               <StyledIcon variant="small">
                 <Icon labelText={"choose image for upload"} />
               </StyledIcon>
-            </ChooseImageContainer>
+            </ChooseImageButton>
           </FileUploadContainer>
         )}
 
@@ -448,19 +466,13 @@ export default function RegularTaskInputForm({
           taskData.original_task_description !== "" &&
           existingTaskData) ? (
           <>
-            <Label htmlFor="original_task_description">
+            <span htmlFor="original_task_description">
               original task description
-            </Label>
-            <Textarea
-              id="original_task_description"
-              name="original_task_description"
-              type="text"
-              required
-              wrap="hard"
-              value={taskData.original_task_description}
-              rows="5"
-              disabled
-            />
+            </span>
+            <OriginalTaskDescriptionContainer>
+              {" "}
+              {taskData.original_task_description}
+            </OriginalTaskDescriptionContainer>
           </>
         ) : null}
         <IconContainer variant="fixed">
@@ -583,7 +595,7 @@ const Input = styled.input`
 
   color: ${(props) =>
     props.value !== "" && props.value !== undefined && props.value
-      ? "black"
+      ? "#1d1d1d"
       : " #878282"};
   :focus {
     outline: none !important;
@@ -622,7 +634,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #f6c6d8;
         box-shadow: 2px #f6c6d8;
       }
@@ -655,7 +667,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #cec7ff;
         box-shadow: 2px #cec7ff;
       }
@@ -688,7 +700,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #a3ffb7;
         box-shadow: 2px #a3ffb7;
       }
@@ -706,7 +718,7 @@ const RadioButtonLabel = styled.label`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: black;
+  color: var(--black-color);
 `;
 
 const MyTagsWrapper = styled.div`
@@ -730,7 +742,7 @@ const MyTagsWrapper = styled.div`
   .ReactTags__remove {
     border-radius: 1.5rem;
     border: none;
-    background-color: black;
+    background-color: var(--black-color);
     color: white;
     margin: 0.1rem;
   }
@@ -759,21 +771,10 @@ const keyCodes = {
 const delimiters = [keyCodes.comma, keyCodes.enter, keyCodes.space];
 
 const BoldText = styled.span`
+  font-weight: 700;
+`;
+const SmallText = styled.span`
   font-size: 0.9rem;
-`;
-
-const Textarea = styled.textarea`
-  padding: 1rem;
-  font-size: inherit;
-  border: none;
-  border-radius: 1.5rem;
-  background-color: var(--light-gray-background);
-  color: gray;
-`;
-
-const TaskImage = styled(Image)`
-  width: 100%;
-  height: 100%;
 `;
 
 const StyledIcon = styled.div`
@@ -825,12 +826,26 @@ const FileUploadContainer = styled.div`
   height: 2.5rem;
 `;
 
-const ChooseImageContainer = styled.div`
+const ChooseImageButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
-
   gap: 3rem;
   height: 2.5rem;
   width: 2.5rem;
+  :active {
+    background-color: #cec7ff;
+    box-shadow: 0 5px #cec7ff;
+    transform: translateY(4px);
+  }
+`;
+
+const OriginalTaskDescriptionContainer = styled.div`
+  width: 100%;
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  color: var(--light-gray-placeholder);
+  border: none;
+  background-color: var(--light-gray-background);
 `;

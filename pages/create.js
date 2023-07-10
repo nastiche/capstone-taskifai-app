@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { StyledContainer } from "../components/StyledContainer";
+import Image from "next/image";
 
 const headerText = "create task";
 const homeButtonShow = true;
@@ -30,14 +31,14 @@ const BannerMessageFailed = () => <div>Complete your task description!</div>;
 const BannerMessageAISuccess = () => <div>Complete your task details!</div>;
 
 export default function CreateTaskPage() {
-  const { mutate, data } = useSWR("/api/tasks");
+  const { mutate, isLoading, error } = useSWR("/api/tasks");
   const router = useRouter();
 
   // State to check whether aiMode is on (aiMode change is triggered with aiMode switch)
   const [aiMode, setAiMode] = useLocalStorageState("aiMode", false);
 
   // State to check whether app is waiting for POST, GET, PATCH and DELETE responses
-  const [isLoading, setIsLoading] = useState(false);
+  const [pageIsLoading, setPageIsLoading] = useState(false);
 
   // State for task data which is coming from OpenAI API
   const [aiTaskData, setAiTaskData] = useState(initialTaskData);
@@ -48,8 +49,8 @@ export default function CreateTaskPage() {
 
   // Function to add a task
   async function addTask(newTaskData) {
-    // While app is waiting for API response (isLoading === true) user sees an animation
-    setIsLoading(true);
+    // While app is waiting for API response (pageIsLoading === true) user sees an animation
+    setPageIsLoading(true);
     // If the user sends post request in regular mode the post request goes directly to the data base
     if (!aiMode) {
       // Send a POST request to the database to create a new task
@@ -192,17 +193,23 @@ export default function CreateTaskPage() {
       }
     }
 
-    setIsLoading(false);
+    setPageIsLoading(false);
   }
 
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-      {isLoading ? (
+      {pageIsLoading || error || isLoading ? (
         // Display loading UI when the task is being created
-        <StyledContainer>
-          <EmptyDiv></EmptyDiv>
-          <StyledLoadingDiv>...loading...</StyledLoadingDiv>
-        </StyledContainer>
+        <LoadingBackground>
+          <LoadingContainer>
+            <Gif
+              src="/loading.gif"
+              alt="circle loading gif"
+              width={200}
+              height={200}
+            />
+          </LoadingContainer>
+        </LoadingBackground>
       ) : (
         // Display switch for AI mode
         <StyledContainer>
@@ -216,12 +223,10 @@ export default function CreateTaskPage() {
               onColor="#cec7ff"
               onHandleColor="#a194fa"
               offColor="#bdbdbd"
-              offHandleColor="#000000"
+              offHandleColor="#1d1d1d"
               handleDiameter={24}
               uncheckedIcon={false}
               checkedIcon={false}
-              // boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              // activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
               height={16}
               width={40}
             />
@@ -257,16 +262,40 @@ const SwitchWrapper = styled.div`
   width: 100%;
 `;
 
-const EmptyDiv = styled.div`
-  height: 28px;
-`;
-
-const StyledLoadingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #a3ffb7;
-`;
-
 const BoldText = styled.span`
   font-weight: 700;
+`;
+
+const LoadingBackground = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const Gif = styled(Image)`
+  border-radius: 100%;
 `;

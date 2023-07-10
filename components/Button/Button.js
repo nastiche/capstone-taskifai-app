@@ -9,6 +9,12 @@ export const Button = styled.button`
   border: none;
   cursor: pointer;
 
+  :active {
+    background-color: #cec7ff;
+    box-shadow: 0 5px #cec7ff;
+    transform: translateY(2px);
+  }
+
   ${({ variant }) =>
     variant === "big" &&
     css`

@@ -7,9 +7,24 @@ export default createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
   }
+  *:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+*:active {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
   body {
     margin: 0;
-    background: black;
+    background: var(--black-color);
+    -ms-overflow-style: none;
+    
   }
   textarea, input, button, select {
     font-family: inherit;
@@ -18,8 +33,10 @@ export default createGlobalStyle`
 
 
 
+
+
   :root {
-  --black-color: #000000;
+  --black-color: #1d1d1d;
   --light-gray-background: #eeeded;
   --light-gray-placeholder: #878282;
   --low-priority-card: #a3ffb7;
@@ -57,7 +74,7 @@ export default createGlobalStyle`
   --toastify-color-info: #cec7ff;
   --toastify-color-success: #a3ffb7;
   --toastify-color-warning: #f1c40f;
-  --toastify-color-error: #e74c3c;
+  --toastify-color-error: #f6c6d8;
   --toastify-color-transparent: rgba(255, 255, 255, 0.7);
   --toastify-icon-color-info: var(--toastify-color-info);
   --toastify-icon-color-success: var(--toastify-color-success);
@@ -69,12 +86,12 @@ export default createGlobalStyle`
   --toastify-toast-max-height: 800px;
   --toastify-font-family: sans-serif;
   --toastify-z-index: 9999;
-  --toastify-text-color-light: #757575;
-  --toastify-text-color-dark: #000000;
-  --toastify-text-color-info: #000000;
-  --toastify-text-color-success: #000000;
-  --toastify-text-color-warning: #000000;
-  --toastify-text-color-error: #000000;
+  --toastify-text-color-light: #1d1d1d;
+  --toastify-text-color-dark: #1d1d1d;
+  --toastify-text-color-info: #1d1d1d;
+  --toastify-text-color-success: #1d1d1d;
+  --toastify-text-color-warning: #1d1d1d;
+  --toastify-text-color-error: #1d1d1d;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
   --toastify-color-progress-light: linear-gradient(
@@ -86,11 +103,11 @@ export default createGlobalStyle`
     #5856d6,
     #ff2d55
   );
-  --toastify-color-progress-dark: #bb86fc;
-  --toastify-color-progress-info: var(--toastify-color-info);
-  --toastify-color-progress-success: var(--toastify-color-success);
-  --toastify-color-progress-warning: var(--toastify-color-warning);
-  --toastify-color-progress-error: var(--toastify-color-error);
+  --toastify-color-progress-dark: #1d1d1d;
+  --toastify-color-progress-info: #1d1d1d;
+  --toastify-color-progress-success: #1d1d1d;
+  --toastify-color-progress-warning: #1d1d1d;
+  --toastify-color-progress-error: #1d1d1d;
 }
 
 .Toastify__toast-container {
@@ -151,7 +168,7 @@ export default createGlobalStyle`
 }
 .Toastify__toast {
   position: relative;
-  min-height: 3rem;
+  min-height: 2.9rem;
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
@@ -248,29 +265,29 @@ export default createGlobalStyle`
 }
 
 .Toastify__progress-bar-theme--light {
-  background: var(--toastify-color-progress-light);
+  background: #1d1d1d;
 }
 .Toastify__progress-bar-theme--dark {
-  background: #000000;
+  background: #1d1d1d;
 }
 .Toastify__progress-bar--info {
-  background: #000000;
+  background: #1d1d1d;
 }
 .Toastify__progress-bar--success {
-  background: v#000000;
+  background: #1d1d1d;
 }
 .Toastify__progress-bar--warning {
-  background: var(--toastify-color-progress-warning);
+  background: #1d1d1d;
 }
 .Toastify__progress-bar--error {
-  background: var(--toastify-color-progress-error);
+  background: #1d1d1d;
 }
 .Toastify__progress-bar-theme--colored.Toastify__progress-bar--info, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--success, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--warning, .Toastify__progress-bar-theme--colored.Toastify__progress-bar--error {
-  background: var(--toastify-color-transparent);
+  background: #1d1d1d;
 }
 
 .Toastify__close-button {
-  color: #fff;
+  color: #1d1d1d;
   background: transparent;
   outline: none;
   border: none;
@@ -282,7 +299,7 @@ export default createGlobalStyle`
       align-self: flex-start;
 }
 .Toastify__close-button--light {
-  color: #000;
+  color: #1d1d1d;
   opacity: 0.3;
 }
 .Toastify__close-button > svg {

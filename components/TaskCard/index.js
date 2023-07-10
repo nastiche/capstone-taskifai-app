@@ -181,17 +181,15 @@ export default function TaskCard({
 
                   {showOriginalTaskDescription ? (
                     <OriginalTaskDescriptionContainer>
-                      <OriginalTaskDescriptionInnerContainer>
-                        <OriginalTaskDescriptionText>
-                          {original_task_description}
-                        </OriginalTaskDescriptionText>
-                        <HideOriginalTaskDescriptionButton
-                          onClick={() => setShowOriginalTaskDescription(false)}
-                          variant="extra-small"
-                        >
-                          <Icon labelText={"hide original task description"} />
-                        </HideOriginalTaskDescriptionButton>
-                      </OriginalTaskDescriptionInnerContainer>
+                      <OriginalTaskDescriptionText>
+                        {original_task_description}
+                      </OriginalTaskDescriptionText>
+                      <HideOriginalTaskDescriptionButton
+                        onClick={() => setShowOriginalTaskDescription(false)}
+                        variant="extra-small"
+                      >
+                        <Icon labelText={"hide original task description"} />
+                      </HideOriginalTaskDescriptionButton>
                     </OriginalTaskDescriptionContainer>
                   ) : (
                     <>
@@ -497,26 +495,11 @@ const DeleteTaskIconsContainer = styled.div`
   height: 3rem;
 `;
 
-const OriginalTaskDescriptionContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-  background: white;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  padding-bottom: 0.7rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-`;
-
 const OriginalTaskDescriptionEmptyContainer = styled.div`
-  border: solid white 1.5px;
+  border: none;
   height: 0.3rem;
   width: 100%;
-  background-color: white;
+  background: var(--light-gray-background);
   border-radius: 5rem;
   margin-top: 0.5rem;
 `;
@@ -538,11 +521,15 @@ const HideOriginalTaskDescriptionButton = styled(Button)`
   transform: translateX(-50%);
 `;
 
-const OriginalTaskDescriptionInnerContainer = styled.div`
+const OriginalTaskDescriptionContainer = styled.div`
+  position: relative;
   border: none;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   background: var(--light-gray-background);
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
+  padding-bottom: 1.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 `;
 const OriginalTaskDescriptionText = styled.span``;

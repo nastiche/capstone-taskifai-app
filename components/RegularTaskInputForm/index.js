@@ -577,7 +577,7 @@ const Input = styled.input`
 
   color: ${(props) =>
     props.value !== "" && props.value !== undefined && props.value
-      ? "black"
+      ? "#1d1d1d"
       : " #878282"};
   :focus {
     outline: none !important;
@@ -616,7 +616,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #f6c6d8;
         box-shadow: 2px #f6c6d8;
       }
@@ -649,7 +649,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #cec7ff;
         box-shadow: 2px #cec7ff;
       }
@@ -682,7 +682,7 @@ const Input = styled.input`
         content: "";
         display: inline-block;
         visibility: visible;
-        border: 0.2rem solid black;
+        border: 0.2rem solid #1d1d1d;
         outline: 5px solid #a3ffb7;
         box-shadow: 2px #a3ffb7;
       }
@@ -700,7 +700,7 @@ const RadioButtonLabel = styled.label`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: black;
+  color: var(--black-color);
 `;
 
 const MyTagsWrapper = styled.div`
@@ -724,7 +724,7 @@ const MyTagsWrapper = styled.div`
   .ReactTags__remove {
     border-radius: 1.5rem;
     border: none;
-    background-color: black;
+    background-color: var(--black-color);
     color: white;
     margin: 0.1rem;
   }

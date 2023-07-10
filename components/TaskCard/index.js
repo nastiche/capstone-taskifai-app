@@ -18,9 +18,8 @@ export default function TaskCard({
   priority,
   original_task_description,
   image_url,
+  onDelete,
 }) {
-  const { mutate } = useSWR(`/api/tasks`);
-
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
 
   const [showImage, setShowImage] = useState(false);
@@ -30,33 +29,6 @@ export default function TaskCard({
 
   const [deleteTaskMode, setDeleteTaskMode] = useState(false);
 
-  // Mesagge for info banner
-  const BannerMessageSaved = () => <div>Task deleted!</div>;
-
-  async function deleteTask(id) {
-    const response = await fetch(`/api/tasks?id=${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(id),
-    });
-
-    if (response.ok) {
-      mutate();
-      // Info banner
-      toast.success(<BannerMessageSaved />, {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-  }
   const formattedDeadline = deadline
     ? new Date(deadline).toLocaleDateString("en-US", {
         day: "numeric",
@@ -85,7 +57,7 @@ export default function TaskCard({
             <ModalText>delete task?</ModalText>
           </DeleteTaskModal>
           <DeleteTaskIconsContainer>
-            <StyledButton variant="medium" onClick={() => deleteTask(id)}>
+            <StyledButton variant="medium" onClick={() => onDelete(id)}>
               <Icon labelText={"confirm task deletion"} />
             </StyledButton>
             <StyledButton
@@ -100,7 +72,10 @@ export default function TaskCard({
     );
   } else {
     return (
-      <TaskCardContainer priorityVariant={priority}>
+      <TaskCardContainer
+        priorityVariant={priority}
+        sizeVariant={taskDetailsDisplay ? "details" : "preview"}
+      >
         <TaskPreviewContainer sizeVariant="preview">
           <TitleContainer>
             <TitleText>{title}</TitleText>
@@ -138,104 +113,101 @@ export default function TaskCard({
           ) : null}
         </TaskPreviewContainer>
         {taskDetailsDisplay ? (
-          <>
-            <TaskDetailsContainer>
-              {subtasks.length > 0 ? (
-                <>
-                  <BoldText>subtasks: </BoldText>
-                  <SubtasksContainer>
-                    {subtasks.map((subtask) => (
-                      <SubtaskContainer key={subtask.id}>
-                        <SubtaskText>{subtask.value}</SubtaskText>
-                      </SubtaskContainer>
-                    ))}
-                  </SubtasksContainer>
-                </>
-              ) : null}
+          <TaskDetailsContainer>
+            {subtasks.length > 0 ? (
+              <>
+                <BoldText>subtasks: </BoldText>
+                <SubtasksContainer>
+                  {subtasks.map((subtask) => (
+                    <SubtaskContainer key={subtask.id}>
+                      <SubtaskText>{subtask.value}</SubtaskText>
+                    </SubtaskContainer>
+                  ))}
+                </SubtasksContainer>
+              </>
+            ) : null}
 
-              {image_url && image_url !== "" ? (
-                <>
-                  <BoldText>image: </BoldText>
-                  <ImageContainer>
-                    <ImageButtonContainer>
-                      <TaskImage
-                        alt="image"
-                        src={image_url}
-                        width="100"
-                        height="100"
-                      />
-                      <ExpandImageButton
-                        onClick={() => setShowImage(true)}
+            {image_url && image_url !== "" ? (
+              <>
+                <BoldText>image: </BoldText>
+                <ImageContainer>
+                  <ImageButtonContainer>
+                    <TaskImage
+                      alt="image"
+                      src={image_url}
+                      width="100"
+                      height="100"
+                    />
+                    <ExpandImageButton
+                      onClick={() => setShowImage(true)}
+                      variant="extra-small"
+                    >
+                      <Icon labelText={"show image"} />
+                    </ExpandImageButton>
+                  </ImageButtonContainer>
+                </ImageContainer>
+              </>
+            ) : null}
+
+            {original_task_description !== "" ? (
+              <>
+                <BoldText>original task description: </BoldText>
+
+                {showOriginalTaskDescription ? (
+                  <OriginalTaskDescriptionContainer>
+                    <OriginalTaskDescriptionText>
+                      {original_task_description}
+                    </OriginalTaskDescriptionText>
+                    <HideOriginalTaskDescriptionButton
+                      onClick={() => setShowOriginalTaskDescription(false)}
+                      variant="extra-small"
+                    >
+                      <Icon labelText={"hide original task description"} />
+                    </HideOriginalTaskDescriptionButton>
+                  </OriginalTaskDescriptionContainer>
+                ) : (
+                  <>
+                    <OriginalTaskDescriptionHiddenContainer>
+                      <ShowOriginalTaskDescriptionButton
+                        onClick={() => setShowOriginalTaskDescription(true)}
                         variant="extra-small"
                       >
-                        <Icon labelText={"show image"} />
-                      </ExpandImageButton>
-                    </ImageButtonContainer>
-                  </ImageContainer>
-                </>
-              ) : null}
+                        <Icon labelText={"show original task description"} />
+                      </ShowOriginalTaskDescriptionButton>
+                    </OriginalTaskDescriptionHiddenContainer>
+                  </>
+                )}
+              </>
+            ) : null}
 
-              {original_task_description !== "" ? (
-                <>
-                  <BoldText>original task description: </BoldText>
-
-                  {showOriginalTaskDescription ? (
-                    <OriginalTaskDescriptionContainer>
-                      <OriginalTaskDescriptionText>
-                        {original_task_description}
-                      </OriginalTaskDescriptionText>
-                      <HideOriginalTaskDescriptionButton
-                        onClick={() => setShowOriginalTaskDescription(false)}
-                        variant="extra-small"
-                      >
-                        <Icon labelText={"hide original task description"} />
-                      </HideOriginalTaskDescriptionButton>
-                    </OriginalTaskDescriptionContainer>
-                  ) : (
-                    <>
-                      <OriginalTaskDescriptionHiddenContainer>
-                        {" "}
-                        <OriginalTaskDescriptionEmptyContainer />{" "}
-                        <ShowOriginalTaskDescriptionButton
-                          onClick={() => setShowOriginalTaskDescription(true)}
-                          variant="extra-small"
-                        >
-                          <Icon labelText={"show original task description"} />
-                        </ShowOriginalTaskDescriptionButton>
-                      </OriginalTaskDescriptionHiddenContainer>
-                    </>
-                  )}
-                </>
-              ) : null}
-              <IconContainer variant="absolute">
-                <StyledLink
-                  href={{ pathname: `/edit`, query: { id: id } }}
-                  variant="medium"
-                  aria-hidden="true"
-                >
-                  <Icon labelText={"go to the task edit page"} />
-                </StyledLink>
-                <Button
-                  type="button"
-                  aria-hidden="true"
-                  onClick={() => {
-                    setTaskDetailsDisplay(false);
-                    setShowOriginalTaskDescription(false);
-                  }}
-                  variant="small"
-                >
-                  <Icon labelText={"hide task details"} />
-                </Button>
-                <Button
-                  onClick={() => setDeleteTaskMode(true)}
-                  variant="medium"
-                  aria-hidden="true"
-                >
-                  <Icon labelText={"delete task"} />
-                </Button>
-              </IconContainer>
-            </TaskDetailsContainer>
-          </>
+            <DetailsIconContainer variant="absolute">
+              <StyledLink
+                href={{ pathname: `/edit`, query: { id: id } }}
+                variant="medium"
+                aria-hidden="true"
+              >
+                <Icon labelText={"go to the task edit page"} />
+              </StyledLink>
+              <Button
+                type="button"
+                aria-hidden="true"
+                onClick={() => {
+                  setTaskDetailsDisplay(false);
+                  setShowOriginalTaskDescription(false);
+                }}
+                variant="small"
+              >
+                <Icon labelText={"hide task details"} />
+              </Button>
+              <Button
+                onClick={() => setDeleteTaskMode(true)}
+                variant="medium"
+                aria-hidden="true"
+              >
+                <Icon labelText={"delete task"} />
+              </Button>
+            </DetailsIconContainer>
+          </TaskDetailsContainer>
         ) : null}
       </TaskCardContainer>
     );
@@ -255,6 +227,11 @@ const TaskCardContainer = styled.div`
   border: none;
   width: 100%;
 
+  ${({ sizeVariant }) =>
+    sizeVariant === "details" &&
+    css`
+      padding-bottom: 4rem;
+    `};
   ${({ priorityVariant }) =>
     priorityVariant === "low" &&
     css`
@@ -284,8 +261,6 @@ const TaskPreviewContainer = styled.div`
 
 const TaskDetailsContainer = styled.div`
   position: relative;
-  margin-top: 0.2rem;
-  padding-bottom: 2rem;
 `;
 
 const TitleContainer = styled.div`
@@ -495,7 +470,17 @@ const DeleteTaskIconsContainer = styled.div`
   height: 3rem;
 `;
 
-const OriginalTaskDescriptionEmptyContainer = styled.div`
+// const OriginalTaskDescriptionEmptyContainer = styled.div`
+//   border: none;
+//   height: 0.3rem;
+//   width: 100%;
+//   background: var(--light-gray-background);
+//   border-radius: 5rem;
+//   margin-top: 0.5rem;
+// `;
+
+const OriginalTaskDescriptionHiddenContainer = styled.div`
+  position: relative;
   border: none;
   height: 0.3rem;
   width: 100%;
@@ -504,15 +489,12 @@ const OriginalTaskDescriptionEmptyContainer = styled.div`
   margin-top: 0.5rem;
 `;
 
-const OriginalTaskDescriptionHiddenContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.3rem;
-  flex-direction: column;
+const ShowOriginalTaskDescriptionButton = styled(Button)`
+  position: absolute;
+  bottom: -2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
 `;
-
-const ShowOriginalTaskDescriptionButton = styled(Button)``;
 
 const HideOriginalTaskDescriptionButton = styled(Button)`
   position: absolute;
@@ -522,7 +504,6 @@ const HideOriginalTaskDescriptionButton = styled(Button)`
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`
-  position: relative;
   border: none;
   border-radius: 1.5rem;
   background: var(--light-gray-background);
@@ -530,6 +511,18 @@ const OriginalTaskDescriptionContainer = styled.div`
   padding: 1rem;
   padding-bottom: 1.2rem;
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
 `;
-const OriginalTaskDescriptionText = styled.span``;
+const OriginalTaskDescriptionText = styled.span`
+  font-size: 0.9rem;
+  color: var(--light-gray-placeholder);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  display: inline-block;
+`;
+
+const DetailsIconContainer = styled(IconContainer)`
+  bottom: -5.5rem;
+`;

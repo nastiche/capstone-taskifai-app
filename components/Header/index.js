@@ -27,7 +27,7 @@ const HeaderContainer = styled.div`
   width: 100%;
   top: 0;
   z-index: 9900;
-  background-color: black;
+  background-color: var(--black-color);
   height: 3rem;
 `;
 
@@ -41,7 +41,7 @@ const DummyContainerRight = styled.div`
   width: 25px;
   border: none;
   border-top-right-radius: 1.5rem;
-  box-shadow: 0 -1.5rem 0 0 black;
+  box-shadow: 0 -1.5rem 0 0 #1d1d1d;
 `;
 
 const DummyContainerLeft = styled.div`
@@ -54,5 +54,5 @@ const DummyContainerLeft = styled.div`
   height: 50px;
   width: 25px;
   border-top-left-radius: 1.5rem;
-  box-shadow: 0 -1.5rem 0 0 black;
+  box-shadow: 0 -1.5rem 0 0 #1d1d1d;
 `;

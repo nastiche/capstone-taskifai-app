@@ -5,6 +5,7 @@ import RegularTaskInputForm from "../components/RegularTaskInputForm";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import { StyledContainer } from "../components/StyledContainer";
+import Image from "next/image";
 
 const headerText = "edit task";
 const homeButtonShow = true;
@@ -51,9 +52,17 @@ export default function TaskEditPage() {
 
   if (!isReady || isLoading || error)
     return (
-      <>
-        <StyledLoadingDiv>...loading...</StyledLoadingDiv>
-      </>
+      // Display loading UI when the task is being created
+      <LoadingBackground>
+        <LoadingContainer>
+          <Gif
+            src="/loading.gif"
+            alt="circle loading gif"
+            width={200}
+            height={200}
+          />
+        </LoadingContainer>
+      </LoadingBackground>
     );
 
   return (
@@ -75,8 +84,36 @@ const EmptyDiv = styled.div`
   height: 25px;
 `;
 
-const StyledLoadingDiv = styled.div`
+const LoadingBackground = styled.div`
+  position: fixed;
   display: flex;
   justify-content: center;
-  background-color: #a3ffb7;
+  align-items: center;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const Gif = styled(Image)`
+  border-radius: 100%;
 `;

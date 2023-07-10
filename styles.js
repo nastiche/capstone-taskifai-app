@@ -13,6 +13,13 @@ export default createGlobalStyle`
     -ms-touch-action: manipulation;
     touch-action: manipulation;
 }
+*:active {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
   body {
     margin: 0;
     background: var(--black-color);

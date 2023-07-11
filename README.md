@@ -21,7 +21,7 @@
 - SWR
 - mongoose
 
-## setup taskifAI in your own environment:
+## setup taskifAI in your own dev environment:
 
 - clone this repository
 - install all dependencies with $ npm install

@@ -6,7 +6,7 @@ taskifAI is your revolutionary personal assistant, transforming the way you mana
 
 
 
-## technologies used
+## technologies used:
 
 - React
 - Next.js
@@ -21,7 +21,7 @@ taskifAI is your revolutionary personal assistant, transforming the way you mana
 - SWR
 - mongoose
 
-## setup taskifAI in your own environment
+## setup taskifAI in your own environment:
 
 - clone this repository
 - install all dependencies with $ npm install

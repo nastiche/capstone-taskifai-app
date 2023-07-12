@@ -84,12 +84,19 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
           onChange={handleChangeTaskDescription}
           ref={original_task_descriptionInputRef}
           placeholder="e.g. plan a trip to Mallorca"
+          data-testid="original-task-description"
         />
         <IconContainer variant="fixed">
           <StyledLink href={`/`} aria-hidden="true" variant="medium">
             <Icon labelText={"go to the previous page"} />
           </StyledLink>
-          <Button type="submit" aria-hidden="true" variant="big">
+          <Button
+            type="submit"
+            aria-hidden="true"
+            variant="big"
+            name="let_ai_create_task_details"
+            data-testid="submit-button"
+          >
             <Icon labelText={"let AI create task details"} />
           </Button>
           <Button
@@ -97,6 +104,9 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
             onClick={resetForm}
             aria-hidden="true"
             variant="medium"
+            name="clear_input_form"
+            id="clear_input_form"
+            data-testid="clear-button"
           >
             <Icon labelText={"clear input form"} />
           </Button>

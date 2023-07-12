@@ -311,7 +311,7 @@ export default function RegularTaskInputForm({
           autoFocus
           maxLength={50}
           variant={
-            existingTaskData || newAiTaskData.title !== ""
+            existingTaskData || (newAiTaskData && newAiTaskData.title !== "")
               ? "big-data"
               : "empty data"
           }

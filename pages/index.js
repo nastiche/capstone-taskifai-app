@@ -11,7 +11,6 @@ import { Button } from "../components/Button/Button";
 import { StyledContainer } from "../components/StyledContainer";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 
 const headerText = "taskifAI";
 const homeButtonShow = false;
@@ -28,30 +27,27 @@ export default function TasksListPage() {
   const [pageIsLoading, setPageIsLoading] = useState(false);
 
   const [sortedTasks, setSortedTasks] = useState([]); // Array to store sorted tasks
-  const [sortType, setSortType] = useLocalStorageState(
-    "sortType",
-    "creation_date"
-  ); // Sort type state with local storage persistence
+  const [sortType, setSortType] = useLocalStorageState("sortType", "priority"); // Sort type state with local storage persistence
 
   // Mesagge for info banner
   const BannerMessageSaved = () => <div>Task deleted!</div>;
 
   const [sortDirection, setSortDirection] = useLocalStorageState(
     "sort direction",
-    "asc"
+    "desc"
   ); // Sort direction state
 
   // Function to convert priority string to a corresponding number
   const priorityToNumber = (priority) => {
     switch (priority) {
       case "low":
-        return 1;
-      case "medium":
         return 2;
-      case "high":
+      case "medium":
         return 3;
-      default:
-        return 0;
+      case "high":
+        return 4;
+      case "none":
+        return 1;
     }
   };
 
@@ -69,7 +65,7 @@ export default function TasksListPage() {
         edit_date: "edit_date",
         priority: "priority",
       };
-      const sortProperty = types[type];
+      const sortProperty = types[type] || "priority";
       if (data.length > 0) {
         const sorted = [...data].sort((a, b) => {
           // Sort based on the sort property
@@ -144,7 +140,7 @@ export default function TasksListPage() {
     return (
       <>
         <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-          <StyledContainer>
+          <StyledContainer name="styled-container">
             <StyledWrapper>
               <SortButton>
                 <StyledSelect

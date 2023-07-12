@@ -1,6 +1,6 @@
-# capstone project - taskifAI
+# taskifAI - AI powered task management app 
 
-### taskifAI is your revolutionary personal assistant, transforming the way you manage tasks. powered by artificial intelligence, it optimizes your daily activities for unparalleled productivity. simply describe your tasks, and taskifAI will generate a comprehensive to-do list in seconds. experience a new level of efficiency like never before!
+taskifAI is your personal assistant, transforming the way you manage tasks. powered by artificial intelligence, it optimizes your daily activities for unparalleled productivity. simply describe your tasks, and taskifAI will generate a comprehensive to-do list in seconds. experience a new level of efficiency like never before!
 
 ![taskifAI](https://github.com/nastiche/capstone_taskifai_app/assets/97537490/de3efd66-c067-4a4e-9276-aa58f20ed6d3)
 
@@ -20,6 +20,7 @@
 - React Testing Library
 - SWR
 - mongoose
+- React Hooks
 
 ## setup taskifAI in your own dev environment:
 

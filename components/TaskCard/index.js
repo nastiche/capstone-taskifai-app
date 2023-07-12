@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Button } from "../Button/Button";
 import Image from "next/image";
 import { StyledLink } from "../NavigationLink/NavigationLink";
-import { toast } from "react-toastify";
 import css from "styled-jsx/css";
 import { IconContainer } from "../IconContainer";
 import { Icon } from "../Icon";
@@ -23,9 +22,6 @@ export default function TaskCard({
   const [taskDetailsDisplay, setTaskDetailsDisplay] = useState(false);
 
   const [showImage, setShowImage] = useState(false);
-
-  const [showOriginalTaskDescription, setShowOriginalTaskDescription] =
-    useState(false);
 
   const [deleteTaskMode, setDeleteTaskMode] = useState(false);
 
@@ -195,7 +191,6 @@ export default function TaskCard({
               aria-hidden="true"
               onClick={() => {
                 setTaskDetailsDisplay(false);
-                setShowOriginalTaskDescription(false);
               }}
               variant="small"
             >
@@ -488,30 +483,6 @@ const DeleteTaskIconsContainer = styled.div`
   margin-bottom: 5rem;
   width: 17rem;
   height: 3rem;
-`;
-
-const OriginalTaskDescriptionHiddenContainer = styled.div`
-  position: relative;
-  border: none;
-  height: 0.3rem;
-  width: 100%;
-  background: var(--light-gray-background);
-  border-radius: 5rem;
-  margin-top: 0.5rem;
-`;
-
-const ShowOriginalTaskDescriptionButton = styled(Button)`
-  position: absolute;
-  bottom: -2.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const HideOriginalTaskDescriptionButton = styled(Button)`
-  position: absolute;
-  bottom: -1rem;
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`

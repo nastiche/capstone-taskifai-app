@@ -212,7 +212,7 @@ export default function CreateTaskPage() {
         </LoadingBackground>
       ) : (
         // Display switch for AI mode
-        <StyledContainer>
+        <StyledContainer name="styled-container">
           <SwitchWrapper>
             <label>
               <BoldText>AI</BoldText>

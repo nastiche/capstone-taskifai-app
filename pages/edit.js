@@ -72,7 +72,7 @@ export default function TaskEditPage() {
 
   return (
     <Layout headerText={headerText} homeButtonShow={homeButtonShow}>
-      <StyledContainer>
+      <StyledContainer name="styled-container">
         <EmptyDiv></EmptyDiv>
         <RegularTaskInputForm
           onSubmit={editTask}

@@ -47,7 +47,7 @@ export default createGlobalStyle`
   --high-priority-icon: #d07253;
   --no-priority-card: #7cded0;
   --no-priority-icon: #31b9a5
-  --input-focus: #a194fa
+  --input-focus: #a194fa;
  
 
   --icon-big: 2.5rem;

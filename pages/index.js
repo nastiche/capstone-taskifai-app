@@ -201,7 +201,8 @@ export default function TasksListPage() {
   }
 }
 
-// Styled components for styling
+// Styled components
+
 const TasksList = styled.ul`
   list-style: none;
   display: flex;

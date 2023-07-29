@@ -8,6 +8,8 @@ export const Button = styled.button`
   background-color: var(--black-color);
   border: none;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
 
   :active {
     background-color: #cec7ff;

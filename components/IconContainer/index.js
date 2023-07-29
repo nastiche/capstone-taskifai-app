@@ -14,9 +14,9 @@ export const IconContainer = styled.div`
       justify-content: center;
       align-items: center;
       bottom: 20px;
+      gap: 50px;
       left: 0;
       right: 0;
-      gap: 50px;
     `}
   ${({ variant }) =>
     variant === "absolute" &&

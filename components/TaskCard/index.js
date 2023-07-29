@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import { useState } from "react";
 import styled from "styled-components";
 import { Button } from "../Button/Button";
@@ -23,6 +22,9 @@ export default function TaskCard({
 
   const [showImage, setShowImage] = useState(false);
 
+  const [showOriginalTaskDescription, setShowOriginalTaskDescription] =
+    useState(false);
+
   const [deleteTaskMode, setDeleteTaskMode] = useState(false);
 
   const formattedDeadline = deadline
@@ -31,6 +33,8 @@ export default function TaskCard({
         month: "short",
       })
     : "";
+
+  console.log(showOriginalTaskDescription);
 
   if (showImage) {
     return (
@@ -95,37 +99,21 @@ export default function TaskCard({
           <PriorityContainer priorityVariant={priority}>
             {priority !== "none" ? priority : null}
           </PriorityContainer>
-          {/* {!taskDetailsDisplay ? (
-            <IconContainer variant="absolute">
-              <Button
-                type="button"
-                aria-hidden="true"
-                onClick={() => {
-                  setTaskDetailsDisplay(true);
-                }}
-                variant="small"
-              >
-                <Icon labelText={"show task details"} />
-              </Button>
-            </IconContainer>
-          ) : null} */}
         </TaskPreviewContainer>
         <TaskDetailsContainerWrap
-          variant={taskDetailsDisplay ? "details" : "preview"}
+          variant={taskDetailsDisplay ? "details" : null}
         >
-          <TaskDetailsContainer
-            variant={taskDetailsDisplay ? "details" : "preview"}
-          >
+          <TaskDetailsContainer variant={taskDetailsDisplay ? "details" : null}>
             {subtasks.length > 0 ? (
               <>
                 <BoldText>subtasks: </BoldText>
-                <SubtasksContainer>
+                <SubtasksWrapper>
                   {subtasks.map((subtask) => (
                     <SubtaskContainer key={subtask.id}>
                       <SubtaskText>{subtask.value}</SubtaskText>
                     </SubtaskContainer>
                   ))}
-                </SubtasksContainer>
+                </SubtasksWrapper>
               </>
             ) : null}
 
@@ -150,16 +138,43 @@ export default function TaskCard({
                 </ImageContainer>
               </>
             ) : null}
-
             {original_task_description !== "" ? (
               <>
-                <BoldText>original task description: </BoldText>
-
-                <OriginalTaskDescriptionContainer>
-                  <OriginalTaskDescriptionText>
-                    {original_task_description}
-                  </OriginalTaskDescriptionText>
-                </OriginalTaskDescriptionContainer>
+                <BoldText>original task description:</BoldText>
+                {!showOriginalTaskDescription ? (
+                  <OriginalTaskDescriptionIconContainer>
+                    <Button
+                      type="button"
+                      aria-hidden="true"
+                      onClick={() => {
+                        setShowOriginalTaskDescription(
+                          (prevState) => !prevState
+                        );
+                      }}
+                      variant="extra-small"
+                    >
+                      <Icon labelText={"show original task description"} />
+                    </Button>
+                  </OriginalTaskDescriptionIconContainer>
+                ) : (
+                  <OriginalTaskDescriptionContainer>
+                    <div>{original_task_description}</div>
+                    <OriginalTaskDescriptionIconContainer
+                      variant={showOriginalTaskDescription ? "show" : "hide"}
+                    >
+                      <Button
+                        type="button"
+                        aria-hidden="true"
+                        onClick={() => {
+                          setShowOriginalTaskDescription((current) => !current);
+                        }}
+                        variant="extra-small"
+                      >
+                        <Icon labelText={"hide original task description"} />
+                      </Button>
+                    </OriginalTaskDescriptionIconContainer>
+                  </OriginalTaskDescriptionContainer>
+                )}
               </>
             ) : null}
           </TaskDetailsContainer>
@@ -301,7 +316,7 @@ const DeadlineContainer = styled.div`
 `;
 
 const DeadlineText = styled.span`
-  color: gray;
+  color: black;
 `;
 
 const TagsContainer = styled.div`
@@ -329,6 +344,7 @@ const TagItem = styled.li`
   border-radius: 1rem;
   padding: 0.4rem 0.6rem;
   white-space: normal;
+  font-weight: 700;
 `;
 
 const TagText = styled.span`
@@ -365,27 +381,29 @@ const PriorityContainer = styled.div`
     `};
 `;
 
-const SubtasksContainer = styled.div`
+const SubtasksWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
   width: 100%;
-  background: white;
-  border-radius: 1rem;
-  padding: 0.5rem;
+  background: transparent;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+  border: none;
+  padding: 0 0.625rem;
+  overflow: visible;
 `;
 
 const SubtaskContainer = styled.div`
   display: flex;
   align-items: center;
-  border: none;
-  border-radius: 1rem;
-  background: var(--light-gray-background);
+  border-radius: 1.5rem;
+  background: white;
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.7rem;
+  color: black;
+  box-shadow: 0 0 0.625rem #1d1d1d;
 `;
 
 const SubtaskText = styled.span`
@@ -486,20 +504,30 @@ const DeleteTaskIconsContainer = styled.div`
 `;
 
 const OriginalTaskDescriptionContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 1.5rem;
-  background: var(--light-gray-background);
-  width: 100%;
-  padding: 1rem;
+  background: white;
+  padding: 0.7rem;
+  padding-bottom: 1.4rem;
+  margin-bottom: 1rem;
   margin-top: 0.5rem;
 `;
-const OriginalTaskDescriptionText = styled.span`
-  font-size: 0.9rem;
-  color: var(--black-color);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  display: inline-block;
+
+const OriginalTaskDescriptionIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0.625rem 0;
+
+  ${({ variant }) =>
+    variant === "show" &&
+    css`
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: -1rem;
+    `}
 `;

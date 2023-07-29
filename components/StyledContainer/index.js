@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const StyledContainer = styled.div`
   border-radius: 1.5rem;
+  border: none;
   background-color: white;
   margin-left: 0.3rem;
   margin-right: 0.3rem;

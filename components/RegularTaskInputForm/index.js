@@ -381,7 +381,8 @@ export default function RegularTaskInputForm({
         />
         <SmallText>priority</SmallText>
         <RadioButtonGroup id="priority" name="priority">
-          <RadioButtonLabel htmlFor="priority-high">
+          <RadioButtonContainer>
+            <RadioButtonLabel htmlFor="priority-high">high</RadioButtonLabel>
             <Input
               id="priority-high"
               type="radio"
@@ -391,9 +392,11 @@ export default function RegularTaskInputForm({
               onChange={() => handleRadioButtonChange("high")}
               variant="priority-high"
             />
-            high
-          </RadioButtonLabel>
-          <RadioButtonLabel htmlFor="priority-medium">
+          </RadioButtonContainer>
+          <RadioButtonContainer>
+            <RadioButtonLabel htmlFor="priority-medium">
+              medium
+            </RadioButtonLabel>
             <Input
               id="priority-medium"
               type="radio"
@@ -403,9 +406,9 @@ export default function RegularTaskInputForm({
               onChange={() => handleRadioButtonChange("medium")}
               variant="priority-medium"
             />
-            medium
-          </RadioButtonLabel>
-          <RadioButtonLabel htmlFor="priority-low">
+          </RadioButtonContainer>
+          <RadioButtonContainer>
+            <RadioButtonLabel htmlFor="priority-low">low</RadioButtonLabel>
             <Input
               id="priority-low"
               type="radio"
@@ -415,8 +418,7 @@ export default function RegularTaskInputForm({
               onChange={() => handleRadioButtonChange("low")}
               variant="priority-low"
             />
-            low
-          </RadioButtonLabel>
+          </RadioButtonContainer>
         </RadioButtonGroup>
         <SmallText>image</SmallText>
         {currentImageValue !== "" ||
@@ -480,7 +482,7 @@ export default function RegularTaskInputForm({
             <Icon labelText={"go to the previous page"} />
           </StyledLink>
           <Button type="submit" variant="big" aria-hidden="true">
-            <Icon labelText={"save task details"} />
+            <Icon labelText={"go to the task creation page"} />
           </Button>
           <Button
             type="button"
@@ -496,14 +498,15 @@ export default function RegularTaskInputForm({
   );
 }
 
-// Styled components for the form layout
+// Styled components
+
 const FormContainer = styled.form`
   display: grid;
   grid-template-columns: auto;
-  margin-bottom: 90px;
+  margin-bottom: 84px;
   gap: 0.5rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 `;
 
 const TitleInput = styled.textarea`
@@ -513,7 +516,6 @@ const TitleInput = styled.textarea`
   border-radius: 1.5rem;
   background-color: var(--light-gray-background);
   flex: 1;
-  margin-right: 0.5rem;
 
   height: auto;
   width: 100%;
@@ -552,17 +554,15 @@ const SubtaskWrapper = styled.div`
 const SubtaskInput = styled.textarea`
   position: absolute;
   padding: 1rem;
-  padding-right: 1.5rem;
   font-size: inherit;
   border: none;
   border-radius: 1.5rem;
   background-color: var(--light-gray-background);
   flex: 1;
-  margin-right: 0.5rem;
-  min-width: 21.838rem;
-
   min-height: 5.563rem;
-  resize: none;
+  max-height: calc(1.5em * 3);
+  width: 100%;
+  // resize: none;
   overflow-y: hidden;
 
   ::placeholder {
@@ -713,10 +713,15 @@ const RadioButtonGroup = styled.div`
   gap: 2rem;
 `;
 
-const RadioButtonLabel = styled.label`
+const RadioButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
+  width: 3.75rem;
+`;
+
+const RadioButtonLabel = styled.label`
   text-align: center;
   color: var(--black-color);
 `;

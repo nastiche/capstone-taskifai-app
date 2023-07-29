@@ -27,6 +27,7 @@ const HeaderContainer = styled.div`
   z-index: 9900;
   background-color: var(--black-color);
   height: 3rem;
+  border: none;
 `;
 
 const DummyContainerRight = styled.div`

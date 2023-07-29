@@ -116,7 +116,8 @@ export default function AiTaskInputForm({ onSubmit, formName, newAiTaskData }) {
   );
 }
 
-// Styled components for the form layout
+// Styled components
+
 const FormContainer = styled.form`
   display: grid;
   margin-bottom: 50px;

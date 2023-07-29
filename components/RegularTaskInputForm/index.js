@@ -482,7 +482,7 @@ export default function RegularTaskInputForm({
             <Icon labelText={"go to the previous page"} />
           </StyledLink>
           <Button type="submit" variant="big" aria-hidden="true">
-            <Icon labelText={"go to the task creation page"} />
+            <Icon labelText={"save task details"} />
           </Button>
           <Button
             type="button"

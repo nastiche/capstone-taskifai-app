@@ -5,7 +5,7 @@ export function Icon({ labelText }) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           height="1.4rem"
           width="1.4rem"
@@ -24,7 +24,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -40,7 +40,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -56,7 +56,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -72,7 +72,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -88,7 +88,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -106,7 +106,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -122,7 +122,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -140,7 +140,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -157,7 +157,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -173,7 +173,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -189,7 +189,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -205,7 +205,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -221,7 +221,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -237,7 +237,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -253,7 +253,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >
@@ -274,7 +274,7 @@ export function Icon({ labelText }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.7"
           stroke="white"
           aria-label={labelText}
         >

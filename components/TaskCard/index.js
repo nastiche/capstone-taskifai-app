@@ -388,7 +388,7 @@ const SubtasksWrapper = styled.div`
   gap: 0.2rem;
   width: 100%;
   background: transparent;
-  margin-top: 0.5rem;
+  margin-top: 0.9rem;
   margin-bottom: 1rem;
   border: none;
   padding: 0 0.625rem;
@@ -512,15 +512,14 @@ const OriginalTaskDescriptionContainer = styled.div`
   background: white;
   padding: 0.7rem;
   padding-bottom: 1.4rem;
-  margin-bottom: 1rem;
-  margin-top: 0.5rem;
+  margin: 0.9rem 0.625rem 1rem;
 `;
 
 const OriginalTaskDescriptionIconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem 0.625rem 0;
+  margin: 0.9rem 0.625rem 0;
 
   ${({ variant }) =>
     variant === "show" &&
